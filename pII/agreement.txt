@@ -1,0 +1,97 @@
+c4rafizs I accept these guidelines and intend to fulfill them.
+c5singha I accept these guidelines and intend to fulfill them.
+c4limamb I accept these guidelines and intend to fulfill them.
+g5ccanni I accept these guidelines and intend to fulfill them.
+
+Methods of Communication:
+
+    All team members must post their phone number in the agreements.txt file
+    Sooham Rafiz: 647-836-6256
+    Angad Singh:647-801-0974
+    Christopher Cannis:778-999-7771
+    Badis Limam: 647-822-2559
+
+    All communication is carried out through the Slack messenger application
+    and over phone if necessary. All document work is to be done through
+    Google Drive. All code is to be posted into the group svn repository.
+
+Communication Response Times:
+
+    The expected response time for EVERY member will be between 12 to 16 hours
+    from when the message was sent. Every member is expected to use Slack.
+
+Meeting Attendance:
+
+    Our first planning meeting for the project will be on thursday 12th of November
+    4:30 - 5:30 pm  (for phase 1).
+    Our second planning meeting will be midway of every project phase.
+    During every planning meeting we will recap on the state of the project and allocate
+    tasks to team members.
+
+    There will be a weekly status meeting held every Monday 6 - 8 pm. All team members
+    are expected to show up to these meeting and discuss what tasks they have
+    accomplished, technical hurdles etc.
+
+    Team member Sooham Rafiz will be responsible for recording all meetings in
+    meetings.txt and shall update the file on the day of the meeting.
+
+    If a member does not meet deadlines and misses meetings without any provided reason
+    (illness, death in family, exam etc.), then the Instructors of CSC207 will be
+    notified about their lack of communication.
+
+    Further updates shall be posted in this section.
+
+Running Meetings:
+
+    All meetings will be held at BA3200, there is no specific time allotted to each team
+    member.
+
+Meeting Preparation:
+
+    Members should have all previous required tasks allocated to them (on Slack, in meeting)
+    completed before every meeting, otherwise, they should promptly report any problems to
+    other team members to acquire help.
+
+Version Control:
+    ALL members must svn update before ANY commits.
+
+    Only the source files of every eclipse project should be committed to the group
+    svn repository (i.e every .java file under a src directory). All code committed should
+    compile without throwing any runtime errors (A half done class with a syntax error
+    is not allowed, but an incomplete class without any syntax errors and fake returns
+    is fine to commit).
+
+    If a merge conflict occurs, the conflictors must meet up and discuss how to work out
+    the conflict unless trivial (i.e fixes a bug).
+
+    All internal eclipse files like bin, .project etc. are not allowed.
+
+Division of Work:
+
+    Work will be divided evenly between all group members. Decisions on which
+    member will be made during group meetings.
+
+
+Submitting Assignments:
+
+    All code must have good comments, javadocs with the correct parameters and return types.
+    In addition any commits must have short, meaningful messages in order to distinguish between
+    repository versions. Files should be submitted any time during the day and should be checked
+    by all members. Furthermore all members will be submitting their respective portions to the
+    repository (ie. classes, methods).
+
+    All code must conform to the CRC diagram made at the beginning of Phase 2 and any UML made by the team.
+
+
+Contingency Planning:
+
+    At least one member will report to the professor if a team member drops / misses two meetings in a row.
+    This will be done either by email or in person within 24 hours of when it was known.
+
+    If a group member is academically dishonest, the incident will be reported to the professor and their
+    plagiarized work will be removed and redone by remaining team members. Necessary actions will be take
+    to ensure all liability for the plagiarism will be held with the plagiariser (limited liability for other team members).
+    This includes repercussions like getting zero in CSC207, project phase etc.
+
+    All team members will hold a emergency meeting.
+
