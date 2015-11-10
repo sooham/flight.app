@@ -8,7 +8,7 @@ Methods of Communication:
     All team members must post their phone number in the agreements.txt file
     Sooham Rafiz: 647-836-6256
     Angad Singh:647-801-0974
-    Christopher Cannis:778-999-7771
+    Christopher Cannistraro:778-999-7771
     Badis Limam: 647-822-2559
 
     All communication is carried out through the Slack messenger application
@@ -94,4 +94,3 @@ Contingency Planning:
     This includes repercussions like getting zero in CSC207, project phase etc.
 
     All team members will hold a emergency meeting.
-
