@@ -1,0 +1,46 @@
+Clients:
+    store all their private and billing information in private fields with
+    appropriate getters and setters implemented, every client will have a
+    non-static variable of ArrayList<Itenary> to hold the Client instance's
+    booked Itineraries.
+    Booked Itineraries are stored in a ArrayList because ArrayList is easier to
+    modify by an Administrator.
+
+Administrator:
+    has non-static fields holding login, private information
+
+Flight:
+    String field for Origin, Destination, int for total cost, java.util.Date is
+    is used for departure and arrival time as they are easy to compare with other
+    times and can be changed according to timezone with java.util.TimeZone.
+
+Itinerary:
+    Contains an ArrayList<Flight> which makes it easy to traverse the itinerary flight
+    by flight, making it easier to edit in code (or by Administrator). Has all the same
+    fields as Flight. Also makes it easy to serialize and cache, sort, search etc.
+
+ClientManager:
+    Is a singleton
+
+    Contains a ArrayList<Client> to hold all clients. It is easy to serialize and cache,
+    easy to edit, search, sort as needed by Administrator methods.
+
+FlightManager:
+    Is a singleton
+
+    Contains a ArrayList<Flight> for Flights as it is easy to serialize and cache,
+    easy to add flights as needed by Administrator methods and its own methods.
+
+    We also keep our itineraries in a Hashmap parameterized over types
+    HashMap<ArrayList<Hashmap<String, Date>>, ArrayList<Itinerary>>,
+    so we can map [{Origin: Departure time}, {Destination: Arrival Time}] to
+    all itineraries starting at origin at given time and ending at destination at
+    given time.
+
+    This makes it easier to update all itineraries when Administrator
+    adds a Flight in the File database, easy to search for all file departing, leaving
+    at a certain locations etc.
+
+FileDatabase:
+    holds an instance of FlightManager and ClientManager and serializes then to
+    make all runtime changes persistent.
