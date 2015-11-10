@@ -1,0 +1,28 @@
+Tuesday Nov 10, first Planning meeting:
+    Notes:
+        One person (Chris) missing from meeting due to vacation
+    Accomplished in meeting:
+        Critically analyzed and combined both parties phase I crc.pdf files,
+        submitted a new crc.pdf including phase II responsiblities.
+
+        Read over phase II handout and delegated responsibilites to members
+
+    Tasks for this week:
+        Sooham:
+            Research into java JSON handling and help Angad with FileDatabase class
+            Implement FlightManager class
+            Implement Admin class with Badis
+        Angad:
+            Update CRC diagrams
+            Implement Flight class
+            Implement Itinerary class
+            Implement FileDatabase with Sooham
+        Badis:
+            Implement Admin class
+            Implement Client class
+
+        Chris:
+            Implement ClientManager class
+            Implement User abstract class
+
+    Note: Next meeting on Thursday 4:30 pm
