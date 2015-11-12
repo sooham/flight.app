@@ -6,6 +6,10 @@ import java.util.Calendar;
 
 public class Client extends User implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3786727358644943990L;
 	private String LastName;
 	private String FirstNames;
 	private String Email;
@@ -15,8 +19,11 @@ public class Client extends User implements Serializable {
 	private Itenary selectedItinerary;
 	private ArrayList<Itenary> bookedItineraries;
 
-	public Client(String LastName, String FirstNames, String Email,
-			String Address, int CreditCardNumber, Calendar ExpiryDate) {
+	public Client(String username, String password, String LastName,
+			String FirstNames, String Email, String Address,
+			int CreditCardNumber, Calendar ExpiryDate) {
+		
+		super(username, password);
 		this.LastName = LastName;
 		this.FirstNames = FirstNames;
 		this.Email = Email;
@@ -133,10 +140,26 @@ public class Client extends User implements Serializable {
 
 	public void setExpiryDate(Calendar expiryDate) {
 		ExpiryDate = expiryDate;
+
+	}
+		
+	/**
+	 * 
+	 * @param listItineraries
+	 * @param index
+	 */
+	
+	public void selectItinerary(ArrayList<Itenary> listItineraries, int index) {
+		this.selectedItinerary = listItineraries.get(index);
 	}
 	
-	public void bookItinerary(Itenary bookedItinerary) {
-		
+	/**
+	 * 
+	 * @param selectedItinerary
+	 */
+	
+	public void bookItinerary(Itenary selectedItinerary) {
+		this.bookedItineraries.add(selectedItinerary);
 	}
 	
 }
