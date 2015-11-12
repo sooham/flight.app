@@ -1,6 +1,7 @@
 package backend;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Client extends User implements Serializable {
@@ -11,6 +12,8 @@ public class Client extends User implements Serializable {
 	private String Address;
 	private int CreditCardNumber;
 	private Calendar ExpiryDate;
+	private Itenary selectedItinerary;
+	private ArrayList<Itenary> bookedItineraries;
 
 	public Client(String LastName, String FirstNames, String Email,
 			String Address, int CreditCardNumber, Calendar ExpiryDate) {
@@ -20,6 +23,8 @@ public class Client extends User implements Serializable {
 		this.Address = Address;
 		this.CreditCardNumber = CreditCardNumber;
 		this.ExpiryDate = ExpiryDate;
+		this.selectedItinerary = new Itenary();
+		this.bookedItineraries = new ArrayList<Itenary>();
 	}
 	
 	/**
@@ -130,8 +135,8 @@ public class Client extends User implements Serializable {
 		ExpiryDate = expiryDate;
 	}
 	
-	
-	
-	
+	public void bookItinerary(Itenary bookedItinerary) {
+		
+	}
 	
 }
