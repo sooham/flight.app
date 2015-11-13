@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package backend;
 
 import java.io.Serializable;
@@ -7,9 +10,10 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * An object that represents an itenary. Contains a valid list of flights. 
+ * @author Angad Singh
+ *
  */
-public class Itenary implements Serializable{
+public class Itinerary implements Serializable{
 	
 	private static final long serialVersionUID = 7985656353564622420L;
 	private List<Flight> flights = new ArrayList<Flight>();
@@ -20,11 +24,11 @@ public class Itenary implements Serializable{
 	private Calendar arrivalTime; 
 	
 	/**
-	 * Creates a new Iternary object given a list of flights. 
+	 * Creates a new Itinerary object given a list of flights. 
 	 * @param newflight a sorted list of flights by departure time. 
 	 * @throws InvalidFlightException 
 	 */
-	public Itenary(List<Flight> newflight) throws InvalidFlightException {
+	public Itinerary(List<Flight> newflight) throws InvalidFlightException {
 		Collections.sort(newflight);
 		for (Flight flight: newflight){
 			this.addFlightEnd(flight);
@@ -32,9 +36,9 @@ public class Itenary implements Serializable{
 	}
 	
 	/**
-	 * Creates a new empty Iternary.  
+	 * Creates a new empty Itinerary.  
 	 */
-	public Itenary(){
+	public Itinerary(){
 		this.flights = new ArrayList<Flight>();
 		this.origin = "";
 		this.destination = "";
@@ -145,13 +149,10 @@ public class Itenary implements Serializable{
 
 
 	/**
-	 * 
-	 * @return the duration of the itirnary in hours
+	 * @return the duration of the itinerary in hours
 	 */
 	public double getDuration(){
 		return (this.getArrivalTime().getTime().getTime()-this.getDepartureTime().getTime().getTime())
 				/(1000 * 60 * 60D) ;
 	}
-	
-	
 }

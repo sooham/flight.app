@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ItenaryTest {
+public class ItineraryTest {
 	Flight flight1;
 	Flight flight2;
 	Flight flight3;
@@ -35,7 +35,7 @@ public class ItenaryTest {
 
 	@Test
 	public void testAddFlightsEnd() throws InvalidFlightException {
-		Itenary i = new Itenary();
+		Itinerary i = new Itinerary();
 		i.addFlightEnd(flight1);
 		i.addFlightEnd(flight2);
 		i.addFlightEnd(flight3);
@@ -45,7 +45,7 @@ public class ItenaryTest {
 	
 	@Test
 	public void testAddFlightsBeginning() throws InvalidFlightException {
-		Itenary i = new Itenary();
+		Itinerary i = new Itinerary();
 		i.addFlightBeginning(flight3);
 		i.addFlightBeginning(flight2);
 		i.addFlightBeginning(flight1);
@@ -55,7 +55,7 @@ public class ItenaryTest {
 	
 	@Test
 	public void testDuration() throws InvalidFlightException {
-		Itenary i = new Itenary();
+		Itinerary i = new Itinerary();
 		i.addFlightBeginning(flight2);
 		i.addFlightBeginning(flight1);
 		assertEquals(i.getDuration(), 1.5, 0.0);
@@ -68,7 +68,7 @@ public class ItenaryTest {
 			add(flight1);
 			add(flight3);
 			}};
-		Itenary i = new Itenary(l);
+	    Itinerary i = new Itinerary(l);
 		assertEquals(i.getOrigin(),"France");
 		assertEquals(i.getDestination(), "Italy");
 	}
