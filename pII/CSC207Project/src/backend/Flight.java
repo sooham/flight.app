@@ -169,7 +169,7 @@ public class Flight implements Comparable<Flight>, Serializable{
 		double duration = 0.0;
 		duration += (this.arrivalTime.get(this.arrivalTime.DATE) - this.arrivalTime.get(this.departureTime.DATE))*24;
 		duration += this.arrivalTime.get(this.arrivalTime.HOUR_OF_DAY) - this.departureTime.get(this.departureTime.HOUR_OF_DAY);
-		duration += this.departureTime.get(this.departureTime.MINUTE)/60 + this.arrivalTime.get(this.arrivalTime.MINUTE)/60;
+		duration += -this.departureTime.get(this.departureTime.MINUTE)/60 + this.arrivalTime.get(this.arrivalTime.MINUTE)/60;
 		return duration;
 	}
 }

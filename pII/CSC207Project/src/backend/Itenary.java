@@ -12,7 +12,7 @@ import java.util.List;
 public class Itenary implements Serializable{
 	
 	private static final long serialVersionUID = 7985656353564622420L;
-	private List<Flight> flights;
+	private List<Flight> flights = new ArrayList<Flight>();
 	private String origin; 
 	private String destination; 
 	private double cost;
@@ -87,7 +87,7 @@ public class Itenary implements Serializable{
 				this.departureTime = newFlight.getDepartureTime();
 				this.origin = newFlight.getOrigin();
 			}else{
-				String message = "The origin is: " + this.destination + 
+				String message = "The origin of the Iternary: " + this.destination + 
 						" The new flight's desination is: " + newFlight.getDestination(); 
 				throw new InvalidFlightException(message);
 			}
@@ -153,7 +153,7 @@ public class Itenary implements Serializable{
 		double duration = 0.0;
 		duration += (this.arrivalTime.get(this.arrivalTime.DATE) - this.arrivalTime.get(this.departureTime.DATE))*24;
 		duration += this.arrivalTime.get(this.arrivalTime.HOUR_OF_DAY) - this.departureTime.get(this.departureTime.HOUR_OF_DAY);
-		duration += this.departureTime.get(this.departureTime.MINUTE)/60 + this.arrivalTime.get(this.arrivalTime.MINUTE)/60;
+		duration += -this.departureTime.get(this.departureTime.MINUTE)/60D + this.arrivalTime.get(this.arrivalTime.MINUTE)/60D;
 		return duration;
 	}
 	
