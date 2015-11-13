@@ -1,14 +1,17 @@
 package backend;
 
+import java.io.Serializable;
 import java.util.Calendar;
 /**
  * An object that represents a flight. Administrators can edit flights. 
  *
  */
-public class Flight implements Comparable<Flight>{
+public class Flight implements Comparable<Flight>, Serializable{
+
+	private static final long serialVersionUID = -6145320157176266485L;
 	private String origin; 
 	private String destination; 
-	private float cost;
+	private double cost;
 	private Calendar departureTime;
 	private Calendar arrivalTime; 
 	private String airline; 
@@ -25,7 +28,7 @@ public class Flight implements Comparable<Flight>{
 	 * @param airline the airline of the flight. 
 	 * @param flightNumber a unique number representing the flight. 
 	 */
-	public Flight(String origin, String destination, float cost, Calendar departureTime, Calendar arrivalTime,
+	public Flight(String origin, String destination, double cost, Calendar departureTime, Calendar arrivalTime,
 			String airline, int flightNumber) {
 		super();
 		this.origin = origin;
@@ -47,16 +50,6 @@ public class Flight implements Comparable<Flight>{
 	}
 
 
-
-	/**
-	 * @param origin the origin to set
-	 */
-	public void setOrigin(String origin) {
-		this.origin = origin;
-	}
-
-
-
 	/**
 	 * @return the destination
 	 */
@@ -66,19 +59,11 @@ public class Flight implements Comparable<Flight>{
 
 
 
-	/**
-	 * @param destination the destination to set
-	 */
-	public void setDestination(String destination) {
-		this.destination = destination;
-	}
-
-
 
 	/**
 	 * @return the cost
 	 */
-	public float getCost() {
+	public double getCost() {
 		return cost;
 	}
 
@@ -103,29 +88,12 @@ public class Flight implements Comparable<Flight>{
 
 
 	/**
-	 * @param departureTime the departureTime to set
-	 */
-	public void setDepartureTime(Calendar departureTime) {
-		this.departureTime = departureTime;
-	}
-
-
-
-	/**
 	 * @return the arrivalTime
 	 */
 	public Calendar getArrivalTime() {
 		return arrivalTime;
 	}
 
-
-
-	/**
-	 * @param arrivalTime the arrivalTime to set
-	 */
-	public void setArrivalTime(Calendar arrivalTime) {
-		this.arrivalTime = arrivalTime;
-	}
 
 
 
@@ -167,17 +135,19 @@ public class Flight implements Comparable<Flight>{
 
 	/**
 	 * Returns if both Flight objects are the same. 
-	 * @param obj a Flight object.
+	 * @param obj an object to be compared to.
 	 * @return true if and only if both Flight objects have the same flight Numbers.
 	 */
-
-	public boolean equals(Flight obj) {
-		// TODO Auto-generated method stub
-		return this.flightNumber == obj.getFlightNumber();
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Flight){
+			return this.flightNumber == ((Flight)obj).getFlightNumber();
+		}
+		return false;
 	}
 	
 
-	/**
+	/**`
 	 * Returns an integer that that represents if this flight object is greater than or 
 	 * less than the given Flight object. 
 	 * 
@@ -190,5 +160,16 @@ public class Flight implements Comparable<Flight>{
 		return this.departureTime.compareTo(obj.getDepartureTime());
 	}
 	
-
+	/**
+	 * 
+	 * @return the duration of the itirnary in hours
+	 */
+	@SuppressWarnings("static-access")
+	public double calulateDuration(){
+		double duration = 0.0;
+		duration += (this.arrivalTime.get(this.arrivalTime.DATE) - this.arrivalTime.get(this.departureTime.DATE))*24;
+		duration += this.arrivalTime.get(this.arrivalTime.HOUR_OF_DAY) - this.departureTime.get(this.departureTime.HOUR_OF_DAY);
+		duration += this.departureTime.get(this.departureTime.MINUTE)/60 + this.arrivalTime.get(this.arrivalTime.MINUTE)/60;
+		return duration;
+	}
 }

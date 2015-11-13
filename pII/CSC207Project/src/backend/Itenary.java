@@ -1,13 +1,17 @@
 package backend;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * An object that represents an itenary. Contains a valid list of flights. 
  */
-public class Itenary{
+public class Itenary implements Serializable{
+	
+	private static final long serialVersionUID = 7985656353564622420L;
 	private List<Flight> flights;
 	private String origin; 
 	private String destination; 
@@ -16,13 +20,14 @@ public class Itenary{
 	private Calendar arrivalTime; 
 	
 	/**
-	 * Creates a new Iternary object given a sorted list of flights. 
+	 * Creates a new Iternary object given a list of flights. 
 	 * @param newflight a sorted list of flights by departure time. 
 	 * @throws InvalidFlightException 
 	 */
 	public Itenary(List<Flight> newflight) throws InvalidFlightException {
+		Collections.sort(newflight);
 		for (Flight flight: newflight){
-			this.addFlight(flight);
+			this.addFlightEnd(flight);
 		}
 	}
 	
@@ -43,7 +48,7 @@ public class Itenary{
 	 * @param newFlight a new flight to add to the list. 
 	 * @throws InvalidFlightException if the flight is invalid. 
 	 */
-	public void addFlight(Flight newFlight) throws InvalidFlightException {
+	public void addFlightEnd(Flight newFlight) throws InvalidFlightException {
 		if (this.flights.isEmpty()){
 			this.flights.add(newFlight);
 			this.arrivalTime = newFlight.getArrivalTime();
@@ -52,7 +57,7 @@ public class Itenary{
 			this.origin = newFlight.getOrigin();
 			this.destination = newFlight.getDestination();
 		}else{
-			if (this.flights.get(-1).getDestination() == newFlight.getOrigin()){
+			if (this.flights.get(this.flights.size()-1).getDestination() == newFlight.getOrigin()){
 				this.flights.add(newFlight);
 				this.cost += newFlight.getCost();
 				this.arrivalTime = newFlight.getArrivalTime();
@@ -60,6 +65,30 @@ public class Itenary{
 			}else{
 				String message = "The desination is: " + this.destination + 
 						" The flights origin is: " + newFlight.getOrigin(); 
+				throw new InvalidFlightException(message);
+			}
+			
+		}
+		
+	}
+	
+	public void addFlightBeginning(Flight newFlight) throws InvalidFlightException {
+		if (this.flights.isEmpty()){
+			this.flights.add(newFlight);
+			this.arrivalTime = newFlight.getArrivalTime();
+			this.departureTime = newFlight.getDepartureTime();
+			this.cost = newFlight.getCost();
+			this.origin = newFlight.getOrigin();
+			this.destination = newFlight.getDestination();
+		}else{
+			if (this.flights.get(0).getOrigin() == newFlight.getDestination()){
+				this.flights.add(0, newFlight);
+				this.cost += newFlight.getCost();
+				this.departureTime = newFlight.getDepartureTime();
+				this.origin = newFlight.getOrigin();
+			}else{
+				String message = "The origin is: " + this.destination + 
+						" The new flight's desination is: " + newFlight.getDestination(); 
 				throw new InvalidFlightException(message);
 			}
 			
@@ -74,12 +103,6 @@ public class Itenary{
 		return flights;
 	}
 
-	/**
-	 * @param flights the flights to set
-	 */
-	public void setFlights(List<Flight> flights) {
-		this.flights = flights;
-	}
 
 	/**
 	 * @return the origin
@@ -87,13 +110,7 @@ public class Itenary{
 	public String getOrigin() {
 		return origin;
 	}
-
-	/**
-	 * @param origin the origin to set
-	 */
-	public void setOrigin(String origin) {
-		this.origin = origin;
-	}
+	
 
 	/**
 	 * @return the destination
@@ -102,12 +119,6 @@ public class Itenary{
 		return destination;
 	}
 
-	/**
-	 * @param destination the destination to set
-	 */
-	public void setDestination(String destination) {
-		this.destination = destination;
-	}
 
 	/**
 	 * @return the cost
@@ -116,12 +127,6 @@ public class Itenary{
 		return cost;
 	}
 
-	/**
-	 * @param cost the cost to set
-	 */
-	public void setCost(double cost) {
-		this.cost = cost;
-	}
 
 	/**
 	 * @return the departureTime
@@ -130,12 +135,6 @@ public class Itenary{
 		return departureTime;
 	}
 
-	/**
-	 * @param departureTime the departureTime to set
-	 */
-	public void setDepartureTime(Calendar departureTime) {
-		this.departureTime = departureTime;
-	}
 
 	/**
 	 * @return the arrivalTime
@@ -144,13 +143,19 @@ public class Itenary{
 		return arrivalTime;
 	}
 
+
 	/**
-	 * @param arrivalTime the arrivalTime to set
+	 * 
+	 * @return the duration of the itirnary in hours
 	 */
-	public void setArrivalTime(Calendar arrivalTime) {
-		this.arrivalTime = arrivalTime;
+	@SuppressWarnings("static-access")
+	public double calulateDuration(){
+		double duration = 0.0;
+		duration += (this.arrivalTime.DATE - this.departureTime.DATE)*24;
+		duration += this.arrivalTime.HOUR_OF_DAY - this.departureTime.HOUR_OF_DAY;
+		duration += this.departureTime.MINUTE/60 + this.arrivalTime.MINUTE/60;
+		return duration;
 	}
-	
 	
 	
 }
