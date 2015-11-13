@@ -58,7 +58,7 @@ public class ItenaryTest {
 		Itenary i = new Itenary();
 		i.addFlightBeginning(flight2);
 		i.addFlightBeginning(flight1);
-		assertEquals(i.calulateDuration(), 1.5, 0.0);
+		assertEquals(i.getDuration(), 1.5, 0.0);
 	}
 	
 	@Test

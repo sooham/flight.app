@@ -164,12 +164,8 @@ public class Flight implements Comparable<Flight>, Serializable{
 	 * 
 	 * @return the duration of the itirnary in hours
 	 */
-	@SuppressWarnings("static-access")
-	public double calulateDuration(){
-		double duration = 0.0;
-		duration += (this.arrivalTime.get(this.arrivalTime.DATE) - this.arrivalTime.get(this.departureTime.DATE))*24;
-		duration += this.arrivalTime.get(this.arrivalTime.HOUR_OF_DAY) - this.departureTime.get(this.departureTime.HOUR_OF_DAY);
-		duration += -this.departureTime.get(this.departureTime.MINUTE)/60 + this.arrivalTime.get(this.arrivalTime.MINUTE)/60;
-		return duration;
+	public double getDuration(){
+		return (this.getArrivalTime().getTime().getTime()-this.getDepartureTime().getTime().getTime())
+				/(1000 * 60 * 60D) ;
 	}
 }
