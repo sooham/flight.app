@@ -24,7 +24,7 @@ public abstract class User implements Serializable{
 		// uses a method from FlightManager
 	}
 	
-	public ArrayList<Iternary> viewItineraries(String origin, String departure, 
+	public ArrayList<Itinerary> viewItineraries(String origin, String departure, 
 			Calendar departureDate){
 		// uses a method from IternaryManager
 	}
@@ -34,7 +34,7 @@ public abstract class User implements Serializable{
 		// uses a method from FlightManager
 	}
 	
-	public ArrayList<Iternary> sortItineraries(String origin, String departure, 
+	public ArrayList<Itinerary> sortItineraries(String origin, String departure, 
 			Calendar departureDate){
 		// uses a method from IternaryManager
 	}
