@@ -36,7 +36,7 @@ public class FlightTest {
 
 	@Test
 	public void testCalulateDuration() {
-		assertTrue(flight1.calulateDuration()==1.0);	
+		assertTrue(flight1.getDuration()==1.0);	
 	}
 	
 	@Test
