@@ -5,8 +5,8 @@ package backend;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,8 +20,8 @@ public class Itinerary implements Serializable{
 	private String origin; 
 	private String destination; 
 	private double cost;
-	private Calendar departureTime;
-	private Calendar arrivalTime; 
+	private Date departureTime;
+	private Date arrivalTime; 
 	
 	/**
 	 * Creates a new Itinerary object given a list of flights. 
@@ -43,8 +43,8 @@ public class Itinerary implements Serializable{
 		this.origin = "";
 		this.destination = "";
 		this.cost = 0.0;
-		this.departureTime = Calendar.getInstance();
-		this.arrivalTime = Calendar.getInstance(); 
+		this.departureTime = null;
+		this.arrivalTime = null; 
 	}
 	
 	/**
@@ -155,7 +155,7 @@ public class Itinerary implements Serializable{
 	/**
 	 * @return the departureTime
 	 */
-	public Calendar getDepartureTime() {
+	public Date getDepartureTime() {
 		return departureTime;
 	}
 
@@ -163,7 +163,7 @@ public class Itinerary implements Serializable{
 	/**
 	 * @return the arrivalTime
 	 */
-	public Calendar getArrivalTime() {
+	public Date getArrivalTime() {
 		return arrivalTime;
 	}
 
@@ -172,7 +172,7 @@ public class Itinerary implements Serializable{
 	 * @return the duration of the itinerary in hours
 	 */
 	public double getDuration(){
-		return (this.getArrivalTime().getTime().getTime()-this.getDepartureTime().getTime().getTime())
-				/(1000 * 60 * 60D) ;
+		return (this.getArrivalTime().getTime()-this.getDepartureTime().getTime())
+				/(60 * 60D * 1000);
 	}
 }
