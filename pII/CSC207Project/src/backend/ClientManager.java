@@ -1,10 +1,8 @@
 package backend;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-
-import backend.Client;
 
 /**
  * @author Christopher Cannistraro
@@ -16,13 +14,13 @@ public class ClientManager implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Client> clients;
+	private ArrayList<User> clients;
 	
 	/**
 	 * Creates a new ClientManager object
 	 */
 	public ClientManager(){
-		this.clients = new ArrayList<Client>();
+		this.clients = new ArrayList<User>();
 	}
 	
 	/**
@@ -41,18 +39,18 @@ public class ClientManager implements Serializable{
 	 * @return specificClients, an ArrayList of Clients that fits the 
 	 * search item
 	 */
-	public ArrayList<Client> getClient(String searchItem, String type){
-		ArrayList<Client> specificClients = new ArrayList<Client>();
-		for (Client c: this.clients){
+	public ArrayList<User> getClient(String searchItem, String type){
+		ArrayList<User> specificClients = new ArrayList<User>();
+		for (User c: this.clients){
 			if (type == "last name"){
 				String lastname = c.getLastName();
 				if (lastname == searchItem){
 					specificClients.add(c);
 				}
 			}
-			else if (type == "first names"){
-				String firstnames = c.getFirstNames();
-				if (firstnames == searchItem){
+			else if (type == "first name"){
+				String firstname = c.getFirstName();
+				if (firstname == searchItem){
 					specificClients.add(c);
 				}
 			}
@@ -81,12 +79,12 @@ public class ClientManager implements Serializable{
 	 * @return specificClients, an ArrayList of Clients that fits the 
 	 * CreditCardNumber and ExpiryDate
 	 */
-	public ArrayList<Client> getClient(int CreditCardNumber,
-			Calendar ExpiryDate){
-		ArrayList<Client> specificClients = new ArrayList<Client>();
-		for (Client c: this.clients){
+	public ArrayList<User> getClient(int CreditCardNumber,
+			SimpleDateFormat ExpiryDate){
+		ArrayList<User> specificClients = new ArrayList<User>();
+		for (User c: this.clients){
 			int creditcardnum = c.getCreditCardNumber();
-			Calendar expdate = c.getExpiryDate();
+			SimpleDateFormat expdate = c.getExpiryDate();
 			if (creditcardnum == CreditCardNumber && expdate == ExpiryDate){
 				specificClients.add(c);
 			}
@@ -95,38 +93,39 @@ public class ClientManager implements Serializable{
 	}
 	
 	/**
-	 * Edits a Client that is inside the ClientManager
-	 * @param clientIndex, the index of the Client that is going to be edited
-	 * @param newType, the change for the type of object altered
-	 * @param type, the type of object that the string is representing
+	 * Returns the index of the user in the the client manager. If the client is not there 
+	 * returns -1. 
+	 * @param lastName a string of the last name of the user.
+	 * @param firstName a string of the first name of the user.
+	 * @param email a string of the unique email address for the user. 
+	 * @param address a string of the billing address for the user.
+	 * @param creditCardNum a credit card number. 
+	 * @param expiryDate the expiry date of the credit card number. 
+	 * @return returns index representing the client in the clientManager. if the client is 
+	 * not there returns -1
 	 */
-	public void editClient(int clientIndex, String newType, String type){
-		Client c = this.clients.get(clientIndex);
-		if (type == "last name"){
-			c.setLastName(newType);
-		}
-		else if (type == "first names"){
-			c.setFirstNames(newType);
-		}
-        else if (type == "email"){
-        	c.setEmail(newType);
-		}
-        else if (type == "address"){
-        	c.setAddress(newType);
-        }
+	public int getClientIndex(String lastName, String firstName, String email, String address,
+			int creditCardNum, SimpleDateFormat expiryDate){
+		User client = new User(lastName, firstName, email, address, creditCardNum, expiryDate);
+		return getClientIndex(client);	
 	}
 	
 	/**
-	 * Edits a Client's credit card information that is inside the 
-	 * ClientManager
-	 * @param clientIndex, the index of the Client that is going to be edited
-	 * @param newCreditCardNum, the new credit card number for the Client
-	 * @param newExpDate, the new expiry date for the Client
+	 * Returns the index of the user in the the client manager. If the client is not there 
+	 * returns -1. 
+	 * @param client a client object. 
+	 * @return returns index representing the client in the clientManager. if the client is 
+	 * not there returns -1
 	 */
-	public void editClient(int clientIndex, int newCreditCardNum,
-			Calendar newExpDate){
-		Client c = this.clients.get(clientIndex);
-		c.setCreditCardNumber(newCreditCardNum);
-		c.setExpiryDate(newExpDate);
+	public int getClientIndex(User client){
+		return this.clients.indexOf(client);
 	}
+
+	/**
+	 * @return the clients
+	 */
+	public ArrayList<User> getClients() {
+		return clients;
+	}
+	
 }
