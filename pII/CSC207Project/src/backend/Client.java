@@ -16,8 +16,8 @@ public class Client extends User implements Serializable {
 	private String Address;
 	private int CreditCardNumber;
 	private Calendar ExpiryDate;
-	private Itenary selectedItinerary;
-	private ArrayList<Itenary> bookedItineraries;
+	private Itinerary selectedItinerary;
+	private ArrayList<Itinerary> bookedItineraries;
 
 	public Client(String username, String password, String LastName,
 			String FirstNames, String Email, String Address,
@@ -30,13 +30,13 @@ public class Client extends User implements Serializable {
 		this.Address = Address;
 		this.CreditCardNumber = CreditCardNumber;
 		this.ExpiryDate = ExpiryDate;
-		this.selectedItinerary = new Itenary();
-		this.bookedItineraries = new ArrayList<Itenary>();
+		this.selectedItinerary = new Itinerary();
+		this.bookedItineraries = new ArrayList<Itinerary>();
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter for the Client's last name.
+	 * @return LastName, a String representation of the Client's last name. 
 	 */
 
 	public String getLastName() {
@@ -44,8 +44,8 @@ public class Client extends User implements Serializable {
 	}
 	
 	/**
-	 * 
-	 * @param lastName
+	 * Setter for the Client's last name.
+	 * @param lastName, a String representation of the Client's last name.
 	 */
 
 	public void setLastName(String lastName) {
@@ -53,8 +53,8 @@ public class Client extends User implements Serializable {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter for the Client's first names.
+	 * @return FirstNames, a String representation of the Client's first names.
 	 */
 
 	public String getFirstNames() {
@@ -62,8 +62,8 @@ public class Client extends User implements Serializable {
 	}
 
 	/**
-	 * 
-	 * @param firstNames
+	 * Setter for the Client's first names.
+	 * @param firstNames, a String representation of the Client's first names.
 	 */
 	
 	public void setFirstNames(String firstNames) {
@@ -71,8 +71,9 @@ public class Client extends User implements Serializable {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter for the Client's email address.
+	 * @return Email, a String representation of the Client's email
+	 * address.
 	 */
 
 	public String getEmail() {
@@ -80,8 +81,9 @@ public class Client extends User implements Serializable {
 	}
 	
 	/**
-	 * 
-	 * @param email
+	 * Setter for the Client's email address.
+	 * @param email, a String representation of the Client's email.
+	 * address.
 	 */
 
 	public void setEmail(String email) {
@@ -89,8 +91,8 @@ public class Client extends User implements Serializable {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter for the Client's email address.
+	 * @return Address, a String representation of the Client's address.
 	 */
 
 	public String getAddress() {
@@ -98,8 +100,8 @@ public class Client extends User implements Serializable {
 	}
 	
 	/**
-	 * 
-	 * @param address
+	 * Setter for the Client's address.
+	 * @param address, a String representation of the Client's address.
 	 */
 
 	public void setAddress(String address) {
@@ -107,8 +109,9 @@ public class Client extends User implements Serializable {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter for the Client's credit card number.
+	 * @return CreditCardNumber, an int representation of the Client's
+	 * credit card number.
 	 */
 
 	public int getCreditCardNumber() {
@@ -116,8 +119,9 @@ public class Client extends User implements Serializable {
 	}
 	
 	/**
-	 * 
-	 * @param creditCardNumber
+	 * Setter for the Client's credit card number.
+	 * @param creditCardNumber, an int representation of the Client's
+	 * credit card number.
 	 */
 
 	public void setCreditCardNumber(int creditCardNumber) {
@@ -125,8 +129,9 @@ public class Client extends User implements Serializable {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter for the Client's credit card expiry date.
+	 * @return ExpiryDate, a Calendar (date) representation of the client's
+	 * credit card expiry date.
 	 */
 
 	public Calendar getExpiryDate() {
@@ -134,8 +139,9 @@ public class Client extends User implements Serializable {
 	}
 	
 	/**
-	 * 
-	 * @param expiryDate
+	 * Setter for the Client's credit card expiry date
+	 * @param expiryDate, a Calendar (date) representation of the client's
+	 * credit card expiry date.
 	 */
 
 	public void setExpiryDate(Calendar expiryDate) {
@@ -144,21 +150,21 @@ public class Client extends User implements Serializable {
 	}
 		
 	/**
-	 * 
-	 * @param listItineraries
-	 * @param index
+	 * Select an Itinerary from a list of Itinerary.
+	 * @param listItineraries, an ArrayList of Itinerary
+	 * @param index, an int index for the ArrayList
 	 */
 	
-	public void selectItinerary(ArrayList<Itenary> listItineraries, int index) {
+	public void selectItinerary(ArrayList<Itinerary> listItineraries, int index) {
 		this.selectedItinerary = listItineraries.get(index);
 	}
 	
 	/**
-	 * 
-	 * @param selectedItinerary
+	 * Book an itinerary selected using the selectItinerary method.
+	 * @param selectedItinerary, an Itinerary previously selected.
 	 */
 	
-	public void bookItinerary(Itenary selectedItinerary) {
+	public void bookItinerary(Itinerary selectedItinerary) {
 		this.bookedItineraries.add(selectedItinerary);
 	}
 	
