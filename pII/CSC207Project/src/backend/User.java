@@ -59,6 +59,7 @@ public class User implements Serializable{
 			// TODO Auto-generated catch block
 			System.out.println("The date is not in the right format: yyy-MM-dd HH:mm");
 	}
+	}
 	
 	/**
 	 * Getter for the Client's last name.
@@ -160,7 +161,7 @@ public class User implements Serializable{
 	 * credit card expiry date.
 	 */
 
-	public SimpleDateFormat getExpiryDate() {
+	public Date getExpiryDate() {
 		return ExpiryDate;
 	}
 	
@@ -170,7 +171,7 @@ public class User implements Serializable{
 	 * credit card expiry date.
 	 */
 
-	public void setExpiryDate(SimpleDateFormat expiryDate) {
+	public void setExpiryDate(Date expiryDate) {
 		ExpiryDate = expiryDate;
 
 	}
@@ -204,16 +205,6 @@ public class User implements Serializable{
 		// uses a method from IternaryManager
 	}
 	
-	public ArrayList<Flight> sortFlights(String origin, String departure, 
-			Calendar departureDate){
-		// uses a method from FlightManager
-	}
-	
-	public ArrayList<Itinerary> sortItineraries(String origin, String departure, 
-			Calendar departureDate){
-		// uses a method from IternaryManager
-	}
-	
 	//Methods from the Admin. 
 	public void editUserInfo() {
 		
@@ -227,8 +218,40 @@ public class User implements Serializable{
 		
 	}
 	
-	public void addFlightFromFile() {
+	public void addFlightFromFile(String dir) {
+		FileReader in = null;
+		BufferedReader br = null;
+		String cvsSplitBy = ",";
 		
+		try{
+			in = new FileReader(dir);
+			br = new BufferedReader(in);
+			String[] values = br.readLine().split(cvsSplitBy);
+			String origin = values[0];
+			String destination = values[1];
+			double cost = Double.parseDouble(values[2]);
+			Date departureTime = format.parse(values[3]);
+			Date arrivalTime = format.parse(values[4]);
+			String airline = values[5];
+			int flightNumber = Integer.parseInt(values[6]);
+			Flight newFlight = new Flight(origin, destination, cost,
+					departureTime, arrivalTime, airline, flightNumber);
+			addFlight(newFlight);
+		} 
+		
+		catch (IOException e) {
+			System.out.println("The file was not found.");
+		}
+		
+		catch (ParseException e) {
+			// TODO Auto-generated catch block
+			System.out.println("The date is not in the right format: yyy-MM-dd HH:mm");
+		}
+		
+		catch (IndexOutOfBoundsException e) {
+			System.out.println("Missing flight data.");
+		}
+		
+		}
+			
 	}
-
-}
