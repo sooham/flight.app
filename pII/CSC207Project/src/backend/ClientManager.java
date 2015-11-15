@@ -1,8 +1,8 @@
 package backend;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author Christopher Cannistraro
@@ -80,11 +80,11 @@ public class ClientManager implements Serializable{
 	 * CreditCardNumber and ExpiryDate
 	 */
 	public ArrayList<User> getClient(int CreditCardNumber,
-			SimpleDateFormat ExpiryDate){
+			Date ExpiryDate){
 		ArrayList<User> specificClients = new ArrayList<User>();
 		for (User c: this.clients){
 			int creditcardnum = c.getCreditCardNumber();
-			SimpleDateFormat expdate = c.getExpiryDate();
+			Date expdate = c.getExpiryDate();
 			if (creditcardnum == CreditCardNumber && expdate == ExpiryDate){
 				specificClients.add(c);
 			}
@@ -105,7 +105,7 @@ public class ClientManager implements Serializable{
 	 * not there returns -1
 	 */
 	public int getClientIndex(String lastName, String firstName, String email, String address,
-			int creditCardNum, SimpleDateFormat expiryDate){
+			int creditCardNum, String expiryDate){
 		User client = new User(lastName, firstName, email, address, creditCardNum, expiryDate);
 		return getClientIndex(client);	
 	}

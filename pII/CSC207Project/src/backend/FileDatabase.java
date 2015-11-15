@@ -17,7 +17,7 @@ public class FileDatabase implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -5414755056678568378L;
-	private static ClientManager clientManger = null;
+	private static ClientManager clientManger = new ClientManager();
 	private static ItenaryManger itineraryManger = null;
 
 	/**
@@ -50,7 +50,7 @@ public class FileDatabase implements Serializable {
 	 */
 	public static void migrateFiles(String dir) {
 		try {
-			FileOutputStream fileout = new FileOutputStream(dir + "/clientManger.ser");
+			FileOutputStream fileout = new FileOutputStream(dir + "/ClientManger.ser");
 			FileOutputStream fileout2 = new FileOutputStream(dir + "/Itineraries.ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileout);
 			ObjectOutputStream out2 = new ObjectOutputStream(fileout2);

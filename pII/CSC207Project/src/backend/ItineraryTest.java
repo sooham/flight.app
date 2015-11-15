@@ -19,7 +19,7 @@ public class ItineraryTest {
 	Date c4;
 	Date c5;
 	Date c6;
-	SimpleDateFormat format = new SimpleDateFormat("yyy-MM-dd HH:mm");
+	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	@Before
 	public void setUp() throws Exception {
