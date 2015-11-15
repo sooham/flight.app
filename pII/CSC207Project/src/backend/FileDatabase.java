@@ -17,17 +17,24 @@ public class FileDatabase implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -5414755056678568378L;
-	private static ClientManager clients = null;
-	private static ItenaryManger itenaryManger = null;
+	private static ClientManager clientManger = null;
+	private static ItenaryManger itineraryManger = null;
 
 	/**
 	 * 
 	 */
-	public FileDatabase() {
+	public FileDatabase(String dir) {
 		// TODO Auto-generated constructor stub
+		try{
+			importFiles(dir);
+		}catch (IOException i){
+			System.out.println("Files not found. Creating new empty mangers. ");
+			migrateFiles(dir);
+		}
 	}
 
 	/**
+	 * This will contain the loop of the final program
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -37,18 +44,18 @@ public class FileDatabase implements Serializable {
 
 	/**
 	 * Takes the location of a directory and saves the ClientManger and
-	 * IernaryManger objects.
+	 * ItineraryManger objects.
 	 * 
 	 * @param dir the location of a directory in the system.
 	 */
 	public void migrateFiles(String dir) {
 		try {
-			FileOutputStream fileout = new FileOutputStream(dir + "/clients.ser");
-			FileOutputStream fileout2 = new FileOutputStream(dir + "/Itenaries.ser");
+			FileOutputStream fileout = new FileOutputStream(dir + "/clientManger.ser");
+			FileOutputStream fileout2 = new FileOutputStream(dir + "/Itineraries.ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileout);
 			ObjectOutputStream out2 = new ObjectOutputStream(fileout2);
-			out.writeObject(clients);
-			out2.writeObject(itenaryManger);
+			out.writeObject(clientManger);
+			out2.writeObject(itineraryManger);
 			out2.close();
 			out.close();
 			fileout.close();
@@ -58,14 +65,28 @@ public class FileDatabase implements Serializable {
 		}
 	}
 	
+	/**
+	 * @return the clientManger
+	 */
+	public static ClientManager getClients() {
+		return clientManger;
+	}
+
+	/**
+	 * @return the itineraryManger
+	 */
+	public static ItenaryManger getItineraryManger() {
+		return itineraryManger;
+	}
+
 	public void importFiles(String dir){
 		try {
-			FileInputStream filein = new FileInputStream(dir +"/clients.ser");
-			FileInputStream filein2 = new FileInputStream(dir +"/Itenaries.ser");
+			FileInputStream filein = new FileInputStream(dir +"/clientManger.ser");
+			FileInputStream filein2 = new FileInputStream(dir +"/Itineraries.ser");
 			ObjectInputStream in = new ObjectInputStream(filein);
 			ObjectInputStream in2 = new ObjectInputStream(filein2);
-			this.clients = (ClientManger) in.readObject();
-			this.itenaryManger = (ItenaryManger) in.readObject();
+			this.clientManger = (ClientManger) in.readObject();
+			this.itineraryManger = (ItineraryManger) in.readObject();
 			filein.close();
 		}catch (IOException i){
 			i.printStackTrace();

@@ -61,7 +61,8 @@ public class Itinerary implements Serializable{
 			this.origin = newFlight.getOrigin();
 			this.destination = newFlight.getDestination();
 		}else{
-			if (this.flights.get(this.flights.size()-1).getDestination() == newFlight.getOrigin()){
+			if (this.flights.get(this.flights.size()-1).getDestination() == newFlight.getOrigin()
+					&& !this.containsLoop(newFlight.getDestination())){
 				this.flights.add(newFlight);
 				this.cost += newFlight.getCost();
 				this.arrivalTime = newFlight.getArrivalTime();
@@ -76,6 +77,12 @@ public class Itinerary implements Serializable{
 		
 	}
 	
+	/**
+	 * Adds a valid new Flight to the beginning of the Itinerary. Raises an error otherwise. 
+	 * @param newFlight a new Flight to add to the beginning. 
+	 * @throws InvalidFlightException if the Flight's destination is not equal to the origin of 
+	 * this Itinerary.
+	 */
 	public void addFlightBeginning(Flight newFlight) throws InvalidFlightException {
 		if (this.flights.isEmpty()){
 			this.flights.add(newFlight);
@@ -85,7 +92,8 @@ public class Itinerary implements Serializable{
 			this.origin = newFlight.getOrigin();
 			this.destination = newFlight.getDestination();
 		}else{
-			if (this.flights.get(0).getOrigin() == newFlight.getDestination()){
+			if (this.flights.get(0).getOrigin() == newFlight.getDestination() 
+					&& !this.containsLoop(newFlight.getOrigin())){
 				this.flights.add(0, newFlight);
 				this.cost += newFlight.getCost();
 				this.departureTime = newFlight.getDepartureTime();
@@ -94,10 +102,22 @@ public class Itinerary implements Serializable{
 				String message = "The origin of the Iternary: " + this.destination + 
 						" The new flight's desination is: " + newFlight.getDestination(); 
 				throw new InvalidFlightException(message);
-			}
-			
+			}	
 		}
-		
+	}
+	
+	/**
+	 * Checks if there is already a flight in the itinerary with the same destination or origin.
+	 * @param flight a string representing the location of the flight. 
+	 * @return boolean true if and only if there is already a flight in the itinerary. 
+	 */
+	private boolean containsLoop(String flight){
+		for (Flight f:this.getFlights()){
+			if (f.getOrigin()==flight||f.getDestination()==flight){
+				return true;
+			}
+		}
+		return false; 
 	}
 
 	/**
