@@ -24,24 +24,30 @@ Tuesday Nov 10, first Planning meeting:
         Chris:
             Implement ClientManager class
             Implement User abstract class
-            
-Thursday, Nov 12, second Status and Planning meeting:
-		Sooham:
-			Updated Chris on the project, helped Angad with Calendar and Date classes.
-		Angad:
-			Flight and Itinerary implemented, problem with duration calculations.
-		Chris:
-			Updated on group status for project, blanks methods for client manager.
-		Badis:
-			Partial Client implementation, blank Admin with empty method	
 
-Sunday, Nov 15, third Status and Planning meeting (Skype):
+Thursday, Nov 12, second Planning meeting:
+        Notes:
+            Committed this information 2 days late
+
 		Sooham:
-			Incomplete classes and methods.
+			Updated Chris on the project, helped Angad with
+            Calendar and Date classes.
+		Angad:
+			Flight and Itinerary implemented, problem with duration
+            calculations.
+		Chris:
+			Updated on group status for project, blanks methods for
+            client manager.
+		Badis:
+			Partial Client implementation, blank Admin with empty method
+
+Sunday, Nov 15, third Status (Skype):
+		Sooham:
+			Implement all incomplete classes and methods, work.
 		Angad:
 			Completed all assigned classed.
 		Chris:
 			ClientManager completed and User class partially completed.
 		Badis:
 			Finished and merged both Client and Admin (Admin was partially implemented).
-		
+
