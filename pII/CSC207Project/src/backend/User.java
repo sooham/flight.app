@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class User implements Serializable{
@@ -21,20 +20,23 @@ public class User implements Serializable{
 	private Date ExpiryDate;
 	private Itinerary selectedItinerary;
 	private ArrayList<Itinerary> bookedItineraries;
-	private SimpleDateFormat format = new SimpleDateFormat("yyy-MM-dd HH:mm");
+	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	public User(String LastName,
 			String FirstName, String Email, String Address,
-			int CreditCardNumber, Date ExpiryDate) {
-		
+			int CreditCardNumber, String ExpiryDate) {
+		try{
 		this.LastName = LastName;
 		this.FirstName = FirstName;
 		this.Email = Email;
 		this.Address = Address;
 		this.CreditCardNumber = CreditCardNumber;
-		this.ExpiryDate = ExpiryDate;
+		this.ExpiryDate = format.parse(ExpiryDate);
 		this.selectedItinerary = new Itinerary();
 		this.bookedItineraries = new ArrayList<Itinerary>();
+		}catch(ParseException e) {
+			System.out.println("The date is not in the right format: yyyy-MM-dd HH:mm");
+		}
 	}
 	
 	public void getInfoFromFile(String dir){
@@ -58,9 +60,11 @@ public class User implements Serializable{
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			System.out.println("The date is not in the right format: yyy-MM-dd HH:mm");
+		} catch(IndexOutOfBoundsException e){
+			System.out.println("The file does not have enough arguements to make a client.");
+		}
 	}
-	}
-	
+
 	/**
 	 * Getter for the Client's last name.
 	 * @return LastName, a String representation of the Client's last name. 
@@ -196,12 +200,12 @@ public class User implements Serializable{
 	}
 	
 	public ArrayList<Flight> viewFlights(String origin, String departure, 
-			Calendar departureDate){
+			Date departureDate){
 		// uses a method from FlightManager
 	}
 	
 	public ArrayList<Itinerary> viewItineraries(String origin, String departure, 
-			Calendar departureDate){
+			Date departureDate){
 		// uses a method from IternaryManager
 	}
 	
