@@ -2,9 +2,9 @@ package backend;
 
 import static org.junit.Assert.assertEquals;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,21 +13,23 @@ public class ItineraryTest {
 	Flight flight1;
 	Flight flight2;
 	Flight flight3;
-	Calendar c1;
-	Calendar c2;
-	Calendar c3;
-	Calendar c4;
-	Calendar c5;
-	Calendar c6;
+	Date c1;
+	Date c2;
+	Date c3;
+	Date c4;
+	Date c5;
+	Date c6;
+	SimpleDateFormat format = new SimpleDateFormat("yyy-MM-dd HH:mm");
 
 	@Before
 	public void setUp() throws Exception {
-		this.c1 = new GregorianCalendar(2013,1,28,13,30);
-		this.c2 = new GregorianCalendar(2013,1,28,14,00);
-		this.c3 = new GregorianCalendar(2013,1,28,14,30);
-		this.c4 = new GregorianCalendar(2013,1,28,15,00);
-		this.c5 = new GregorianCalendar(2013,1,28,15,30);
-		this.c6 = new GregorianCalendar(2013,1,28,16,00);
+		
+		this.c1 = (Date) format.parse("2013-01-28 13:30");
+		this.c2 = (Date) format.parse("2013-01-28 14:00");
+		this.c3 = (Date) format.parse("2013-01-28 14:30");
+		this.c4 = (Date) format.parse("2013-01-28 15:00");
+		this.c5 = (Date) format.parse("2013-01-28 15:30");
+		this.c6 = (Date) format.parse("2013-01-28 16:05");
 		this.flight1 = new Flight("France", "Canada", 100.0, c1, c2, "Airline", 1002342);
 		this.flight2 = new Flight("Canada", "Germany", 100.0, c3, c4, "Airline", 1002342453);
 		this.flight3 = new Flight("Germany", "Italy", 100.0, c5, c6, "Airline", 104532342);
@@ -56,9 +58,11 @@ public class ItineraryTest {
 	@Test
 	public void testDuration() throws InvalidFlightException {
 		Itinerary i = new Itinerary();
-		i.addFlightBeginning(flight2);
-		i.addFlightBeginning(flight1);
-		assertEquals(i.getDuration(), 1.5, 0.0);
+		i.addFlightEnd(flight2);
+		i.addFlightEnd(flight3);
+		System.out.println(i.getArrivalTime());
+		System.out.println(i.getDepartureTime());
+		assertEquals(i.getDuration(), 1.5, 0.1);
 	}
 	
 	@Test

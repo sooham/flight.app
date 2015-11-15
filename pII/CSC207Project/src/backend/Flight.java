@@ -1,7 +1,7 @@
 package backend;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.util.Date;
 /**
  * An object that represents a flight. Administrators can edit flights. 
  *
@@ -12,8 +12,8 @@ public class Flight implements Comparable<Flight>, Serializable{
 	private String origin; 
 	private String destination; 
 	private double cost;
-	private Calendar departureTime;
-	private Calendar arrivalTime; 
+	private Date departureTime;
+	private Date arrivalTime; 
 	private String airline; 
 	private int flightNumber;
 	
@@ -28,7 +28,7 @@ public class Flight implements Comparable<Flight>, Serializable{
 	 * @param airline the airline of the flight. 
 	 * @param flightNumber a unique number representing the flight. 
 	 */
-	public Flight(String origin, String destination, double cost, Calendar departureTime, Calendar arrivalTime,
+	public Flight(String origin, String destination, double cost, Date departureTime, Date arrivalTime,
 			String airline, int flightNumber) {
 		super();
 		this.origin = origin;
@@ -81,7 +81,7 @@ public class Flight implements Comparable<Flight>, Serializable{
 	/**
 	 * @return the departureTime
 	 */
-	public Calendar getDepartureTime() {
+	public Date getDepartureTime() {
 		return departureTime;
 	}
 
@@ -90,7 +90,7 @@ public class Flight implements Comparable<Flight>, Serializable{
 	/**
 	 * @return the arrivalTime
 	 */
-	public Calendar getArrivalTime() {
+	public Date getArrivalTime() {
 		return arrivalTime;
 	}
 
@@ -162,10 +162,10 @@ public class Flight implements Comparable<Flight>, Serializable{
 	
 	/**
 	 * 
-	 * @return the duration of the itirnary in hours
+	 * @return the duration of the itinerary in hours
 	 */
 	public double getDuration(){
-		return (this.getArrivalTime().getTime().getTime()-this.getDepartureTime().getTime().getTime())
+		return (this.getArrivalTime().getTime()-this.getDepartureTime().getTime())
 				/(1000 * 60 * 60D) ;
 	}
 }

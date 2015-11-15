@@ -48,7 +48,7 @@ public class FileDatabase implements Serializable {
 	 * 
 	 * @param dir the location of a directory in the system.
 	 */
-	public void migrateFiles(String dir) {
+	public static void migrateFiles(String dir) {
 		try {
 			FileOutputStream fileout = new FileOutputStream(dir + "/clientManger.ser");
 			FileOutputStream fileout2 = new FileOutputStream(dir + "/Itineraries.ser");
@@ -79,7 +79,7 @@ public class FileDatabase implements Serializable {
 		return itineraryManger;
 	}
 
-	public void importFiles(String dir){
+	public static void importFiles(String dir){
 		try {
 			FileInputStream filein = new FileInputStream(dir +"/clientManger.ser");
 			FileInputStream filein2 = new FileInputStream(dir +"/Itineraries.ser");
