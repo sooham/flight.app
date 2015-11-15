@@ -19,7 +19,7 @@ public class SampleTest {
         
         Driver.uploadClientInfo(CLIENTS);
         
-        String expected = "Richard,Roe,richard@email.com,21 First Lane Way,9999888877776666,2017-10-01";
+        String expected = "Roe,Richard,richard@email.com,21 First Lane Way,9999888877776666,2017-10-01";
         String found = Driver.getClient("richard@email.com");
         String msg = "Unexpected (incorrect or incorrectly formatted) client information or string output was returned.";
 
