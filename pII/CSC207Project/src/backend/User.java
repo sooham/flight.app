@@ -4,9 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class User implements Serializable{
 
@@ -16,13 +18,14 @@ public class User implements Serializable{
 	private String Email;
 	private String Address;
 	private int CreditCardNumber;
-	private SimpleDateFormat ExpiryDate;
+	private Date ExpiryDate;
 	private Itinerary selectedItinerary;
 	private ArrayList<Itinerary> bookedItineraries;
+	private SimpleDateFormat format = new SimpleDateFormat("yyy-MM-dd HH:mm");
 
 	public User(String LastName,
 			String FirstName, String Email, String Address,
-			int CreditCardNumber, SimpleDateFormat ExpiryDate) {
+			int CreditCardNumber, Date ExpiryDate) {
 		
 		this.LastName = LastName;
 		this.FirstName = FirstName;
@@ -48,12 +51,13 @@ public class User implements Serializable{
 			this.Email = values[2];
 			this.Address = values[3];
 			this.CreditCardNumber = Integer.parseInt(values[4]);
-			this.ExpiryDate = new SimpleDateFormat(values[5]);
+			this.ExpiryDate = format.parse(values[5]);
 			
 		} catch (IOException e) {
 			System.out.println("The file was not found.");
-		}
-		
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			System.out.println("The date is not in the right format: yyy-MM-dd HH:mm");
 	}
 	
 	/**
