@@ -3,17 +3,20 @@
  */
 package backend;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.io.Serializable;
 
 /**
- * @author Angad Singh
- *
+ * A Flight Itinerary. An Itinerary is a sequence of Flights for which
+ * every previous flight's destination is the following flight's origin and
+ * every previous flight arrives less than 6 hours before the following
+ * flight's departure.
+ * 
  */
-public class Itinerary implements Serializable{
+public class Itinerary extends Flight implements Serializable {
 	
 	private static final long serialVersionUID = 7985656353564622420L;
 	private List<Flight> flights = new ArrayList<Flight>();
