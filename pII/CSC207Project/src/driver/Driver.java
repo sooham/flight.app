@@ -9,6 +9,12 @@ import backend.User;
 
 /** A Driver used for autotesting the project backend. */
 public class Driver {
+	
+	private static User user;
+	private Flight flight;
+	private Itinerary itinerary;
+	private FileDatabase filedatabase;
+	private ClientManager clientmanager;
 
 	/**
 	 * Uploads client information to the application from the file at the given
@@ -21,7 +27,7 @@ public class Driver {
 	 *            (the ExpiryDate is stored in the format YYYY-MM-DD)
 	 */
 	public static void uploadClientInfo(String path) {
-		// TODO: complete this method body
+		user.getInfoFromFile(path);
 	}
 
 	/**
@@ -50,8 +56,15 @@ public class Driver {
 	 *         (the ExpiryDate is stored in the format YYYY-MM-DD)
 	 */
 	public static String getClient(String email) {
-		// TODO: complete this method body
-		return null;
+		String result;
+		String userEmail = user.getEmail();
+		if (email == userEmail){
+			result = user.getLastName() + ',' + user.getFirstName() + ','
+					+ ',' + userEmail + ',' + user.getAddress() + ',' +
+					user.getCreditCardNumber() + ',' + user.getExpiryDate();
+			return result;
+		}
+		return null; // This method seems wrong to me
 	}
 
 	/**
