@@ -27,7 +27,7 @@ public class ClientManager implements Serializable{
 	 * Adds a client to the ClientManager 
 	 * @param c,  a client that is added into ClientManager
 	 */
-	public void addClient(Client c){
+	public void addClient(User c){
 		this.clients.add(c);
 	}
 	
