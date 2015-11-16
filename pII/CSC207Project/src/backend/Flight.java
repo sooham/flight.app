@@ -2,170 +2,156 @@ package backend;
 
 import java.io.Serializable;
 import java.util.Date;
-/**
- * An object that represents a flight. Administrators can edit flights. 
- *
- */
-public class Flight implements Comparable<Flight>, Serializable{
 
-	private static final long serialVersionUID = -6145320157176266485L;
+/**
+ * A Flight. Every Flight has a flight number, airline name, departure arrival 
+ * date and time, origin, destination, ticket price and travel time.
+ * 
+ * Flight objects will be persistent, hence they implement Serializable.
+ * The natural ordering for Flights will be by Date, hence implments
+ * Comparable.
+ */
+public class Flight implements Comparable<Flight>, Serializable {
+
+	private static final long serialVersionUID = 4362700743234104218L;
+
+	private String airline; 
+	private long flightNumber;
 	private String origin; 
 	private String destination; 
-	private double cost;
-	private Date departureTime;
-	private Date arrivalTime; 
-	private String airline; 
-	private int flightNumber;
-	
+	private Date departureDateTime;
+	private Date arrivalDateTime; 
+	private double price;
 
 	/**
-	 * Generates a new flight object given the parameters. 
-	 * @param origin the location from where the flight is leaving from. 
-	 * @param destination the location where the flight is going to. 
-	 * @param cost the total cost of the flight. 
-	 * @param departureTime the time and date of the flight. 
-	 * @param arrivalTime the time and date of arrival of the flight. 
-	 * @param airline the airline of the flight. 
-	 * @param flightNumber a unique number representing the flight. 
+	 * Generates a new Flight object.
+	 * 
+	 * @param airline  the airline.
+	 * @param flightNumber  a unique number representing this Flight.
+	 * @param origin  the location where this Flight begins.
+	 * @param destination  the location where this Flight ends.
+	 * @param departureDateTime  the Date this Flight departs.
+	 * @param arrivalDateTime  the Date this Flight arrives.
+	 * @param price  the ticket price for this Flight.
 	 */
-	public Flight(String origin, String destination, double cost, Date departureTime, Date arrivalTime,
-			String airline, int flightNumber) {
-		super();
-		this.origin = origin;
-		this.destination = destination;
-		this.cost = cost;
-		this.departureTime = departureTime;
-		this.arrivalTime = arrivalTime;
+	public Flight(String airline, long flightNumber, String origin,
+	String destination, Date departureDateTime, Date arrivalDateTime,
+	double price) {
 		this.airline = airline;
 		this.flightNumber = flightNumber;
+		this.origin = origin;
+		this.destination = destination;
+		this.departureDateTime = departureDateTime;
+		this.arrivalDateTime = arrivalDateTime;
+		this.price = price;
 	}
 
-
-
 	/**
-	 * @return the origin
-	 */
-	public String getOrigin() {
-		return origin;
-	}
-
-
-	/**
-	 * @return the destination
-	 */
-	public String getDestination() {
-		return destination;
-	}
-
-
-
-
-	/**
-	 * @return the cost
-	 */
-	public double getCost() {
-		return cost;
-	}
-
-
-
-	/**
-	 * @param cost the cost to set
-	 */
-	public void setCost(float cost) {
-		this.cost = cost;
-	}
-
-
-
-	/**
-	 * @return the departureTime
-	 */
-	public Date getDepartureTime() {
-		return departureTime;
-	}
-
-
-
-	/**
-	 * @return the arrivalTime
-	 */
-	public Date getArrivalTime() {
-		return arrivalTime;
-	}
-
-
-
-
-	/**
+	 * Returns this flight's airline.
+	 * 
 	 * @return the airline
 	 */
 	public String getAirline() {
 		return airline;
 	}
 
-
-
 	/**
-	 * @param airline the airline to set
-	 */
-	public void setAirline(String airline) {
-		this.airline = airline;
-	}
-
-
-
-	/**
+	 * Returns this flight's unique flight number.
+	 * 
 	 * @return the flightNumber
 	 */
-	public int getFlightNumber() {
+	public long getFlightNumber() {
 		return flightNumber;
 	}
-	
-	
-	
-	/**
-	 * @param flightNumber the flightNumber to set
-	 */
-	public void setFlightNumber(int flightNumber) {
-		this.flightNumber = flightNumber;
-	}
-	
-	
 
 	/**
-	 * Returns if both Flight objects are the same. 
-	 * @param obj an object to be compared to.
-	 * @return true if and only if both Flight objects have the same flight Numbers.
+	 * Returns this flight's origin city.
+	 * 
+	 * @return the origin city
+	 */
+	public String getOrigin() {
+		return origin;
+	}
+
+	/**
+	 * Returns this flight's destination city.
+	 * 
+	 * @return the destination city
+	 */
+	public String getDestination() {
+		return destination;
+	}
+
+	/**
+	 * Returns this flight's departing date and time with respect to UTC.
+	 * 
+	 * @return the departureDateTime
+	 */
+	public Date getDepartureDateTime() {
+		return departureDateTime;
+	}
+
+	/**
+	 * Returns this flight's arrival date and time with respect to UTC.
+	 * 
+	 * @return the arrivalDateTime
+	 */
+	public Date getArrivalDateTime() {
+		return arrivalDateTime;
+	}
+
+	/**
+	 * Returns the ticket price for this flight.
+	 * 
+	 * @return the price 
+	 */
+	public double getPrice() {
+		return price;
+	}
+
+	/**
+	 * Returns an integer that shows relative departure time (less, equals
+	 * or more than) another Flight object.
+	 * 
+	 * @param other  a Flight object 
+	 * @returns an integer representing the relative departure times.
 	 */
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof Flight){
-			return this.flightNumber == ((Flight)obj).getFlightNumber();
+	public int compareTo(Flight other) {
+
+		return departureDateTime.compareTo(other.getDepartureDateTime());
+	}
+
+	/**
+	 * Compares this flight and another Object. Returns true iff other object
+	 * is a Flight and has identical fields.
+	 * 
+	 * @param object  an Object to compare.
+	 * @return true iff object is a Flight and has identical fields.
+	 */
+	@Override
+	public boolean equals(Object object) {
+		if (object instanceof Flight) {
+			Flight f = (Flight) object;
+			return flightNumber == f.flightNumber &&
+					airline.equals(f.airline) && 
+					origin.equals(f.origin) &&
+					destination.equals(f.destination) &&
+					departureDateTime.equals(f.departureDateTime) &&
+					arrivalDateTime.equals(f.arrivalDateTime) &&
+					price == f.price;
 		}
 		return false;
 	}
-	
 
-	/**`
-	 * Returns an integer that that represents if this flight object is greater than or 
-	 * less than the given Flight object. 
-	 * 
-	 * @param a Flight object 
-	 * @returns an integer representing the difference between the two flight objects 
-	 */
-	@Override
-	public int compareTo(Flight obj) {
-		// TODO Auto-generated method stub
-		return this.departureTime.compareTo(obj.getDepartureTime());
-	}
-	
 	/**
+	 * Returns the total travel time of this flight in minutes.
 	 * 
-	 * @return the duration of the itinerary in hours
+	 * @return the number of minutes between departure and arrival time.
 	 */
-	public double getDuration(){
-		return (this.getArrivalTime().getTime()-this.getDepartureTime().getTime())
-				/(1000 * 60 * 60D) ;
+	public long getDuration() {
+		int toMinute = 60000; // milliseconds
+		return (arrivalDateTime.getTime() - departureDateTime.getTime()) /
+				toMinute;
 	}
 }
