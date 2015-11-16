@@ -1,5 +1,12 @@
 package driver;
 
+import backend.ClientManager;
+import backend.FileDatabase;
+import backend.Flight;
+import backend.InvalidFlightException;
+import backend.Itinerary;
+import backend.User;
+
 /** A Driver used for autotesting the project backend. */
 public class Driver {
 
