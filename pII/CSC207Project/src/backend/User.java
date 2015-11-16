@@ -59,7 +59,7 @@ public class User implements Serializable{
 			System.out.println("The file was not found.");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			System.out.println("The date is not in the right format: yyy-MM-dd HH:mm");
+			System.out.println("The date is not in the right format: yyyy-MM-dd HH:mm");
 		} catch(IndexOutOfBoundsException e){
 			System.out.println("The file does not have enough arguements to make a client.");
 		}
@@ -249,7 +249,7 @@ public class User implements Serializable{
 		
 		catch (ParseException e) {
 			// TODO Auto-generated catch block
-			System.out.println("The date is not in the right format: yyy-MM-dd HH:mm");
+			System.out.println("The date is not in the right format: yyyy-MM-dd HH:mm");
 		}
 		
 		catch (IndexOutOfBoundsException e) {
