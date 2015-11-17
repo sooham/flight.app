@@ -134,7 +134,7 @@ public class FileDatabase implements Serializable {
 	 * @throws InvalidFlightException 
 	 * @throws NumberFormatException 
 	 */
-	public static void addFlightFromFile(String dir) throws NumberFormatException, InvalidFlightException {
+	public static void addFlightFromFile(String dir){
 		FileReader in = null;
 		BufferedReader br = null;
 		String cvsSplitBy = ",";
@@ -146,7 +146,7 @@ public class FileDatabase implements Serializable {
 			Date departureTime = format.parse(values[3]);
 			Date arrivalTime = format.parse(values[4]);
 			Flight newFlight = new Flight(values[5], Long.parseLong(values[6]), values[0],
-					values[1], arrivalTime, departureTime,Double.parseDouble(values[2]));
+						values[1], arrivalTime, departureTime,Double.parseDouble(values[2]));
 			flightManager.addFlight(newFlight);
 		} 
 		
@@ -158,10 +158,16 @@ public class FileDatabase implements Serializable {
 			// TODO Auto-generated catch block
 			System.out.println("The date is not in the right format: yyyy-MM-dd HH:mm");
 		}
-		
 		catch (IndexOutOfBoundsException e) {
 			System.out.println("Missing flight data.");
+		}catch (InvalidFlightException e){
+			
+		}catch (NumberFormatException e) {
+			System.out.println("The flight number is not in the right format.");
+			
 		}
+			
+		
 		
 	}
 
