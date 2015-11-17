@@ -23,7 +23,7 @@ public class User implements Serializable{
 			String firstName, String email, String address,
 			int creditCardNumber, String expiryDate) {
 		try{
-		this.lastName = lastName;
+		this.lastName = LastName;
 		this.firstName = firstName;
 		this.email = email;
 		this.address = address;
@@ -71,7 +71,7 @@ public class User implements Serializable{
 	 */
 	
 	public void setLastName(String lastName) {
-		lastName = lastName;
+		this.lastName = lastName;
 	}
 	
 	/**
@@ -89,7 +89,7 @@ public class User implements Serializable{
 	 */
 	
 	public void setFirstName(String firstName) {
-		firstName = firstName;
+		this.firstName = firstName;
 	}
 	
 	/**
@@ -109,7 +109,7 @@ public class User implements Serializable{
 	 */
 
 	public void setEmail(String email) {
-		email = email;
+		this.email = email;
 	}
 	
 	/**
@@ -127,7 +127,7 @@ public class User implements Serializable{
 	 */
 
 	public void setAddress(String address) {
-		address = address;
+		this.address = address;
 	}
 	
 	/**
@@ -147,7 +147,7 @@ public class User implements Serializable{
 	 */
 
 	public void setCreditCardNumber(int creditCardNumber) {
-		creditCardNumber = creditCardNumber;
+		this.creditCardNumber = creditCardNumber;
 	}
 	
 	/**
@@ -167,7 +167,7 @@ public class User implements Serializable{
 	 */
 
 	public void setExpiryDate(Date expiryDate) {
-		expiryDate = expiryDate;
+		this.expiryDate = expiryDate;
 
 	}
 		
