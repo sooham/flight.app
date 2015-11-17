@@ -1,6 +1,3 @@
-/**
- * 
- */
 package backend;
 
 import java.util.Collections;
@@ -38,7 +35,8 @@ public class Itinerary extends Flight implements Serializable {
 	 * Constructs an Itinerary from a TreeSet of Flight.
 	 * 
 	 * @param flights  a TreeSet of Flight objects 
-	 * @throws InvalidItineraryExecption if Itinerary is not valid. 
+	 * @throws InvalidItineraryExecption if Itinerary is invalid. 
+	 * @throws InvalidFlightException if Itinerary is invalid.
 	 */
 	public Itinerary(TreeSet<Flight> flights) throws InvalidItineraryException,
 	InvalidFlightException {
@@ -50,13 +48,13 @@ public class Itinerary extends Flight implements Serializable {
 		 * Because we will Itineraries directly into files, there is no
 		 * need to modify the middle elements of the set of Flights.
 		 */
-			super(flights.first().getAirline(),
-				  idCount,
-				  flights.first().getOrigin(),
-				  flights.last().getDestination(),
-				  flights.first().getDepartureDateTime(),
-				  flights.last().getArrivalDateTime(),
-				  0.0);
+		super(flights.first().getAirline(),
+			  idCount,
+			  flights.first().getOrigin(),
+			  flights.last().getDestination(),
+			  flights.first().getDepartureDateTime(),
+			  flights.last().getArrivalDateTime(),
+			  0.0);
 			  
 		// Set the price of this itinerary
 		double totalItineraryPrice = 0.0; 
@@ -144,15 +142,22 @@ public class Itinerary extends Flight implements Serializable {
 	 * or creates a stopover time of greater than 6 hours.
 	 * 
 	 * @param newFlight  the flight to add to this Itinerary. 
-	 * @throws InvalidItineraryException if the flight is invalid. 
+	 * @throws InvalidItineraryException if the Itinerary formed is invalid. 
 	 */
 	public Itinerary addFlight(Flight newFlight) throws 
-	InvalidItineraryException, InvalidFlightException {
+	InvalidItineraryException {
 		// Create a new TreeSet, being careful not to alias
 		TreeSet<Flight> newFlights = (TreeSet<Flight>) flights.clone();
 		newFlights.add(newFlight);
-		Itinerary newItinerary = new Itinerary(newFlights);
-		return newItinerary;
+
+		try {
+			Itinerary newItinerary = new Itinerary(newFlights);
+			return newItinerary;
+		} catch (InvalidFlightException e) {
+			throw new InvalidItineraryException(
+				"The flight added created an invalid Itinerary"
+				);
+		}
 	}
 	
 	/**
