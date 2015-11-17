@@ -43,8 +43,6 @@ public class FlightManager {
 					value.add(newI);
 				}catch (InvalidItineraryException e){
 				
-				}catch (InvalidFlightException c) {
-					
 				}
 				if(!value.isEmpty()){
 					String[] newKey = {value.get(0).getOrigin(),value.get(0).getDestination()
