@@ -31,7 +31,7 @@ public class FlightManager {
 		addIteraries(newFlight);
 	}
 	
-	public void addIteraries(Flight f){
+	private void addIteraries(Flight f){
 		HashSet<String[]> oldKeys = new HashSet<String[]>(Itineraries.keySet());
 		for (String[] key: oldKeys){
 			ArrayList<Itinerary> value = new ArrayList<Itinerary>();
@@ -79,16 +79,24 @@ public class FlightManager {
 		
 	}
 	
-	public Flight getFlight(String origin, String destination, String departureDate) throws ParseException{
-		Date date = format.parse(departureDate);
+	public Flight getFlight(String origin, String destination, String departureDate){
+		
+		Date date;
 		Flight f = null; 
-		for (Flight f2: this.flights){
-			if (f2.getOrigin() == origin && f2.getDestination() == destination
-					&& f2.getDepartureDateTime() == date){
-				f = f2;
-				break;
+		try {
+			date = format.parse(departureDate);
+			
+			for (Flight f2: this.flights){
+				if (f2.getOrigin() == origin && f2.getDestination() == destination
+						&& f2.getDepartureDateTime() == date){
+					f = f2;
+					break;
+				}
 			}
+		} catch (ParseException e) {
+			
 		}
+		
 		return f; 
 	}
 }

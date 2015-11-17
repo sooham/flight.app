@@ -9,26 +9,26 @@ import java.util.Date;
 public class User implements Serializable{
 
 	private static final long serialVersionUID = -3786727358644943990L;
-	private String LastName;
-	private String FirstName;
-	private String Email;
-	private String Address;
-	private int CreditCardNumber;
-	private Date ExpiryDate;
+	private String lastName;
+	private String firstName;
+	private String email;
+	private String address;
+	private int creditCardNumber;
+	private Date expiryDate;
 	private Itinerary selectedItinerary;
 	private ArrayList<Itinerary> bookedItineraries;
-	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
 	public User(String LastName,
-			String FirstName, String Email, String Address,
-			int CreditCardNumber, String ExpiryDate) {
+			String firstName, String email, String address,
+			int creditCardNumber, String expiryDate) {
 		try{
-		this.LastName = LastName;
-		this.FirstName = FirstName;
-		this.Email = Email;
-		this.Address = Address;
-		this.CreditCardNumber = CreditCardNumber;
-		this.ExpiryDate = format.parse(ExpiryDate);
+		this.lastName = lastName;
+		this.firstName = firstName;
+		this.email = email;
+		this.address = address;
+		this.creditCardNumber = creditCardNumber;
+		this.expiryDate = format.parse(expiryDate);
 		this.selectedItinerary = null;
 		this.bookedItineraries = new ArrayList<Itinerary>();
 		}catch(ParseException e) {
@@ -62,7 +62,7 @@ public class User implements Serializable{
 	 */
 	
 	public String getLastName() {
-		return LastName;
+		return lastName;
 	}
 	
 	/**
@@ -71,7 +71,7 @@ public class User implements Serializable{
 	 */
 	
 	public void setLastName(String lastName) {
-		LastName = lastName;
+		lastName = lastName;
 	}
 	
 	/**
@@ -80,7 +80,7 @@ public class User implements Serializable{
 	 */
 
 	public String getFirstName() {
-		return FirstName;
+		return firstName;
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class User implements Serializable{
 	 */
 	
 	public void setFirstName(String firstName) {
-		FirstName = firstName;
+		firstName = firstName;
 	}
 	
 	/**
@@ -99,7 +99,7 @@ public class User implements Serializable{
 	 */
 
 	public String getEmail() {
-		return Email;
+		return email;
 	}
 	
 	/**
@@ -109,7 +109,7 @@ public class User implements Serializable{
 	 */
 
 	public void setEmail(String email) {
-		Email = email;
+		email = email;
 	}
 	
 	/**
@@ -118,7 +118,7 @@ public class User implements Serializable{
 	 */
 
 	public String getAddress() {
-		return Address;
+		return address;
 	}
 	
 	/**
@@ -127,7 +127,7 @@ public class User implements Serializable{
 	 */
 
 	public void setAddress(String address) {
-		Address = address;
+		address = address;
 	}
 	
 	/**
@@ -137,7 +137,7 @@ public class User implements Serializable{
 	 */
 
 	public int getCreditCardNumber() {
-		return CreditCardNumber;
+		return creditCardNumber;
 	}
 	
 	/**
@@ -147,7 +147,7 @@ public class User implements Serializable{
 	 */
 
 	public void setCreditCardNumber(int creditCardNumber) {
-		CreditCardNumber = creditCardNumber;
+		creditCardNumber = creditCardNumber;
 	}
 	
 	/**
@@ -157,7 +157,7 @@ public class User implements Serializable{
 	 */
 
 	public Date getExpiryDate() {
-		return ExpiryDate;
+		return expiryDate;
 	}
 	
 	/**
@@ -167,7 +167,7 @@ public class User implements Serializable{
 	 */
 
 	public void setExpiryDate(Date expiryDate) {
-		ExpiryDate = expiryDate;
+		expiryDate = expiryDate;
 
 	}
 		
@@ -176,7 +176,6 @@ public class User implements Serializable{
 	 * @param listItineraries, an ArrayList of Itinerary
 	 * @param index, an int index for the ArrayList
 	 */
-	
 	public void selectItinerary(ArrayList<Itinerary> listItineraries, int index) {
 		this.selectedItinerary = listItineraries.get(index);
 	}
@@ -185,30 +184,44 @@ public class User implements Serializable{
 	 * Book an itinerary selected using the selectItinerary method.
 	 * @param selectedItinerary, an Itinerary previously selected.
 	 */
-	
 	public void bookItinerary(Itinerary selectedItinerary) {
 		this.bookedItineraries.add(selectedItinerary);
 	}
 	
-	public ArrayList<Flight> viewFlights(String origin, String departure, 
-			Date departureDate){
-				return null;
-		// uses a method from FlightManager
+	/**
+	 * Find a Flight given its origin, destination and departureDate
+	 *  
+	 * @param origin
+	 * @param destination the destination of the flight. 
+	 * @param departureDate a string representation of the date. Should be in yyyy-MM-dd HH:mm.  
+	 * @return
+	 */
+	public Flight viewFlights(String origin, String destination, 
+			String departureDate){
+		Flight value = null;
+		value = FileDatabase.getItineraryManger().getFlight(origin, destination, departureDate);
+		return value;
 	}
 	
 	public ArrayList<Itinerary> viewItineraries(String origin, String departure, 
-			Date departureDate){
-				return null;
-		// uses a method from IternaryManager
+			String departureDate){
+		return FileDatabase.getItineraryManger().getItineraries(origin, departure, departureDate);
 	}
 	
-	//Methods from the Admin. 
-	public void editUserInfo() {
-		
-	}
-	
-	public String viewClientInfo() {
-		return "Insert client info code here.";
+	/**
+	 * Returns the information stored for the client with the given email.
+	 * 
+	 * @param email
+	 *            the email address of a client
+	 * @return the information stored for the client with the given email in
+	 *         this format:
+	 *         LastName,FirstNames,Email,Address,CreditCardNumber,ExpiryDate
+	 *         (the ExpiryDate is stored in the format YYYY-MM-DD)
+	 */
+	@Override
+	public String toString(){
+		return lastName + "," + firstName+ ","+ email+"," + address + "," 
+	           + String.valueOf(creditCardNumber) + "," + format.format(expiryDate); 
 	}
 	
 

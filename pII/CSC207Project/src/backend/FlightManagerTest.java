@@ -19,7 +19,7 @@ public class FlightManagerTest {
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	Flight f1 = null; 
-	Flight f2 =null; 
+	Flight f2 = null; 
 	Flight f3 = null; 
 	
 	Date d1 = null;
@@ -48,9 +48,9 @@ public class FlightManagerTest {
 	@Test
 	public void test() {
 		FlightManager manager = new FlightManager();
-		manager.addIteraries(f1);
-		manager.addIteraries(f2);
-		manager.addIteraries(f3);
+		manager.addFlight(f1);
+		manager.addFlight(f2);
+		manager.addFlight(f3);
 		for(String[] key: manager.Itineraries.keySet()){
 			System.out.println(key[0] +" " +key[1] +" " + key[2]);
 			for(Itinerary i:manager.Itineraries.get(key)){
