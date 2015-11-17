@@ -69,7 +69,7 @@ public class FlightManager {
 				try{
 					newI.addFlight(f);
 					value.add(newI);
-				}catch (IfInvalidItineraryException){
+				}catch (InvalidItineraryException e){
 					
 				}
 			if(!value.isEmpty()){
