@@ -15,13 +15,13 @@ public class Flight implements Comparable<Flight>, Serializable {
 
 	private static final long serialVersionUID = 4362700743234104218L;
 
-	private String airline; 
-	private long number;
-	private String origin; 
-	private String destination; 
-	private Date departureDateTime;
-	private Date arrivalDateTime; 
-	private double price;
+	protected String airline; 
+	protected long number;
+	protected String origin; 
+	protected String destination; 
+	protected Date departureDateTime;
+	protected Date arrivalDateTime; 
+	protected double price;
 
 	/**
 	 * Generates a new Flight object.
@@ -113,15 +113,6 @@ public class Flight implements Comparable<Flight>, Serializable {
 	 */
 	public double getPrice() {
 		return price;
-	}
-	
-	/**
-	 * Sets the ticket price of this flight.
-	 * 
-	 * @param newPrice  the new price of this Flight
-	 */
-	public void setPrice(double newPrice) {
-		price = newPrice;
 	}
 
 	/**
