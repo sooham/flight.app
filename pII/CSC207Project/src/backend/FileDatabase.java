@@ -87,7 +87,7 @@ public class FileDatabase implements Serializable {
 
 	public static void importFiles(String dir){
 		try {
-			FileInputStream filein = new FileInputStream(dir +"/clientManager.ser");
+			FileInputStream filein = new FileInputStream(dir +"/ClientManager.ser");
 			FileInputStream filein2 = new FileInputStream(dir +"/FlightManager.ser");
 			ObjectInputStream in = new ObjectInputStream(filein);
 			ObjectInputStream in2 = new ObjectInputStream(filein2);
@@ -161,6 +161,6 @@ public class FileDatabase implements Serializable {
 			System.out.println("Missing flight data.");
 		}
 		
-		}
+	}
 
 }
