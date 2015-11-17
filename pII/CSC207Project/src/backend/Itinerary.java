@@ -96,6 +96,9 @@ public class Itinerary extends Flight implements Serializable {
 	public boolean isValid() {
 		// check there is no repetition of origins and destinations
 		// and all Flights depart where the previous one arrives
+		if (flights.size() == 1) {
+			return true;
+		}
 		
 		List<String> cities = new ArrayList<String>();
 		cities.add(flights.first().getOrigin());
@@ -149,5 +152,18 @@ public class Itinerary extends Flight implements Serializable {
 		newFlights.add(newFlight);
 		Itinerary newItinerary = new Itinerary(newFlights);
 		return newItinerary;
+	}
+	
+	public static void main(String[] args) {
+		Flight f = new Flight("quanta", 123, "Paris", "NY", new Date(2012, 10, 12, 6, 0), new Date(2012, 10, 13, 5, 50), 1300.0);
+		Flight g = new Flight("emirates", 345, "NY", "York", new Date(2012, 10, 13, 11, 50), new Date(2012, 10, 13, 21, 50), 100.0);
+		TreeSet<Flight> flights = new TreeSet<Flight>();
+		flights.add(f);
+		flights.add(g);
+		try {
+			Itinerary newIt = new Itinerary(flights);
+		} catch (InvalidItineraryException e) {
+			
+		}
 	}
 }
