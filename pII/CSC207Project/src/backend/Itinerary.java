@@ -61,7 +61,7 @@ public class Itinerary extends Flight implements Serializable {
 		for (Flight f: flights) {
 			totalItineraryPrice += f.getPrice();
 		}
-		setPrice(totalItineraryPrice);
+		price = totalItineraryPrice;
 		
 		this.flights = flights;
 		
