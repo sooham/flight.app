@@ -41,7 +41,7 @@ Thursday, Nov 12, second Planning meeting:
 		Badis:
 			Partial Client implementation, blank Admin with empty method
 
-Sunday, Nov 15, third Status (Skype):
+Sunday, Nov 15, third Status meeeting (Skype):
 		Sooham:
 			Implement all incomplete classes and methods, work.
 		Angad:
@@ -50,4 +50,14 @@ Sunday, Nov 15, third Status (Skype):
 			ClientManager completed and User class partially completed.
 		Badis:
 			Finished and merged both Client and Admin (Admin was partially implemented).
+			
+Monday, Nov 16, fourth Status meeting
+		Sooham:
+			Worked on Itinerary and redone flight.
+		Angad:
+			Worked on the FlightManager class and completed it
+		Chris:
+			Worked on two Driver methods
+		Badis:
+			Worked (ideas) with Angad for the FlightManager class
 
