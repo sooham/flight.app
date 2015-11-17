@@ -106,8 +106,8 @@ public class Itinerary extends Flight implements Serializable {
 		cities.add(flights.first().getDestination());
 		
 		// Go over the Flights starting from the second flight
-		for (Flight f = flights.higher(flights.first());
-		flights.higher(f) != null; f = flights.higher(f)) {
+		for (Flight f = flights.higher(flights.first()); f != null;
+				f = flights.higher(f)) {
 			
 			// check if the flight starts where the previous flight ended
 			boolean continuous = f.getOrigin().equals(
@@ -159,9 +159,12 @@ public class Itinerary extends Flight implements Serializable {
 		try {
 			Flight f = new Flight("quanta", 123, "Paris", "NY", new Date(2012, 10, 12, 6, 0), new Date(2012, 10, 13, 5, 50), 1300.0);
 			Flight g = new Flight("emirates", 345, "NY", "York", new Date(2012, 10, 13, 11, 50), new Date(2012, 10, 13, 21, 50), 100.0);
+			Flight h = new Flight("AA", 370, "York", "Shanghai", new Date(2012, 10, 14, 1, 20), new Date(2012, 10, 14, 12, 00), 300.0);
+
 			TreeSet<Flight> flights = new TreeSet<Flight>();
 			flights.add(f);
 			flights.add(g);
+			flights.add(h);
 			Itinerary newIt = new Itinerary(flights);
 		} catch (InvalidItineraryException e) {
 			
