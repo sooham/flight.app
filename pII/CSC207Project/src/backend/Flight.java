@@ -36,7 +36,13 @@ public class Flight implements Comparable<Flight>, Serializable {
 	 */
 	public Flight(String airline, long number, String origin,
 	String destination, Date departureDateTime, Date arrivalDateTime,
-	double price) {
+	double price) throws InvalidFlightException {
+		if (((arrivalDateTime.getTime() - departureDateTime.getTime()) < 0) ||
+			 origin.equals(destination)) {
+			throw new InvalidFlightException(
+					"The Flight constructor inupts were invalid"
+					);
+		}
 		this.airline = airline;
 		this.number = number;
 		this.origin = origin;
@@ -162,5 +168,15 @@ public class Flight implements Comparable<Flight>, Serializable {
 		final int TO_MINUTE= 60000; // milliseconds
 		return (arrivalDateTime.getTime() - departureDateTime.getTime()) /
 				TO_MINUTE;
+	}
+
+	/**
+	 * Returns a String representation of this Flight.
+	 * @return a String representation of this Flight.
+	 */
+	@Override
+	public String toString() {
+		return "Flight " + number + " from " + origin + " to " + destination
+				+ " at " + departureDateTime + " ___ " + arrivalDateTime + "]";
 	}
 }
