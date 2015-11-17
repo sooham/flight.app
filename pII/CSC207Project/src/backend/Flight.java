@@ -177,6 +177,6 @@ public class Flight implements Comparable<Flight>, Serializable {
 	@Override
 	public String toString() {
 		return "Flight " + number + " from " + origin + " to " + destination
-				+ " at " + departureDateTime + " ___ " + arrivalDateTime;
+				+ " (" + departureDateTime + " ___ " + arrivalDateTime + ")";
 	}
 }
