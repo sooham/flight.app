@@ -40,7 +40,8 @@ public class Itinerary extends Flight implements Serializable {
 	 * @param flights  a TreeSet of Flight objects 
 	 * @throws InvalidItineraryExecption if Itinerary is not valid. 
 	 */
-	public Itinerary(TreeSet<Flight> flights) throws InvalidItineraryException {
+	public Itinerary(TreeSet<Flight> flights) throws InvalidItineraryException,
+	InvalidFlightException {
 		/* TreeSets are used because they automatically maintain natural
 		 * ordering of the elements, have methods like first and last to
 		 * get the first and last flights in the set and headset(), tailset()
@@ -49,13 +50,13 @@ public class Itinerary extends Flight implements Serializable {
 		 * Because we will Itineraries directly into files, there is no
 		 * need to modify the middle elements of the set of Flights.
 		 */
-		super(flights.first().getAirline(),
-			  idCount,
-			  flights.first().getOrigin(),
-			  flights.last().getDestination(),
-			  flights.first().getDepartureDateTime(),
-			  flights.last().getArrivalDateTime(),
-			  0.0);
+			super(flights.first().getAirline(),
+				  idCount,
+				  flights.first().getOrigin(),
+				  flights.last().getDestination(),
+				  flights.first().getDepartureDateTime(),
+				  flights.last().getArrivalDateTime(),
+				  0.0);
 			  
 		// Set the price of this itinerary
 		double totalItineraryPrice = 0.0; 
@@ -146,7 +147,7 @@ public class Itinerary extends Flight implements Serializable {
 	 * @throws InvalidItineraryException if the flight is invalid. 
 	 */
 	public Itinerary addFlight(Flight newFlight) throws 
-	InvalidItineraryException {
+	InvalidItineraryException, InvalidFlightException {
 		// Create a new TreeSet, being careful not to alias
 		TreeSet<Flight> newFlights = (TreeSet<Flight>) flights.clone();
 		newFlights.add(newFlight);
@@ -155,14 +156,16 @@ public class Itinerary extends Flight implements Serializable {
 	}
 	
 	public static void main(String[] args) {
-		Flight f = new Flight("quanta", 123, "Paris", "NY", new Date(2012, 10, 12, 6, 0), new Date(2012, 10, 13, 5, 50), 1300.0);
-		Flight g = new Flight("emirates", 345, "NY", "York", new Date(2012, 10, 13, 11, 50), new Date(2012, 10, 13, 21, 50), 100.0);
-		TreeSet<Flight> flights = new TreeSet<Flight>();
-		flights.add(f);
-		flights.add(g);
 		try {
+			Flight f = new Flight("quanta", 123, "Paris", "NY", new Date(2012, 10, 12, 6, 0), new Date(2012, 10, 13, 5, 50), 1300.0);
+			Flight g = new Flight("emirates", 345, "NY", "York", new Date(2012, 10, 13, 11, 50), new Date(2012, 10, 13, 21, 50), 100.0);
+			TreeSet<Flight> flights = new TreeSet<Flight>();
+			flights.add(f);
+			flights.add(g);
 			Itinerary newIt = new Itinerary(flights);
 		} catch (InvalidItineraryException e) {
+			
+		} catch (InvalidFlightException f) {
 			
 		}
 	}
