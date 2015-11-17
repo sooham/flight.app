@@ -14,13 +14,13 @@ import java.util.TreeSet;
  * @author Angad Singh
  *
  */
-public class ItineraryManager {
+public class FlightManager {
 	
 	public HashMap<String[], ArrayList<Itinerary>>Itineraries; 
 	public ArrayList<Flight> flights = new ArrayList<Flight>();
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	
-	public ItineraryManager() {
+	public FlightManager() {
 		// Key(Origin, Destination, yyyy-MM-dd HH:mm)
 		this.Itineraries = new HashMap<String[], ArrayList<Itinerary>>();
 	}
