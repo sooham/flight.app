@@ -131,8 +131,10 @@ public class FileDatabase implements Serializable {
 	 * Adds a flight from a given file. Takes a directory including the file name. 
 	 * File must be a csv file. Can be txt but must be separated with commas.  
 	 * @param dir a string of the path to the csv file. 
+	 * @throws InvalidFlightException 
+	 * @throws NumberFormatException 
 	 */
-	public static void addFlightFromFile(String dir) {
+	public static void addFlightFromFile(String dir) throws NumberFormatException, InvalidFlightException {
 		FileReader in = null;
 		BufferedReader br = null;
 		String cvsSplitBy = ",";
