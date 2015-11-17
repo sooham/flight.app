@@ -76,7 +76,7 @@ public class FileDatabase implements Serializable {
 	/**
 	 * @return the itineraryManger
 	 */
-	public static FlightManager getItineraryManger() {
+	public static FlightManager getFlightManger() {
 		return flightManager;
 	}
 	

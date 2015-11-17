@@ -18,6 +18,17 @@ public class User implements Serializable{
 	private Itinerary selectedItinerary;
 	private ArrayList<Itinerary> bookedItineraries;
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	
+	/**
+	 * Takes a last name, first name, email, address, credit card number and the expiry date. Creates 
+	 * a new User class, with the given feilds. 
+	 * @param LastName a string of the user's last name. 
+	 * @param firstName a string of the user's first name. 
+	 * @param email a string of the user's email. 
+	 * @param address a string of the user's address. 
+	 * @param creditCardNumber a integer of the user's credit cards number. 
+	 * @param expiryDate a string in yyyy-MM-dd of the date of expiry. 
+	 */
 
 	public User(String LastName,
 			String firstName, String email, String address,
@@ -199,13 +210,13 @@ public class User implements Serializable{
 	public Flight viewFlights(String origin, String destination, 
 			String departureDate){
 		Flight value = null;
-		value = FileDatabase.getItineraryManger().getFlight(origin, destination, departureDate);
+		value = FileDatabase.getFlightManger().getFlight(origin, destination, departureDate);
 		return value;
 	}
 	
 	public ArrayList<Itinerary> viewItineraries(String origin, String departure, 
 			String departureDate){
-		return FileDatabase.getItineraryManger().getItineraries(origin, departure, departureDate);
+		return FileDatabase.getFlightManger().getItineraries(origin, departure, departureDate);
 	}
 	
 	/**
