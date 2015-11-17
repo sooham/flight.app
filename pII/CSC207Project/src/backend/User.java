@@ -1,8 +1,5 @@
 package backend;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,37 +29,31 @@ public class User implements Serializable{
 		this.Address = Address;
 		this.CreditCardNumber = CreditCardNumber;
 		this.ExpiryDate = format.parse(ExpiryDate);
-		this.selectedItinerary = new Itinerary();
+		this.selectedItinerary = null;
 		this.bookedItineraries = new ArrayList<Itinerary>();
 		}catch(ParseException e) {
 			System.out.println("The date is not in the right format: yyyy-MM-dd HH:mm");
 		}
 	}
-	
+	/**
+	 * Adds a client to the clientManager in FileDatabase. Takes client information from a file. 
+	 * File should be a csv file. 
+	 * @param dir the path to client file. 
+	 */
 	public void getInfoFromFile(String dir){
-		FileReader in = null;
-		BufferedReader br = null;
-		String cvsSplitBy = ",";
+		FileDatabase.getInfoFromFile(dir);
+	}
+	
+	/**
+	 * Adds a flight to the flightManager in FileDatabase. Takes flight information from a file. 
+	 * File should be a csv file. 
+	 * @param dir the path to flight csv file. 
+	 */
+	public void addFlightFromFile(String dir){
+		FileDatabase.addFlightFromFile(dir);
+	}
+	public void addFlight(Flight toAdd) {
 		
-		try{
-			in = new FileReader(dir);
-			br = new BufferedReader(in);
-			String[] values = br.readLine().split(cvsSplitBy);
-			this.LastName = values[0];
-			this.FirstName = values[1];
-			this.Email = values[2];
-			this.Address = values[3];
-			this.CreditCardNumber = Integer.parseInt(values[4]);
-			this.ExpiryDate = format.parse(values[5]);
-			
-		} catch (IOException e) {
-			System.out.println("The file was not found.");
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			System.out.println("The date is not in the right format: yyyy-MM-dd HH:mm");
-		} catch(IndexOutOfBoundsException e){
-			System.out.println("The file does not have enough arguements to make a client.");
-		}
 	}
 
 	/**
@@ -201,11 +192,13 @@ public class User implements Serializable{
 	
 	public ArrayList<Flight> viewFlights(String origin, String departure, 
 			Date departureDate){
+				return null;
 		// uses a method from FlightManager
 	}
 	
 	public ArrayList<Itinerary> viewItineraries(String origin, String departure, 
 			Date departureDate){
+				return null;
 		// uses a method from IternaryManager
 	}
 	
@@ -218,44 +211,6 @@ public class User implements Serializable{
 		return "Insert client info code here.";
 	}
 	
-	public void addFlight(Flight toAdd) {
-		
-	}
-	
-	public void addFlightFromFile(String dir) {
-		FileReader in = null;
-		BufferedReader br = null;
-		String cvsSplitBy = ",";
-		
-		try{
-			in = new FileReader(dir);
-			br = new BufferedReader(in);
-			String[] values = br.readLine().split(cvsSplitBy);
-			String origin = values[0];
-			String destination = values[1];
-			double cost = Double.parseDouble(values[2]);
-			Date departureTime = format.parse(values[3]);
-			Date arrivalTime = format.parse(values[4]);
-			String airline = values[5];
-			int flightNumber = Integer.parseInt(values[6]);
-			Flight newFlight = new Flight(origin, destination, cost,
-					departureTime, arrivalTime, airline, flightNumber);
-			addFlight(newFlight);
-		} 
-		
-		catch (IOException e) {
-			System.out.println("The file was not found.");
-		}
-		
-		catch (ParseException e) {
-			// TODO Auto-generated catch block
-			System.out.println("The date is not in the right format: yyyy-MM-dd HH:mm");
-		}
-		
-		catch (IndexOutOfBoundsException e) {
-			System.out.println("Missing flight data.");
-		}
-		
-		}
+
 			
-	}
+}
