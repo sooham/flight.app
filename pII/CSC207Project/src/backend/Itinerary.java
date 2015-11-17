@@ -55,10 +55,10 @@ public class Itinerary extends Flight implements Serializable {
 			  flights.last().getDestination(),
 			  flights.first().getDepartureDateTime(),
 			  flights.last().getArrivalDateTime(),
-			  0);
+			  0.0);
 			  
 		// Set the price of this itinerary
-		double totalItineraryPrice = 0; 
+		double totalItineraryPrice = 0.0; 
 		for (Flight f: flights) {
 			totalItineraryPrice += f.getPrice();
 		}
