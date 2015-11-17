@@ -65,9 +65,6 @@ public class FlightManager {
 		}catch (InvalidFlightException c) {
 			
 		}
-		
-		
-		
 	}
 	
 	public ArrayList<Itinerary> getItineraries(String origin, String destination, String departureDate){

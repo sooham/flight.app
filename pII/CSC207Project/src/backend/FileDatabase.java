@@ -14,8 +14,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @author Angad Singh
- *
+ * The main class of the program. Will store all clients, flights and itineraries in static 
+ * variables. Clients will be stored in a client manager, while the flights and itineraries 
+ * will be stored in a flight manager. This class will also deal with taking input from csv
+ * files.  
  */
 public class FileDatabase implements Serializable {
 	/**
@@ -46,7 +48,6 @@ public class FileDatabase implements Serializable {
 	/**
 	 * Takes the location of a directory and saves the ClientManger and
 	 * ItineraryManger objects.
-	 * 
 	 * @param dir the path of a directory in the system.
 	 */
 	public static void migrateFiles(String dir) {
@@ -84,7 +85,6 @@ public class FileDatabase implements Serializable {
 	 * Imports the manager classes from a specific directory passed. 
 	 * @param dir the path where the files are located. 
 	 */
-
 	public static void importFiles(String dir){
 		try {
 			FileInputStream filein = new FileInputStream(dir +"/ClientManager.ser");
@@ -143,32 +143,25 @@ public class FileDatabase implements Serializable {
 			in = new FileReader(dir);
 			br = new BufferedReader(in);
 			String[] values = br.readLine().split(cvsSplitBy);
+			//Creates the date objects from a string
 			Date departureTime = format.parse(values[3]);
 			Date arrivalTime = format.parse(values[4]);
+			//Creates a new flight object. 
 			Flight newFlight = new Flight(values[5], Long.parseLong(values[6]), values[0],
 						values[1], arrivalTime, departureTime,Double.parseDouble(values[2]));
 			flightManager.addFlight(newFlight);
-		} 
-		
-		catch (IOException e) {
+		}catch (IOException e) {
 			System.out.println("The file was not found.");
-		}
-		
-		catch (ParseException e) {
-			// TODO Auto-generated catch block
-			System.out.println("The date is not in the right format: yyyy-MM-dd HH:mm");
-		}
-		catch (IndexOutOfBoundsException e) {
+		}catch (ParseException e) {
+		    System.out.println("The date is not in the right format: yyyy-MM-dd HH:mm");
+		}catch (IndexOutOfBoundsException e) {
 			System.out.println("Missing flight data.");
 		}catch (InvalidFlightException e){
 			
 		}catch (NumberFormatException e) {
-			System.out.println("The flight number is not in the right format.");
-			
+			System.out.println("The flight number is not in the right format.");	
 		}
 			
-		
-		
 	}
 
 }

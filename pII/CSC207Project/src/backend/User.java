@@ -6,6 +6,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Will represent both client and administrators. Every user will have 
+ * a last name, fist name, email, address, credit card number, expiry date. 
+ * Where the expiry date will be in the format yyyy-MM-dd. 
+ * 
+ * All user will be stored and therefore are serializable. 
+ */
 public class User implements Serializable{
 
 	private static final long serialVersionUID = -3786727358644943990L;
@@ -17,11 +24,11 @@ public class User implements Serializable{
 	private Date expiryDate;
 	private Itinerary selectedItinerary;
 	private ArrayList<Itinerary> bookedItineraries;
-	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:ss");
 	
 	/**
 	 * Takes a last name, first name, email, address, credit card number and the expiry date. Creates 
-	 * a new User class, with the given feilds. 
+	 * a new User class, with the given fields. 
 	 * @param LastName a string of the user's last name. 
 	 * @param firstName a string of the user's first name. 
 	 * @param email a string of the user's email. 
@@ -29,7 +36,6 @@ public class User implements Serializable{
 	 * @param creditCardNumber a integer of the user's credit cards number. 
 	 * @param expiryDate a string in yyyy-MM-dd of the date of expiry. 
 	 */
-
 	public User(String LastName,
 			String firstName, String email, String address,
 			int creditCardNumber, String expiryDate) {
@@ -214,16 +220,20 @@ public class User implements Serializable{
 		return value;
 	}
 	
-	public ArrayList<Itinerary> viewItineraries(String origin, String departure, 
+	/**
+	 * Returns a list itineraries bases on the origin, destination and the departure date.
+	 * @param origin the origin of the required itineraries. 
+	 * @param destination the destination of the required itineraries. 
+	 * @param departureDate the date and time of departure. In the format yyyy-MM-d HH:ss
+	 * @return an ArrayList contain all valid itineraries. 
+	 */
+	public ArrayList<Itinerary> viewItineraries(String origin, String destination, 
 			String departureDate){
-		return FileDatabase.getFlightManger().getItineraries(origin, departure, departureDate);
+		return FileDatabase.getFlightManger().getItineraries(origin, destination, departureDate);
 	}
 	
 	/**
-	 * Returns the information stored for the client with the given email.
-	 * 
-	 * @param email
-	 *            the email address of a client
+	 * Returns the information stored for the client as a string .
 	 * @return the information stored for the client with the given email in
 	 *         this format:
 	 *         LastName,FirstNames,Email,Address,CreditCardNumber,ExpiryDate
