@@ -3,180 +3,151 @@
  */
 package backend;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.TreeSet;
 import java.io.Serializable;
 
 /**
- * A Flight Itinerary. An Itinerary is a sequence of Flights for which
+ * A Flight Itinerary. An Itinerary is a set of Flights for which
  * every previous flight's destination is the following flight's origin and
  * every previous flight arrives less than 6 hours before the following
  * flight's departure.
  * 
+ * Additional restriction such as no repetition of origin and destinations
+ * is imposed to prevent inefficient routes.
+ * 
+ * Itineraries have all fields inherited from Flight and a TreeSet of flights,
+ * due to no cycles. Every Itinerary has a unique identifier number.
  */
 public class Itinerary extends Flight implements Serializable {
 	
-	private static final long serialVersionUID = 7985656353564622420L;
-	private List<Flight> flights = new ArrayList<Flight>();
-	private String origin; 
-	private String destination; 
-	private double cost;
-	private Date departureTime;
-	private Date arrivalTime; 
-	
-	/**
-	 * Creates a new Itinerary object given a list of flights. 
-	 * @param newflight a sorted list of flights by departure time. 
-	 * @throws InvalidFlightException 
-	 */
-	public Itinerary(List<Flight> newflight) throws InvalidFlightException {
-		Collections.sort(newflight);
-		for (Flight flight: newflight){
-			this.addFlightEnd(flight);
-		}
-	}
-	
-	/**
-	 * Creates a new empty Itinerary.  
-	 */
-	public Itinerary(){
-		this.flights = new ArrayList<Flight>();
-		this.origin = "";
-		this.destination = "";
-		this.cost = 0.0;
-		this.departureTime = null;
-		this.arrivalTime = null; 
-	}
-	
-	/**
-	 * Adds a flight to the Iternary and updates all instance variables.  
-	 * @param newFlight a new flight to add to the list. 
-	 * @throws InvalidFlightException if the flight is invalid. 
-	 */
-	public void addFlightEnd(Flight newFlight) throws InvalidFlightException {
-		if (this.flights.isEmpty()){
-			this.flights.add(newFlight);
-			this.arrivalTime = newFlight.getArrivalTime();
-			this.departureTime = newFlight.getDepartureTime();
-			this.cost = newFlight.getCost();
-			this.origin = newFlight.getOrigin();
-			this.destination = newFlight.getDestination();
-		}else{
-			if (this.flights.get(this.flights.size()-1).getDestination() == newFlight.getOrigin()
-					&& !this.containsLoop(newFlight.getDestination())){
-				this.flights.add(newFlight);
-				this.cost += newFlight.getCost();
-				this.arrivalTime = newFlight.getArrivalTime();
-				this.destination = newFlight.getDestination();
-			}else{
-				String message = "The desination is: " + this.destination + 
-						" The flights origin is: " + newFlight.getOrigin(); 
-				throw new InvalidFlightException(message);
-			}
-			
-		}
-		
-	}
-	
-	/**
-	 * Adds a valid new Flight to the beginning of the Itinerary. Raises an error otherwise. 
-	 * @param newFlight a new Flight to add to the beginning. 
-	 * @throws InvalidFlightException if the Flight's destination is not equal to the origin of 
-	 * this Itinerary.
-	 */
-	public void addFlightBeginning(Flight newFlight) throws InvalidFlightException {
-		if (this.flights.isEmpty()){
-			this.flights.add(newFlight);
-			this.arrivalTime = newFlight.getArrivalTime();
-			this.departureTime = newFlight.getDepartureTime();
-			this.cost = newFlight.getCost();
-			this.origin = newFlight.getOrigin();
-			this.destination = newFlight.getDestination();
-		}else{
-			if (this.flights.get(0).getOrigin() == newFlight.getDestination() 
-					&& !this.containsLoop(newFlight.getOrigin())){
-				this.flights.add(0, newFlight);
-				this.cost += newFlight.getCost();
-				this.departureTime = newFlight.getDepartureTime();
-				this.origin = newFlight.getOrigin();
-			}else{
-				String message = "The origin of the Iternary: " + this.destination + 
-						" The new flight's desination is: " + newFlight.getDestination(); 
-				throw new InvalidFlightException(message);
-			}	
-		}
-	}
-	
-	/**
-	 * Checks if there is already a flight in the itinerary with the same destination or origin.
-	 * @param flight a string representing the location of the flight. 
-	 * @return boolean true if and only if there is already a flight in the itinerary. 
-	 */
-	private boolean containsLoop(String flight){
-		for (Flight f:this.getFlights()){
-			if (f.getOrigin()==flight||f.getDestination()==flight){
-				return true;
-			}
-		}
-		return false; 
-	}
+	private static final long SIX_HOURS_TO_MILLISECONDS = (long) 2.16e+7;
 
+	private static final long serialVersionUID = 7985656353564622420L;
+	private static long idCount = 0; // the ID to be assigned next Itinerary
+
+	private TreeSet<Flight> flights;	// the Set of flights in sequence for
+										// this Itinerary
+	
 	/**
-	 * @return the flights
+	 * Constructs an Itinerary from a TreeSet of Flight.
+	 * 
+	 * @param flights  a TreeSet of Flight objects 
+	 * @throws InvalidItineraryExecption if Itinerary is not valid. 
 	 */
-	public List<Flight> getFlights() {
+	public Itinerary(TreeSet<Flight> flights) throws InvalidItineraryException {
+		/* TreeSets are used because they automatically maintain natural
+		 * ordering of the elements, have methods like first and last to
+		 * get the first and last flights in the set and headset(), tailset()
+		 * to get all flights before or after a given flight.
+		 * 
+		 * Because we will Itineraries directly into files, there is no
+		 * need to modify the middle elements of the set of Flights.
+		 */
+		super(flights.first().getAirline(),
+			  idCount,
+			  flights.first().getOrigin(),
+			  flights.last().getDestination(),
+			  flights.first().getDepartureDateTime(),
+			  flights.last().getArrivalDateTime(),
+			  0);
+			  
+		// Set the price of this itinerary
+		double totalItineraryPrice = 0; 
+		for (Flight f: flights) {
+			totalItineraryPrice += f.getPrice();
+		}
+		setPrice(totalItineraryPrice);
+		
+		this.flights = flights;
+		
+		// check if valid
+		if (!this.isValid()) {
+			throw new InvalidItineraryException(
+					"The constructor was given an invalid Flight sequence."
+			);
+		}
+
+		// increase idCount
+		idCount++;
+	}
+	
+	/**
+	 * Returns the TreeSet of Flights in this Itinerary.
+	 * 
+	 * @return the flights field of this Itinerary
+	 */
+	public TreeSet<Flight> getFlights() {
 		return flights;
 	}
-
-
-	/**
-	 * @return the origin
-	 */
-	public String getOrigin() {
-		return origin;
-	}
 	
-
 	/**
-	 * @return the destination
+	 * Returns if this Itinerary is traversable. An Itinerary is traversable
+	 * if and only if all flights in the Itinerary form a non-cyclic path in
+	 * time and cities AND all layovers are less than 6 hours long.
+	 * 
+	 * @return a boolean indicating if the Flight in flights are traversable.
 	 */
-	public String getDestination() {
-		return destination;
+	public boolean isValid() {
+		// check there is no repetition of origins and destinations
+		// and all Flights depart where the previous one arrives
+		
+		List<String> cities = new ArrayList<String>();
+		cities.add(flights.first().getOrigin());
+		cities.add(flights.first().getDestination());
+		
+		// Go over the Flights starting from the second flight
+		for (Flight f = flights.higher(flights.first());
+		flights.higher(f) != null; f = flights.higher(f)) {
+			
+			// check if the flight starts where the previous flight ended
+			boolean continuous = f.getOrigin().equals(
+												cities.get(cities.size() - 1));
+
+			// check if the layover time is less than six hours
+			long travelTime = (
+				f.getDepartureDateTime().getTime() 
+				- flights.lower(f).getArrivalDateTime().getTime()
+			); 
+			boolean shortLayover = (0 <= travelTime) &&
+					(travelTime <= SIX_HOURS_TO_MILLISECONDS);
+			
+			// check if the flight is non-cyclic
+			boolean nonCyclic = !cities.contains(f.getDestination());
+			
+			if (continuous && shortLayover && nonCyclic) {
+				// continue checking the next Flight in Itinerary
+				cities.add(f.getDestination());
+			} else {
+				return false;
+			}
+		}
+		return true;
 	}
 
-
 	/**
-	 * @return the cost
+	 * Returns a new Itinerary with a given Flight added. If the new 
+	 * Itinerary is valid. Otherwise an InvalidItineraryException is
+	 * thrown.
+	 * 
+	 * A Flight is invalid if it forms a cycle in the Itinerary,
+	 * conflicts with any other Flight in the itinerary in terms of scheduling
+	 * or creates a stopover time of greater than 6 hours.
+	 * 
+	 * @param newFlight  the flight to add to this Itinerary. 
+	 * @throws InvalidItineraryException if the flight is invalid. 
 	 */
-	public double getCost() {
-		return cost;
-	}
-
-
-	/**
-	 * @return the departureTime
-	 */
-	public Date getDepartureTime() {
-		return departureTime;
-	}
-
-
-	/**
-	 * @return the arrivalTime
-	 */
-	public Date getArrivalTime() {
-		return arrivalTime;
-	}
-
-
-	/**
-	 * @return the duration of the itinerary in hours
-	 */
-	public double getDuration(){
-		return (this.getArrivalTime().getTime()-this.getDepartureTime().getTime())
-				/(60 * 60D * 1000);
+	public Itinerary addFlight(Flight newFlight) throws 
+	InvalidItineraryException {
+		// Create a new TreeSet, being careful not to alias
+		TreeSet<Flight> newFlights = (TreeSet<Flight>) flights.clone();
+		newFlights.add(newFlight);
+		Itinerary newItinerary = new Itinerary(newFlights);
+		return newItinerary;
 	}
 }

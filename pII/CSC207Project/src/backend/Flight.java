@@ -4,7 +4,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * A Flight. Every Flight has a flight number, airline name, departure arrival 
+ * A Flight. Every Flight has a number, airline name, departure arrival 
  * date and time, origin, destination, ticket price and travel time.
  * 
  * Flight objects will be persistent, hence they implement Serializable.
@@ -16,7 +16,7 @@ public class Flight implements Comparable<Flight>, Serializable {
 	private static final long serialVersionUID = 4362700743234104218L;
 
 	private String airline; 
-	private long flightNumber;
+	private long number;
 	private String origin; 
 	private String destination; 
 	private Date departureDateTime;
@@ -27,18 +27,18 @@ public class Flight implements Comparable<Flight>, Serializable {
 	 * Generates a new Flight object.
 	 * 
 	 * @param airline  the airline.
-	 * @param flightNumber  a unique number representing this Flight.
+	 * @param number  a unique number representing this Flight.
 	 * @param origin  the location where this Flight begins.
 	 * @param destination  the location where this Flight ends.
 	 * @param departureDateTime  the Date this Flight departs.
 	 * @param arrivalDateTime  the Date this Flight arrives.
 	 * @param price  the ticket price for this Flight.
 	 */
-	public Flight(String airline, long flightNumber, String origin,
+	public Flight(String airline, long number, String origin,
 	String destination, Date departureDateTime, Date arrivalDateTime,
 	double price) {
 		this.airline = airline;
-		this.flightNumber = flightNumber;
+		this.number = number;
 		this.origin = origin;
 		this.destination = destination;
 		this.departureDateTime = departureDateTime;
@@ -56,12 +56,12 @@ public class Flight implements Comparable<Flight>, Serializable {
 	}
 
 	/**
-	 * Returns this flight's unique flight number.
+	 * Returns this flight's unique number.
 	 * 
 	 * @return the flightNumber
 	 */
-	public long getFlightNumber() {
-		return flightNumber;
+	public long getNumber() {
+		return number;
 	}
 
 	/**
@@ -108,6 +108,15 @@ public class Flight implements Comparable<Flight>, Serializable {
 	public double getPrice() {
 		return price;
 	}
+	
+	/**
+	 * Sets the ticket price of this flight.
+	 * 
+	 * @param newPrice  the new price of this Flight
+	 */
+	public void setPrice(double newPrice) {
+		price = newPrice;
+	}
 
 	/**
 	 * Returns an integer that shows relative departure time (less, equals
@@ -133,7 +142,7 @@ public class Flight implements Comparable<Flight>, Serializable {
 	public boolean equals(Object object) {
 		if (object instanceof Flight) {
 			Flight f = (Flight) object;
-			return flightNumber == f.flightNumber &&
+			return number == f.number &&
 					airline.equals(f.airline) && 
 					origin.equals(f.origin) &&
 					destination.equals(f.destination) &&
@@ -150,8 +159,8 @@ public class Flight implements Comparable<Flight>, Serializable {
 	 * @return the number of minutes between departure and arrival time.
 	 */
 	public long getDuration() {
-		int toMinute = 60000; // milliseconds
+		final int TO_MINUTE= 60000; // milliseconds
 		return (arrivalDateTime.getTime() - departureDateTime.getTime()) /
-				toMinute;
+				TO_MINUTE;
 	}
 }
