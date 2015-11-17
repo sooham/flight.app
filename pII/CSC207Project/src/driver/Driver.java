@@ -1,20 +1,11 @@
 package driver;
 
-import backend.ClientManager;
 import backend.FileDatabase;
-import backend.Flight;
-import backend.InvalidFlightException;
-import backend.Itinerary;
-import backend.User;
 
 /** A Driver used for autotesting the project backend. */
 public class Driver {
 	
-	private static User user;
-	private Flight flight;
-	private Itinerary itinerary;
-	private FileDatabase filedatabase;
-	private ClientManager clientmanager;
+	private static FileDatabase filedatabase;
 
 	/**
 	 * Uploads client information to the application from the file at the given
@@ -27,7 +18,7 @@ public class Driver {
 	 *            (the ExpiryDate is stored in the format YYYY-MM-DD)
 	 */
 	public static void uploadClientInfo(String path) {
-		user.getInfoFromFile(path);
+		filedatabase.getInfoFromFile(path);
 	}
 
 	/**
@@ -43,6 +34,7 @@ public class Driver {
 	 */
 	public static void uploadFlightInfo(String path) {
 		// TODO: complete this method body
+		filedatabase.addFlightFromFile(path);
 	}
 
 	/**
@@ -56,15 +48,7 @@ public class Driver {
 	 *         (the ExpiryDate is stored in the format YYYY-MM-DD)
 	 */
 	public static String getClient(String email) {
-		String result;
-		String userEmail = user.getEmail();
-		if (email == userEmail){
-			result = user.getLastName() + ',' + user.getFirstName() + ','
-					+ ',' + userEmail + ',' + user.getAddress() + ',' +
-					user.getCreditCardNumber() + ',' + user.getExpiryDate();
-			return result;
-		}
-		return null; // This method seems wrong to me
+		 return filedatabase.getClients().getClient(email, "email").toString();
 	}
 
 	/**
@@ -85,7 +69,7 @@ public class Driver {
 	 */
 	public static String getFlights(String date, String origin, String destination) {
 		// TODO: complete this method body
-		return null;
+		return filedatabase.getFlightManger().getFlight(origin, destination,date).toString();
 	}
 
 	/**
@@ -112,7 +96,7 @@ public class Driver {
 	 */
 	public static String getItineraries(String date, String origin, String destination) {
 		// TODO: complete this method body
-		return null;
+		return filedatabase.getFlightManger().getItineraries(origin, destination, date).toString();
 	}
 
 	/**
