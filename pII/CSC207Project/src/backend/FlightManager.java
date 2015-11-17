@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.TreeSet;
 
 /**
@@ -30,63 +31,43 @@ public class FlightManager {
 		addIteraries(newFlight);
 	}
 	
-	private void generateItneraries(){
-		this.Itineraries.clear();
-		for (int x =0; x<this.flights.size(); x++){
-			String[] key = new String[3];
-			key[0]=(flights.get(x).getOrigin());
-			key[1]=(flights.get(x).getDestination());
-			key[2]=(format.format(flights.get(x).getDepartureDateTime()));
-			
-			ArrayList<Itinerary> value = new ArrayList<Itinerary>();
-			ArrayList<Itinerary> value2 = new ArrayList<Itinerary>();
-			try {
-				Itinerary newFlight = new Itinerary();
-				newFlight.addFlightBeginning(flights.get(x));
-				value.add(newFlight);
-				for (Itinerary i: value){
-					for (Flight flight2: this.flights){
-						value2 = value; 
-						for (Itinerary i2: value2){
-							i2.addFlightEnd(flight2);
-						}
-					}
-					value.addAll(value2);
-				}
-			} catch (InvalidFlightException e) {
-
-			}
-			this.Itineraries.put(key, value);
-		}
-	}
-	
-	private void addIteraries(Flight f){
-		for (String[] key: this.Itineraries.keySet()){
+	public void addIteraries(Flight f){
+		HashSet<String[]> oldKeys = new HashSet<String[]>(Itineraries.keySet());
+		for (String[] key: oldKeys){
 			ArrayList<Itinerary> value = new ArrayList<Itinerary>();
 			
-			for(Itinerary i: this.Itineraries.get(key)){
-				Itinerary newI = i;
+			for(Itinerary i: Itineraries.get(key)){
+				Itinerary newI = null;
 				try{
-					newI.addFlight(f);
+					newI = i.addFlight(f);
 					value.add(newI);
 				}catch (InvalidItineraryException e){
+				
+				}catch (InvalidFlightException c) {
 					
 				}
-			if(!value.isEmpty()){
-				String[] newKey = new String[3];
-				newKey[0] = value.get(1).getOrigin();
-				newKey[1] = value.get(1).getDestination();
-				newKey[2] = format.format(value.get(1).getDepartureTime());
+				if(!value.isEmpty()){
+					String[] newKey = {value.get(0).getOrigin(),value.get(0).getDestination()
+							,format.format(value.get(0).getDepartureDateTime())};
+					Itineraries.put(newKey, value);
+				}
 			}
 		}
-		ArrayList<Itinerary> newList = new ArrayList<Itinerary>();
-		TreeSet fl = new TreeSet();
-		fl.add(f);
-		Itinerary I2 = new Itinerary(fl);
-		newList.add(I2);
-		String[] newKey  = {f.getOrigin(),  f.getDestination(), format.format(f.getDepartureDateTime())};
-		this.Itineraries.put(newKey,newList);
-	}
+		//Adds the single Flight Itinerary to the HashMap
+		try {
+			ArrayList<Itinerary> newList = new ArrayList<Itinerary>();
+			TreeSet fl = new TreeSet();
+			fl.add(f);
+			Itinerary I2 = new Itinerary(fl);
+			newList.add(I2);
+			String[] newKey  = {f.getOrigin(),  f.getDestination(), format.format(f.getDepartureDateTime())};
+			Itineraries.put(newKey,newList);
+		} catch (InvalidItineraryException e) {
+		
+		}catch (InvalidFlightException c) {
+			
+		}
+		
 		
 		
 	}
