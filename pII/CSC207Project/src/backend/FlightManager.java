@@ -54,7 +54,7 @@ public class FlightManager {
 		//Adds the single Flight Itinerary to the HashMap
 		try {
 			ArrayList<Itinerary> newList = new ArrayList<Itinerary>();
-			TreeSet fl = new TreeSet();
+			TreeSet<Flight> fl = new TreeSet<Flight>();
 			fl.add(f);
 			Itinerary I2 = new Itinerary(fl);
 			newList.add(I2);
