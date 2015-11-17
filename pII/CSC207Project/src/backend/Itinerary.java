@@ -155,10 +155,21 @@ public class Itinerary extends Flight implements Serializable {
 		return newItinerary;
 	}
 	
+	/**
+	 * Returns the String representation of this Itinerary.
+	 * @return the String representation of this Itinerary
+	 */
+	@Override
+	public String toString() {
+		return "Itinerary " + getNumber() + " from " + getOrigin() + " to "
+				+ getDestination() + " (" + getDepartureDateTime() + " --- "
+				+ getArrivalDateTime() + ")";
+	}
+
 	public static void main(String[] args) {
 		try {
 			Flight f = new Flight("quanta", 123, "Paris", "NY", new Date(2012, 10, 12, 6, 0), new Date(2012, 10, 13, 5, 50), 1300.0);
-			Flight g = new Flight("emirates", 345, "NY", "York", new Date(2012, 10, 13, 11, 50), new Date(2012, 10, 13, 21, 50), 100.0);
+			Flight g = new Flight("emirates", 345, "Rome", "Paris", new Date(2012, 10, 13, 12, 50), new Date(2012, 10, 13, 21, 50), 100.0);
 			Flight h = new Flight("AA", 370, "York", "Shanghai", new Date(2012, 10, 14, 1, 20), new Date(2012, 10, 14, 12, 00), 300.0);
 
 			TreeSet<Flight> flights = new TreeSet<Flight>();
