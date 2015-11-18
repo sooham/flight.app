@@ -1,6 +1,7 @@
 package backend;
 
 import java.util.Comparator;
+import java.io.Serializable;
 
 /**
  * A comparator for comparing Flights and Itinerary by duration.
@@ -8,7 +9,10 @@ import java.util.Comparator;
  * 
  * @param T a subclass of Flight object to compare by duration
  */
-public class DurationComparator<T extends Flight> implements Comparator<T> {
+public class DurationComparator<T extends Flight> implements Comparator<T>, 
+Serializable {
+
+	private static final long serialVersionUID = 7448765617847258913L;
 
 	/**
 	 * Instantiates this DurationComparator.

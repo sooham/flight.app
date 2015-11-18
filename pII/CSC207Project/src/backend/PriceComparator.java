@@ -1,6 +1,7 @@
 package backend;
 
 import java.util.Comparator;
+import java.io.Serializable;
 
 /**
  * A comparator for comparing Flights and Itinerary by price.
@@ -8,7 +9,10 @@ import java.util.Comparator;
  * 
  * @param T a subclass of Flight object to compare by price
  */
-public class PriceComparator<T extends Flight> implements Comparator<T> {
+public class PriceComparator<T extends Flight> implements Comparator<T>, 
+Serializable {
+
+	private static final long serialVersionUID = -7067868135052897832L;
 
 	/**
 	 * Instantiates this PriceComparator.
@@ -22,7 +26,7 @@ public class PriceComparator<T extends Flight> implements Comparator<T> {
 	 * 
 	 * @param o1  a subclass of Flight
 	 * @param o2  a subclass of Flight
-	 * @return an int corresponding to relative position of o1 and o2.
+	 * @return an int corresponding to relative price of o1 and o2.
 	 */
 	public int compare(T o1, T o2) {
 		double diff = o2.getPrice() - o1.getPrice();
