@@ -54,7 +54,9 @@ public class User implements Serializable{
 			this.selectedItinerary = null;
 			this.bookedItineraries = new ArrayList<Itinerary>();
 		}catch(ParseException e) {
-			System.out.println("The date is not in the right format: yyyy-MM-dd HH:mm");
+			System.out.println(
+				"The date is not in the right format: yyyy-MM-dd HH:mm"
+			);
 		}
 	}
 
@@ -242,7 +244,8 @@ public class User implements Serializable{
 	 * 
 	 * @param origin the origin of the required itineraries. 
 	 * @param destination the destination of the required itineraries. 
-	 * @param departureDate the date and time of departure. In the format yyyy-MM-d HH:ss
+	 * @param departureDate the date and time of departure. In the format 
+	 * yyyy-MM-d HH:ss
 	 * @return an ArrayList contain all valid itineraries. 
 	 */
 	public ArrayList<Itinerary> viewItineraries(String origin, 
@@ -262,7 +265,8 @@ public class User implements Serializable{
 	@Override
 	public String toString(){
 		return lastName + "," + firstName+ ","+ email+"," + address + "," 
-	           + String.valueOf(creditCardNumber) + "," + format.format(expiryDate); 
+	           + String.valueOf(creditCardNumber) + "," + 
+				format.format(expiryDate); 
 	}
 			
 }
