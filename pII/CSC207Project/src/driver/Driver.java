@@ -68,7 +68,8 @@ public class Driver {
 	 *         Destination,Price (the dates are in the format YYYY-MM-DD; the
 	 *         price has exactly two decimal places)
 	 */
-	public static String getFlights(String date, String origin, String destination) {
+	public static String getFlights(String date, String origin, 
+			String destination) {
 		// TODO: complete this method body
 		return FileDatabase.getFlightManger().getFlights(origin, 
 				destination,date).toString();
@@ -96,7 +97,8 @@ public class Driver {
 	 *         decimal places), followed by total duration (on its own line, in
 	 *         format HH:MM).
 	 */
-	public static String getItineraries(String date, String origin, String destination) {
+	public static String getItineraries(String date, String origin,
+			String destination) {
 		// TODO: complete this method body
 		return FileDatabase.getFlightManger().getItineraries(origin, 
 				destination, date).toString();
@@ -121,10 +123,11 @@ public class Driver {
 	 *         decimal places), followed by total duration (on its own line, in
 	 *         format HH:MM).
 	 */
-	public static String getItinerariesSortedByCost(String date, String origin, String destination) {
+	public static String getItinerariesSortedByCost(String date, String origin,
+			String destination) {
 		// TODO: complete this method body
-		ArrayList<Itinerary> flights = FileDatabase.getFlightManger().getItineraries(origin, 
-				destination, date);
+		ArrayList<Itinerary> flights = FileDatabase.getFlightManger(
+				).getItineraries(origin, destination, date);
 		FileDatabase.getFlightManger().sortByPrice(flights);
 		return flights.toString();
 	}
@@ -148,9 +151,10 @@ public class Driver {
 	 *         decimal places), followed by total duration (on its own line, in
 	 *         format HH:MM).
 	 */
-	public static String getItinerariesSortedByTime(String date, String origin, String destination) {
-		ArrayList<Itinerary> flights = FileDatabase.getFlightManger().getItineraries(origin, 
-				destination, date);
+	public static String getItinerariesSortedByTime(String date, String origin,
+	String destination) {
+		ArrayList<Itinerary> flights = FileDatabase.getFlightManger(
+				).getItineraries(origin, destination, date);
 		FileDatabase.getFlightManger().sortByDuration(flights);
 		return flights.toString();
 	}
