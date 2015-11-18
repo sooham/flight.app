@@ -30,7 +30,7 @@ Thursday, Nov 12, second Planning meeting:
             Committed this information 2 days late
 
 		Sooham:
-			Sooham having family problems, slow with his portion of assignement. 
+			Sooham having family problems, slow with his portion of assignement.
 			Updated Chris on the project, helped Angad with
             Calendar and Date classes.
 		Angad:
@@ -44,7 +44,7 @@ Thursday, Nov 12, second Planning meeting:
 
 Sunday, Nov 15, third Status meeeting (Skype):
 		Sooham:
-			Sooham still having family problems, slow with his portion of assignement. 
+			Sooham still having family problems, slow with his portion of assignement.
 			Implement all incomplete classes and methods, work.
 		Angad:
 			Completed all assigned classed.
@@ -52,17 +52,17 @@ Sunday, Nov 15, third Status meeeting (Skype):
 			ClientManager completed and User class partially completed.
 		Badis:
 			Finished and merged both Client and Admin (Admin was partially implemented).
-			
+
 Monday, Nov 16, fourth Status meeting
 		Sooham:
-			Worked on Itinerary and redone flight.
-			Finish sorting for FlightManager. 
-			Edit toStrings to meet specifications in driver class. 
-			Finish last three driver methods. 
+			Worked on Itinerary and redone flight, better Algorithms and Javadocs.
+			Finish sorting for FlightManager.
+			Edit toStrings to meet specifications in driver class.
+			Finish last three driver methods.
 		Angad:
-			Worked on the FlightManager class and completed generating possiable itineraries. 
-			Check over driver methods. 
-			Work on java docs for User and FileDatabase classes. 
+			Worked on the FlightManager class and completed generating possiable itineraries.
+			Check over driver methods.
+			Work on java docs for User and FileDatabase classes.
 		Chris:
 			Worked on two Driver methods
 		Badis:
