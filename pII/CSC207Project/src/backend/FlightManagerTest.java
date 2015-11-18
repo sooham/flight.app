@@ -11,10 +11,6 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @author Angad Singh
- *
- */
 public class FlightManagerTest {
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -38,20 +34,20 @@ public class FlightManagerTest {
 		d5= format.parse("2011-02-21 14:00");
 		d6= format.parse("2011-02-21 14:30");
 		
-		f1 = new Flight("Airline", 10000232L, "Canada", "France", d1,d2, 100.0);
-		f2 = new Flight("Airline", 11000232L, "France", "Germany", d3,d4, 100.0);
-		f3 = new Flight("Airline", 10300232L, "Germany", "Spain", d5,d6, 100.0);
+		f1 = new Flight("Airline", 10000232, "Canada", "France", d1,d2, 100.0);
+		f2 = new Flight("Airline", 11000232, "France", "Germany", d3,d4, 100.0);
+		f3 = new Flight("Airline", 10300232, "Germany", "Spain", d5,d6, 100.0);
 		
 		
 	}
 
 	@Test
 	public void test() {
-		FlightManager manager = new FlightManager();
+		FlightManager manager = FlightManager.getInstance();
 		manager.addFlight(f1);
 		manager.addFlight(f2);
 		manager.addFlight(f3);
-		for(String[] key: manager.Itineraries.keySet()){
+		for (String[] key: manager.itineraries.keySet()){
 			System.out.println(key[0] +" " +key[1] +" " + key[2]);
 			for(Itinerary i:manager.Itineraries.get(key)){
 				System.out.println("       "+i);
