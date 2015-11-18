@@ -139,7 +139,8 @@ public class FileDatabase implements Serializable {
 	}
 	
 	/**
-	 * Adds a flight from a given file. Takes a directory including the file name. 
+	 * Adds a flight from a given file. Takes a directory including the 
+	 * file name. 
 	 * File must be a csv file. Can be txt but must be separated with commas.  
 	 * 
 	 * @param dir  a string of the path to the csv file. 
