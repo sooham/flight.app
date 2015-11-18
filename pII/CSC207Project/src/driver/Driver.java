@@ -8,8 +8,6 @@ import backend.Itinerary;
 /** A Driver used for autotesting the project backend. */
 public class Driver {
 	
-	private static FileDatabase filedatabase;
-
 	/**
 	 * Uploads client information to the application from the file at the given
 	 * path.
@@ -21,7 +19,7 @@ public class Driver {
 	 *            (the ExpiryDate is stored in the format YYYY-MM-DD)
 	 */
 	public static void uploadClientInfo(String path) {
-		filedatabase.getInfoFromFile(path);
+		FileDatabase.getInfoFromFile(path);
 	}
 
 	/**
@@ -37,7 +35,7 @@ public class Driver {
 	 */
 	public static void uploadFlightInfo(String path) {
 		// TODO: complete this method body
-		filedatabase.addFlightFromFile(path);
+		FileDatabase.addFlightFromFile(path);
 	}
 
 	/**
@@ -51,7 +49,7 @@ public class Driver {
 	 *         (the ExpiryDate is stored in the format YYYY-MM-DD)
 	 */
 	public static String getClient(String email) {
-		 return filedatabase.getClients().getClient(email, "email").toString();
+		 return FileDatabase.getClients().getClient(email, "email").toString();
 	}
 
 	/**
@@ -72,7 +70,8 @@ public class Driver {
 	 */
 	public static String getFlights(String date, String origin, String destination) {
 		// TODO: complete this method body
-		return filedatabase.getFlightManger().getFlights(origin, destination,date).toString();
+		return FileDatabase.getFlightManger().getFlights(origin, 
+				destination,date).toString();
 	}
 
 	/**
@@ -99,7 +98,8 @@ public class Driver {
 	 */
 	public static String getItineraries(String date, String origin, String destination) {
 		// TODO: complete this method body
-		return filedatabase.getFlightManger().getItineraries(origin, destination, date).toString();
+		return FileDatabase.getFlightManger().getItineraries(origin, 
+				destination, date).toString();
 	}
 
 	/**
@@ -123,8 +123,9 @@ public class Driver {
 	 */
 	public static String getItinerariesSortedByCost(String date, String origin, String destination) {
 		// TODO: complete this method body
-		ArrayList<Itinerary> flights = filedatabase.getFlightManger().getItineraries(origin, destination, date);
-		filedatabase.getFlightManger().sortByPrice(flights);
+		ArrayList<Itinerary> flights = FileDatabase.getFlightManger().getItineraries(origin, 
+				destination, date);
+		FileDatabase.getFlightManger().sortByPrice(flights);
 		return flights.toString();
 	}
 
@@ -148,8 +149,9 @@ public class Driver {
 	 *         format HH:MM).
 	 */
 	public static String getItinerariesSortedByTime(String date, String origin, String destination) {
-		ArrayList<Itinerary> flights = filedatabase.getFlightManger().getItineraries(origin, destination, date);
-		filedatabase.getFlightManger().sortByDuration(flights);
+		ArrayList<Itinerary> flights = FileDatabase.getFlightManger().getItineraries(origin, 
+				destination, date);
+		FileDatabase.getFlightManger().sortByDuration(flights);
 		return flights.toString();
 	}
 }
