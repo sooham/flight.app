@@ -1,6 +1,9 @@
 package driver;
 
+import java.util.ArrayList;
+
 import backend.FileDatabase;
+import backend.Itinerary;
 
 /** A Driver used for autotesting the project backend. */
 public class Driver {
@@ -69,7 +72,7 @@ public class Driver {
 	 */
 	public static String getFlights(String date, String origin, String destination) {
 		// TODO: complete this method body
-		return filedatabase.getFlightManger().getFlight(origin, destination,date).toString();
+		return filedatabase.getFlightManger().getFlights(origin, destination,date).toString();
 	}
 
 	/**
@@ -120,7 +123,9 @@ public class Driver {
 	 */
 	public static String getItinerariesSortedByCost(String date, String origin, String destination) {
 		// TODO: complete this method body
-		return null;
+		ArrayList<Itinerary> flights = filedatabase.getFlightManger().getItineraries(origin, destination, date);
+		filedatabase.getFlightManger().sortByPrice(flights);
+		return flights.toString();
 	}
 
 	/**
@@ -143,7 +148,8 @@ public class Driver {
 	 *         format HH:MM).
 	 */
 	public static String getItinerariesSortedByTime(String date, String origin, String destination) {
-		// TODO: complete this method body
-		return null;
+		ArrayList<Itinerary> flights = filedatabase.getFlightManger().getItineraries(origin, destination, date);
+		filedatabase.getFlightManger().sortByDuration(flights);
+		return flights.toString();
 	}
 }
