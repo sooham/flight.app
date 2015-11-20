@@ -2,16 +2,16 @@
 package backend;
 
 import java.io.BufferedReader;
-import java.util.Date;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.ParseException;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * The FileDataBase class. This class stores all User, Flight and Itinerary 
@@ -29,6 +29,8 @@ public class FileDatabase implements Serializable {
 	private static FlightManager flightManager = FlightManager.getInstance();
 	private static SimpleDateFormat format = new SimpleDateFormat(
 												 	"yyyy-MM-dd HH:mm");
+	private static String flightManagerFile = "FlightManager.ser";
+	private static String clientManagerFile = "ClientManager.ser";
 
 	/**
 	 * Imports the files from the given path. If the files are not found will 
@@ -49,10 +51,10 @@ public class FileDatabase implements Serializable {
 	public static void migrateFiles(String dir) {
 		try {
 			FileOutputStream fileout = new FileOutputStream(
-					dir + "/ClientManager.ser"
+					dir + clientManagerFile
 			);
 			FileOutputStream fileout2 = new FileOutputStream(
-					dir + "/FlightManager.ser"
+					dir + flightManagerFile
 			);
 			ObjectOutputStream out = new ObjectOutputStream(fileout);
 			ObjectOutputStream out2 = new ObjectOutputStream(fileout2);
@@ -93,10 +95,10 @@ public class FileDatabase implements Serializable {
 	public static void importFiles(String dir){
 		try {
 			FileInputStream filein = new FileInputStream(
-					dir +"/ClientManager.ser"
+					dir + clientManagerFile
 					);
 			FileInputStream filein2 = new FileInputStream(
-					dir +"/FlightManager.ser"
+					dir + flightManagerFile
 					);
 			ObjectInputStream in = new ObjectInputStream(filein);
 			ObjectInputStream in2 = new ObjectInputStream(filein2);
@@ -121,14 +123,16 @@ public class FileDatabase implements Serializable {
 		FileReader in = null;
 		BufferedReader br = null;
 		String cvsSplitBy = ",";
-		
+		String line = null;
 		try{
 			in = new FileReader(dir);
 			br = new BufferedReader(in);
-			String[] values = br.readLine().split(cvsSplitBy);
-			User newUser = new User(values[0],values[1],values[2],
-					values[3],Integer.parseInt(values[4]),values[5]);
-			FileDatabase.clientManager.addClient(newUser);
+			while ((line = br.readLine()) != null){
+				String[] values = line.split(cvsSplitBy);
+				User newUser = new User(values[0],values[1],values[2],
+						values[3],Integer.parseInt(values[4]),values[5]);
+				FileDatabase.clientManager.addClient(newUser);
+			}
 		} catch (IOException e) {
 			System.out.println("The file was not found.");
 		} catch(IndexOutOfBoundsException e){
@@ -155,15 +159,18 @@ public class FileDatabase implements Serializable {
 		try{
 			in = new FileReader(dir);
 			br = new BufferedReader(in);
-			String[] values = br.readLine().split(cvsSplitBy);
-			//Creates the date objects from a string
-			Date departureTime = format.parse(values[3]);
-			Date arrivalTime = format.parse(values[4]);
-			//Creates a new flight object. 
-			Flight newFlight = new Flight(values[5], Long.parseLong(values[6]),
-					values[0], values[1], arrivalTime, departureTime,
-					Double.parseDouble(values[2]));
-			flightManager.addFlight(newFlight);
+			String line = null;
+			while ((line = br.readLine()) != null){
+				String[] values = line.split(cvsSplitBy);
+				//Creates the date objects from a string
+				Date departureTime = format.parse(values[1]);
+				Date arrivalTime = format.parse(values[2]);
+				//Creates a new flight object. 
+				Flight newFlight = new Flight(values[5], Long.parseLong(values[0]),
+						values[4], values[5], arrivalTime, departureTime,
+						Double.parseDouble(values[6]));
+				flightManager.addFlight(newFlight);
+			}
 		}catch (IOException e) {
 			System.out.println("The file was not found.");
 		}catch (ParseException e) {
