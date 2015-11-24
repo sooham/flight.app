@@ -268,5 +268,4 @@ public class User implements Serializable{
 	           + String.valueOf(creditCardNumber) + "," + 
 				format.format(expiryDate); 
 	}
-			
 }

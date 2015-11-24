@@ -1,13 +1,13 @@
 package backend;
 
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * A Flight. Every Flight has a number, airline name, departure arrival 
  * date and time, origin, destination, ticket price and travel time.
  * 
- * Flight objects will be persistent, hence they implement Serializable.
+ * <p>Flight objects will be persistent, hence they implement Serializable.
  * The natural ordering for Flights will be by Date, hence implements
  * Comparable.
  */
