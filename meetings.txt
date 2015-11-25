@@ -1,3 +1,5 @@
+Phase II
+___________________________________________________________________________
 Tuesday Nov 10, first Planning meeting:
     Notes:
         One person (Chris) missing from meeting due to vacation
@@ -68,3 +70,54 @@ Monday, Nov 16, fourth Status meeting
 		Badis:
 			Worked (ideas) with Angad for the FlightManager class
 
+Phase III
+___________________________________________________________________________
+Monday Nov 23, first Planning meeting:
+    Notes:
+        One person (Chris) missing from meeting due to part time job,
+        notified later nonetheless.
+
+    Accomplished in meeting:
+        Decided Activities for User Login and Flight / Itinerary Searching
+        will be completed for Phase IIIa (to demonstrate in interview).
+
+        Analysed major distinctions in Phase III requirements list compared
+        to phase II requirements list, listed each big change in a to-do
+         list.
+
+        Read over phase III handout and delegated responsibilites to members
+        before next meeting.
+
+    Problems found:
+        Our phase II implementation is incomplete, it is likely that
+        Sooham will have to complete the incomplete and faulty aspects
+        of Phase II before others can work.
+
+    Tasks for this week:
+        Sooham:
+            Finish all faulty methods, classes from Phase II.
+
+            Write updated CRC cards to reflect frontend Activities and
+            Backend changes in requirements file
+
+            Figure out how to join Android Studio and SVN seamlessly
+
+        Angad:
+            Get Android Studio Virtual Android Device working
+
+            Get Login Activity running
+
+            Work on backend to allow User login
+        Badis:
+            Leave Login backend to Angad
+
+            Implement Admin class by subclassing User
+
+            Implement Client class by subclassing User
+
+        Chris:
+            Update Flight and Itinerary classes to account
+            for seat numbering
+
+            Update FileDatabase CSV reading methods to account
+            for addition of seat numbering
