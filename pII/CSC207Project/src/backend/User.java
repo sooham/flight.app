@@ -1,10 +1,10 @@
 package backend;
 
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.text.ParseException;
-import java.io.Serializable;
-import java.text.SimpleDateFormat;
 
 /**
  * A User object. A User is a backend representation for both Client and 
@@ -22,6 +22,8 @@ public class User implements Serializable{
 	private String firstName;
 
 	private String email;
+	private String password;
+
 	private String address;
 	private int creditCardNumber;
 	private Date expiryDate;
@@ -126,6 +128,15 @@ public class User implements Serializable{
 		return email;
 	}
 	
+	/**
+	 * Getter for the User's Password
+	 * 
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
 	/**
 	 * Setter for the Client's email address.
 	 * 
