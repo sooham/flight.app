@@ -22,7 +22,7 @@ public class Itinerary extends Flight implements Serializable {
 	private static final long SIX_HOURS_TO_MILLISECONDS = (long) 2.16e+7;
 
 	private static final long serialVersionUID = 7985656353564622420L;
-	private static long idCount = 0; // the ID to be assigned next Itinerary
+	private static long idCount = 0l; // the ID to be assigned next Itinerary
 
 	private TreeSet<Flight> flights;	// the Set of flights in sequence for
 										// this Itinerary
@@ -83,8 +83,9 @@ public class Itinerary extends Flight implements Serializable {
 	
 	/**
 	 * Returns if this Itinerary is traversable. An Itinerary is traversable
-	 * if and only if all flights in the Itinerary form a non-cyclic path in
-	 * time and cities AND all layovers are less than 6 hours long.
+	 * if and only if all flights in the Itinerary form a continuous, 
+	 * non-cyclic path in time and cities AND all 
+	 * layovers are less than 6 hours long.
 	 * 
 	 * @return a boolean indicating if the Flight in flights are traversable.
 	 */
@@ -165,5 +166,28 @@ public class Itinerary extends Flight implements Serializable {
 		return "Itinerary " + getNumber() + " from " + getOrigin() + " to "
 				+ getDestination() + " (" + getDepartureDateTime() + " --- "
 				+ getArrivalDateTime() + ")";
+	}
+	
+	/**
+	 * Compares this Itinerary and another Object. Returns true iff other object
+	 * is a Itinerary and has identical fields.
+	 * 
+	 * @param object  an Object to compare.
+	 * @return true iff object is a Flight and has identical fields.
+	 */
+	@Override
+	public boolean equals(Object object) {
+		if (object instanceof Itinerary) {
+			Itinerary i = (Itinerary) object;
+			return getNumber() == i.getNumber() &&
+					getAirline() == i.getAirline() && 
+					getOrigin() == i.getOrigin() &&
+					getDestination() == i.getDestination() &&
+					getDepartureDateTime() == i.getDepartureDateTime() &&
+					getArrivalDateTime() == i.getArrivalDateTime() &&
+					getPrice() == i.getPrice() &&
+					flights == i.getFlights();
+		}
+		return false;
 	}
 }
