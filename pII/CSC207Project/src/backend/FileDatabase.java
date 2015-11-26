@@ -168,7 +168,7 @@ public class FileDatabase implements Serializable {
 				//Creates a new flight object. 
 				Flight newFlight = new Flight(values[5], Long.parseLong(values[0]),
 						values[4], values[5], arrivalTime, departureTime,
-						Double.parseDouble(values[6]));
+						Double.parseDouble(values[6]), Integer.parseInt(values[7]));
 				flightManager.addFlight(newFlight);
 			}
 		}catch (IOException e) {
