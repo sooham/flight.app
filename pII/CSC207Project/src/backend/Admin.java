@@ -15,5 +15,28 @@ public class Admin extends User implements Serializable {
 		super(LastName, firstName, email, address, creditCardNumber,
 				expiryDate);
 	}
+	
+	public String viewClientInfo(User theClient) throws MissingUserException,
+	InvalidUserException {
+		String result = null;
+		if (theClient == null) {
+			throw new MissingUserException("This user does not exist.");
+		}
+		else if (theClient instanceof Admin) {
+			throw new InvalidUserException("Cannot view another admin's info.");
+		}
+		else {
+			result = 
+					String.format(theClient.getLastName(), ", ",
+					theClient.getFirstName(), ", ",
+					theClient.getEmail(), ", ",
+					theClient.getAddress(), ", ",
+					String.valueOf(theClient.getCreditCardNumber()), ", ",
+					String.valueOf(theClient.getExpiryDate()));
+		}
+		return result;
+		
+		}
 
 }
+	
