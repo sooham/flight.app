@@ -1,7 +1,7 @@
 package backend;
 
-import java.util.Comparator;
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * A comparator for comparing Flights and Itinerary by price.
