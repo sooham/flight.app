@@ -1,6 +1,7 @@
 package backend;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Client extends User implements Serializable {
 	
@@ -11,9 +12,9 @@ public class Client extends User implements Serializable {
 
 	public Client(String LastName,
 			String firstName, String email, String address,
-			int creditCardNumber, String expiryDate) {
+			int creditCardNumber, Date expiryDate, String password) {
 		super(LastName, firstName, email, address, creditCardNumber,
-				expiryDate);
+				expiryDate, password);
 	}
 	
 	@Override
