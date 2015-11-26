@@ -2,7 +2,10 @@
 package backend;
 
 import java.io.BufferedReader;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,71 +14,81 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
- * The FileDataBase class. This class stores all User, Flight and Itinerary 
- * objects for the app. Clients will be stored in a ClientManager, while the
- * Flights and Itinerary will be stored in a FlightManager.
+ * The FileDataBase class. This class is a singleton which stores all 
+ * User, Flight and Itinerary objects for the backend of the FlightApp 
+ * and deals with autosaving the app upon detecting changes.
  * 
- * <p>This class has method for reading CSV files, updating the backend
- * and Serializing runime status of the app into persistent .ser files.
+ * <p>Client and Admin will be stored in a UserManager, while the
+ * Flights and Itinerary will be stored in a FlightManager. This choice is
+ * made because Client, Admin subclass User and Flight and Itinerary subclass
+ * Flight.
  */
 
 public class FileDatabase implements Serializable {
 
 	private static final long serialVersionUID = -5414755056678568378L;
-	private static ClientManager clientManager = new ClientManager();
-	private static FlightManager flightManager = FlightManager.getInstance();
-	private static SimpleDateFormat format = new SimpleDateFormat(
+
+	// the managers
+	private UserManager userManager = UserManager.getInstance();
+	private FlightManager flightManager = FlightManager.getInstance();
+
+	// date time formats
+	private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat(
 												 	"yyyy-MM-dd HH:mm");
-	private static String flightManagerFile = "FlightManager.ser";
-	private static String clientManagerFile = "ClientManager.ser";
+	private SimpleDateFormat dateFormatter = new SimpleDateFormat(
+												 	"yyyy-MM-dd");
+
+	// the singleton instance
+	private static FileDatabase singletonInstance;
+	// name of serialized files
+	private String flightManagerFile = "FlightManager.ser";			
+	private String userManagerFile = "ClientManager.ser";			
 
 	/**
-	 * Imports the files from the given path. If the files are not found will 
-	 * create new blank Manager class in the given directory. 
+	 * Constructs this FileDataBase. Deserializes the manager .ser files 
+	 * from the given path, if they exist and loads them to the FlightApp,
+	 * otherwise this method will create new blank Manager serialized files
+	 * in the given directory. 
 	 * 
-	 * @param dir  the path of the file
+	 * @param dir  the path to the directory contain or to contain app
+	 * persistent storage.
 	 */
-	public FileDatabase(String dir) {
-		importFiles(dir);
+	private FileDatabase(String dir) {
+		deserializeManagers(dir);
 	}
 
 	/**
-	 * Takes the location of a directory and saves the ClientManger and
-	 * ItineraryManger objects.
+	 * Creates the singleton instance of this class. If the singleton has
+	 * already been instantiated, this method does nothing. 
 	 * 
-	 * @param dir  the path of a directory in the system.
+	 * @param dir  the path to the directory contain or to contain app
+	 * persistent storage.
 	 */
-	public static void migrateFiles(String dir) {
-		try {
-			FileOutputStream fileout = new FileOutputStream(
-					dir + clientManagerFile
-			);
-			FileOutputStream fileout2 = new FileOutputStream(
-					dir + flightManagerFile
-			);
-			ObjectOutputStream out = new ObjectOutputStream(fileout);
-			ObjectOutputStream out2 = new ObjectOutputStream(fileout2);
-			out.writeObject(clientManager);
-			out2.writeObject(flightManager);
-			out2.close();
-			out.close();
-			fileout.close();
-			fileout2.close();
-		} catch (IOException i) {
-			i.printStackTrace();
+	public static void createInstance(String dir) {
+		if (singletonInstance == null) {
+			singletonInstance = new FileDatabase(dir);
 		}
+	}
+
+	/**
+	 * Returns the singleton instance of this class. If the singleton has
+	 * not been created before  this method returns null.
+	 * 
+	 * @return the singleton FlightManager
+	 */
+	public static FileDatabase getInstance() {
+		return singletonInstance;
 	}
 	
 	/**
-	 * Returns the ClientManager for this FileDatabase.
+	 * Returns the UserManager for this FileDatabase.
 	 * 
 	 * @return the clientManger
 	 */
-	public static ClientManager getClients() {
-		return clientManager;
+	public UserManager getUserManager() {
+		return userManager;
 	}
 
 	/**
@@ -83,106 +96,178 @@ public class FileDatabase implements Serializable {
 	 * 
 	 * @return the flightManager
 	 */
-	public static FlightManager getFlightManger() {
+	public FlightManager getFlightManger() {
 		return flightManager;
 	}
-	
+
 	/**
-	 * Imports the manager classes from a specific directory passed. 
+	 * Imports the manager classes from the given directory path. If Manager
+	 * serialized files do not exist, the method will create empty versions
+	 * of those files.
 	 * 
-	 * @param dir  the path where the files are located. 
+	 * @param dir  the path to directory where serialized files are stored.
 	 */
-	public static void importFiles(String dir){
-		try {
-			FileInputStream filein = new FileInputStream(
-					dir + clientManagerFile
-					);
-			FileInputStream filein2 = new FileInputStream(
-					dir + flightManagerFile
-					);
-			ObjectInputStream in = new ObjectInputStream(filein);
-			ObjectInputStream in2 = new ObjectInputStream(filein2);
-			clientManager = (ClientManager) in.readObject();
-			flightManager = (FlightManager) in.readObject();
-			filein.close();
-		} catch (IOException i){
+	public void deserializeManagers(String dir) {
+		boolean serializedFilesExist = true;
+
+		try (
+			FileInputStream userFile = new 
+				FileInputStream(dir + userManagerFile);
+			BufferedInputStream buffer = new BufferedInputStream(userFile);
+			ObjectInputStream userStream = new ObjectInputStream(buffer);
+
+			FileInputStream flightFile = new 
+					FileInputStream(dir + flightManagerFile);
+			BufferedInputStream buffer2 = new BufferedInputStream(flightFile);
+			ObjectInputStream flightStream = new ObjectInputStream(buffer2);
+			) {
+			userManager = (UserManager) userStream.readObject();
+			flightManager = (FlightManager) flightStream.readObject();
+		} catch (FileNotFoundException e) {
+			serializedFilesExist = false;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e){
+			e.printStackTrace();
+		}
+		
+		if (!serializedFilesExist) {
 			migrateFiles(dir);
-		} catch(ClassNotFoundException c){
-			c.printStackTrace();
-			return;
 		}
 	}
 	
+	
 	/**
-	 * Adds a user from a given file. Takes a directory including the file name. 
-	 * File must be a csv file. Can be txt but must be separated with commas.  
+	 * Takes the path of a directory and saves the serialized ClientManger and
+	 * ItineraryManger objects.
 	 * 
-	 * @param dir  a string of the path to the csv file. 
+	 * @param dir  the path of a directory in the system.
 	 */
-	public static void getInfoFromFile(String dir){
-		FileReader in = null;
-		BufferedReader br = null;
-		String cvsSplitBy = ",";
-		String line = null;
-		try{
-			in = new FileReader(dir);
-			br = new BufferedReader(in);
-			while ((line = br.readLine()) != null){
-				String[] values = line.split(cvsSplitBy);
-				User newUser = new User(values[0],values[1],values[2],
-						values[3],Integer.parseInt(values[4]),values[5]);
-				FileDatabase.clientManager.addClient(newUser);
+	public void migrateFiles(String dir) {
+		try (
+			FileOutputStream userFile = new FileOutputStream(
+					dir + userManagerFile);
+			BufferedOutputStream buffer = new BufferedOutputStream(userFile);
+			ObjectOutputStream userStream = new ObjectOutputStream(buffer);
+			
+			FileOutputStream flightFile = new FileOutputStream(
+					dir + flightManagerFile);
+			BufferedOutputStream buffer2 = new BufferedOutputStream(flightFile);
+			ObjectOutputStream flightStream = new ObjectOutputStream(buffer2);
+			) {
+			userStream.writeObject(userManager);
+			flightStream.writeObject(flightManager);
+		} catch( Exception e) {
+			// Could be FileNotFound or IOException
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Adds a User to UserManager from a given CSV file. 
+	 * 
+	 * <p>The CSV file has to follow the format 
+	 * "LastName,FirstNames,Email,Address,CreditCardNumber,ExpiryDate" per
+	 * line for every User to instantiate.
+	 * 
+	 * @param dir  the path to the CSV file. 
+	 */
+	public void addUserFromFile(String dir) {
+		String comma = ",";
+
+		try (FileReader in = new FileReader(dir);
+			 BufferedReader br = new BufferedReader(in)
+			) {
+			
+			// go through the CSV file line by line
+			String line;
+			while((line = br.readLine()) != null) {
+				// create a new User
+				String[] values = line.split(comma);
+				User newUser = new User(values[0],
+										values[1],
+										values[2],
+										values[3],
+										Integer.parseInt(values[4]), 
+										dateFormatter.parse(values[5]),
+										""						// TODO: This is supposed to be a passoword, please check the passwords.txt
+										);
+				userManager.addUser(newUser);
 			}
-		} catch (IOException e) {
-			System.out.println("The file was not found.");
+		} catch(FileNotFoundException e) {
+			System.out.println("The file " + dir + 
+			" was not found, or cannot be read.");
+			e.printStackTrace();
+		} catch(IOException e) {
+			e.printStackTrace();
 		} catch(IndexOutOfBoundsException e){
 			System.out.println(
-				"The file does not have enough arguements to make a client."
+				"The CSV file given at " + dir + " is not formatted correctly."
 			);
+			e.printStackTrace();
+		} catch(ParseException e) {
+			System.out.println(
+				"The CSV file given at " + dir + " is not formatted correctly."
+			);
+			e.printStackTrace();
 		}
 	}
 	
 	/**
-	 * Adds a flight from a given file. Takes a directory including the 
-	 * file name. 
-	 * File must be a csv file. Can be txt but must be separated with commas.  
+	 * Adds a Flight to FlightManager from a given CSV file. 
 	 * 
-	 * @param dir  a string of the path to the csv file. 
-	 * @throws InvalidFlightException 
-	 * @throws NumberFormatException 
+	 * <p>The CSV file has to follow the format 
+	 * "Number,DepartureDateTime,ArrivalDateTime,Airline,Origin,Destination,
+	 * Price,NumSeats"
+	 *  per line for every Flight to instantiate.
+	 * 
+	 * @param dir  the path to the CSV file. 
 	 */
-	public static void addFlightFromFile(String dir){
-		FileReader in = null;
-		BufferedReader br = null;
-		String cvsSplitBy = ",";
-		
-		try{
-			in = new FileReader(dir);
-			br = new BufferedReader(in);
-			String line = null;
-			while ((line = br.readLine()) != null){
-				String[] values = line.split(cvsSplitBy);
-				//Creates the date objects from a string
-				Date departureTime = format.parse(values[1]);
-				Date arrivalTime = format.parse(values[2]);
-				//Creates a new flight object. 
-				Flight newFlight = new Flight(values[5], Long.parseLong(values[0]),
-						values[4], values[5], arrivalTime, departureTime,
-						Double.parseDouble(values[6]), Integer.parseInt(values[7]));
-				flightManager.addFlight(newFlight);
-			}
-		}catch (IOException e) {
-			System.out.println("The file was not found.");
-		}catch (ParseException e) {
-		    System.out.println(
-		    		"The date is not in the right format: yyyy-MM-dd HH:mm"
-		    		);
-		}catch (IndexOutOfBoundsException e) {
-			System.out.println("Missing flight data.");
-		}catch (InvalidFlightException e){
+	public void addFlightFromFile(String dir) {
+		String comma = ",";
+
+		try (FileReader in = new FileReader(dir);
+			 BufferedReader br = new BufferedReader(in)
+			) {
 			
-		}catch (NumberFormatException e) {
-			System.out.println("The flight number is not in the right format.");	
+			// go through the CSV file line by line
+			String line;
+			while((line = br.readLine()) != null) {
+				//Create a new Flight object. 
+				String[] values = line.split(comma);
+				
+				try {
+				Flight newFlight = new Flight(
+											values[3],
+											Long.parseLong(values[0]),
+											values[4],
+											values[5],
+											dateTimeFormatter.parse(values[1]),
+											dateTimeFormatter.parse(values[2]),
+											Double.parseDouble(values[6]),
+											Integer.parseInt(values[7])
+											);
+				flightManager.addFlight(newFlight);
+				} catch(InvalidFlightException e) {
+					System.out.println("A Flight in the CSV was invalid.");
+				}
+			}
+		} catch(FileNotFoundException e) {
+			System.out.println("The file " + dir + 
+			" was not found, or cannot be read.");
+			e.printStackTrace();
+		} catch(IOException e) {
+			e.printStackTrace();
+		} catch(IndexOutOfBoundsException e){
+			System.out.println(
+				"The CSV file given at " + dir + " is not formatted correctly."
+			);
+			e.printStackTrace();
+		} catch(ParseException e) {
+			System.out.println(
+				"The CSV file given at " + dir + " is not formatted correctly."
+			);
+			e.printStackTrace();
 		}
 	}
 }
