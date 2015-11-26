@@ -1,9 +1,9 @@
 package backend;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.TreeSet;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeSet;
 
 /**
  * A Flight Itinerary. An Itinerary is a set of Flights for which
@@ -26,9 +26,6 @@ public class Itinerary extends Flight implements Serializable {
 
 	private TreeSet<Flight> flights;	// the Set of flights in sequence for
 	                                    // this Itinerary
-	private ArrayList<Integer> totalNumSeats = new ArrayList<Integer>(); 
-	// the ArrayList of number of seats for each flight in the Itinerary
-										
 	
 	/**
 	 * Constructs an Itinerary from a TreeSet of Flight.
@@ -63,9 +60,11 @@ public class Itinerary extends Flight implements Serializable {
 		setPrice(totalItineraryPrice);
 		
 		// Set the number of seats
-		for (Flight f: flights){
-			totalNumSeats.add((Integer) f.getNumSeats());
+		int totalNumSeats = 0;
+		for (Flight f: flights) {
+			totalNumSeats +=  f.getNumSeats();
 		}
+		setNumSeats(totalNumSeats);
 		
 		this.flights = flights;
 		
@@ -194,7 +193,7 @@ public class Itinerary extends Flight implements Serializable {
 					getDepartureDateTime() == i.getDepartureDateTime() &&
 					getArrivalDateTime() == i.getArrivalDateTime() &&
 					getPrice() == i.getPrice() &&
-					totalNumSeats == i.totalNumSeats &&
+					getNumSeats() == i.getNumSeats() &&
 					flights == i.getFlights();
 		}
 		return false;
