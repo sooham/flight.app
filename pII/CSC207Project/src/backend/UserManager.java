@@ -127,13 +127,14 @@ public class UserManager implements Serializable{
 	 * @param address  the billing address for the user.
 	 * @param creditCardNum  the credit card number for the user.
 	 * @param expiryDate  the expiry-date of the credit card number. 
+	 * @param password  the password for the user.
 	 * @return the index representing the user in this UserManager. If User
 	 * does not exist return -1. 
 	 */
 	public int getUserIndex(String lastName, String firstName, String email,
-			String address, int creditCardNum, Date expiryDate){
+			String address, int creditCardNum, Date expiryDate, String password){
 		User user = new User(
-			lastName, firstName, email, address, creditCardNum, expiryDate
+			lastName, firstName, email, address, creditCardNum, expiryDate, password
 			);
 		return getUserIndex(user);	
 	}
