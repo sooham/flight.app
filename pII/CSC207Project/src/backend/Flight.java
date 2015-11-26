@@ -1,7 +1,6 @@
 package backend;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -36,6 +35,9 @@ public class Flight implements Comparable<Flight>, Serializable {
 	 * @param arrivalDateTime  the Date this Flight arrives.
 	 * @param price  the ticket price for this Flight.
 	 * @param numSeats  the number of seats for this Flight.
+	 * 
+	 * @throws InvalidFlightException if the timing of the Flight is incorrect
+	 * or the Flight has the same origin and destination.
 	 */
 	public Flight(String airline, long number, String origin,
 	String destination, Date departureDateTime, Date arrivalDateTime,
