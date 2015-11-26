@@ -16,7 +16,13 @@ public class Client extends User implements Serializable {
 				expiryDate);
 	}
 	
-
+	@Override
+	public void addFlightFromFile(String dir) throws InvalidUserException{
+		throw new InvalidUserException("Access denied, User must be Admin to" +
+	" perform this action.");
+	}
+	
+	
 	
 
 }

@@ -78,7 +78,7 @@ public class User implements Serializable{
 	 * 
 	 * @param dir the path to flight csv file. 
 	 */
-	public void addFlightFromFile(String dir){
+	public void addFlightFromFile(String dir) throws InvalidUserException{
 		FileDatabase.addFlightFromFile(dir);
 	}
 
