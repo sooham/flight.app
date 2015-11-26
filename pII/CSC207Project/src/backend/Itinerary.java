@@ -25,7 +25,10 @@ public class Itinerary extends Flight implements Serializable {
 	private static long idCount = 0l; // the ID to be assigned next Itinerary
 
 	private TreeSet<Flight> flights;	// the Set of flights in sequence for
-										// this Itinerary
+	                                    // this Itinerary
+	private ArrayList<Integer> totalNumSeats = new ArrayList<Integer>(); 
+	// the ArrayList of number of seats for each flight in the Itinerary
+										
 	
 	/**
 	 * Constructs an Itinerary from a TreeSet of Flight.
@@ -50,7 +53,7 @@ public class Itinerary extends Flight implements Serializable {
 			  flights.last().getDestination(),
 			  flights.first().getDepartureDateTime(),
 			  flights.last().getArrivalDateTime(),
-			  0.0);
+			  0.0, 0);
 			  
 		// Set the price of this itinerary
 		double totalItineraryPrice = 0.0; 
@@ -58,6 +61,11 @@ public class Itinerary extends Flight implements Serializable {
 			totalItineraryPrice += f.getPrice();
 		}
 		setPrice(totalItineraryPrice);
+		
+		// Set the number of seats
+		for (Flight f: flights){
+			totalNumSeats.add((Integer) f.getNumSeats());
+		}
 		
 		this.flights = flights;
 		
@@ -186,6 +194,7 @@ public class Itinerary extends Flight implements Serializable {
 					getDepartureDateTime() == i.getDepartureDateTime() &&
 					getArrivalDateTime() == i.getArrivalDateTime() &&
 					getPrice() == i.getPrice() &&
+					totalNumSeats == i.totalNumSeats &&
 					flights == i.getFlights();
 		}
 		return false;

@@ -1,6 +1,7 @@
 package backend;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -22,6 +23,7 @@ public class Flight implements Comparable<Flight>, Serializable {
 	private Date departureDateTime;
 	private Date arrivalDateTime; 
 	private double price;
+	private int numSeats;
 
 	/**
 	 * Generates a new Flight object.
@@ -33,10 +35,11 @@ public class Flight implements Comparable<Flight>, Serializable {
 	 * @param departureDateTime  the Date this Flight departs.
 	 * @param arrivalDateTime  the Date this Flight arrives.
 	 * @param price  the ticket price for this Flight.
+	 * @param numSeats  the number of seats for this Flight.
 	 */
 	public Flight(String airline, long number, String origin,
 	String destination, Date departureDateTime, Date arrivalDateTime,
-	double price) throws InvalidFlightException {
+	double price, int numSeats) throws InvalidFlightException {
 		if (((arrivalDateTime.getTime() - departureDateTime.getTime()) < 0) ||
 			 origin.equals(destination)) {
 			throw new InvalidFlightException(
@@ -50,6 +53,7 @@ public class Flight implements Comparable<Flight>, Serializable {
 		this.departureDateTime = departureDateTime;
 		this.arrivalDateTime = arrivalDateTime;
 		this.price = price;
+		this.numSeats = numSeats;
 	}
 
 	/**
@@ -123,6 +127,24 @@ public class Flight implements Comparable<Flight>, Serializable {
 	public void setPrice(double newPrice) {
 		price = newPrice;
 	}
+	
+	/**
+	 * Returns the number of seats for this Flight.
+	 * 
+	 * @return the number of seats 
+	 */
+	public int getNumSeats() {
+		return numSeats;
+	}
+
+	/**
+	 * Sets the number of seats for this Flight
+	 * 
+	 * @param numSeats  the new number of seats of this Flight
+	 */
+	public void setNumSeats(int numSeats) {
+		this.numSeats = numSeats;
+	}
 
 	/**
 	 * Returns an integer that shows relative departure time (less, equals
@@ -154,7 +176,8 @@ public class Flight implements Comparable<Flight>, Serializable {
 					destination.equals(f.destination) &&
 					departureDateTime.equals(f.departureDateTime) &&
 					arrivalDateTime.equals(f.arrivalDateTime) &&
-					price == f.price;
+					price == f.price &&
+					numSeats == f.numSeats;
 		}
 		return false;
 	}
