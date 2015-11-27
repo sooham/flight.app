@@ -6,91 +6,53 @@ import java.util.Date;
 public class Client extends User implements Serializable {
 	
 	/**
+	 * A Client object. Every Client has a first name, last name, email,
+	 * address, credit card number and its related expiry date. 
+	 * The expiry date is in the format 'YYYY-MM-DD'
 	 * 
+	 * <p>A Client can search Flight and Itinerary, book Itineraries,
+	 * show results sorted by price or total travel time, view and edit its
+	 * own information.
 	 */
 	private static final long serialVersionUID = 7643440842230713877L;
 
-	public Client(String LastName,
-			String firstName, String email, String address,
-			int creditCardNumber, Date expiryDate, String password) {
+	/**
+	 * Creates a new Client instance with the given fields. Takes a last name, 
+	 * first name, email, address, credit card number, its expiry date and
+	 * password and creates the corresponding Client.
+	 *  
+	 * @param lastName  this client's last name. 
+	 * @param firstName  this client's first name. 
+	 * @param email  this client's email. 
+	 * @param address  this client's address. 
+	 * @param creditCardNumber  this client's credit card number. 
+	 * @param expiryDate  a Date indicating this client's credit card 
+	 * 															expiry date.
+	 * @param password  the password for this client.
+	 */
+	public Client(String LastName, String firstName, String email, 
+	String address, int creditCardNumber, Date expiryDate, String password) {
 		super(LastName, firstName, email, address, creditCardNumber,
 				expiryDate, password);
 	}
 	
 	/**
-	 * This method is unavailable to clients and is meant to be Admin only.
+	 * Creates a new Client instance with the given fields. Takes a last name, 
+	 * first name, email, address, credit card number, its expiry date and 
+	 * creates the corresponding Client.
+	 *  
+	 * @param lastName  this client's last name. 
+	 * @param firstName  this client's first name. 
+	 * @param email  this client's email. 
+	 * @param address  this client's address. 
+	 * @param creditCardNumber  this client's credit card number. 
+	 * @param expiryDate  a Date indicating this client's credit card 
+	 * 															expiry date.
+	 * @param password  the password for this client.
 	 */
-	
-	@Override
-	public void addFlightFromFile(String dir) {}
-	
-	/**
-	 * This method is unavailable to clients and is meant to be Admin only.
-	 */
-	
-	@Override
-	public void addUserFromFile(String dir) {}
-	
-	/**
-	 * Allows the client to view all of his personal and billing information.
-	 * @return Personal and billing information (String)
-	 */
-	
-	public String viewInfo() {
-		return String.format(this.getLastName(), ", ",
-				this.getFirstName(), ", ",
-				this.getEmail(), ", ",
-				this.getAddress(), ", ",
-				String.valueOf(this.getCreditCardNumber()), ", ",
-				String.valueOf(this.getExpiryDate()));
+	public Client(String LastName, String firstName, String email, 
+	String address, int creditCardNumber, Date expiryDate) {
+		super(LastName, firstName, email, address, creditCardNumber,
+				expiryDate);
 	}
-	
-	/**
-	 * Allows the client to edit his personal and billing info
-	 * @param index The information to edit, going from 0 to 6,
-	 * it follows the constructor order, last one being the password
-	 * @param o what will the information be set, must be of the same type
-	 */
-	
-	public void editInfo(int index, Object o) {
-		if (!(index > 6) && !(index < 0)) {
-			if (index == 0) {
-				if (o.getClass() == this.getLastName().getClass()) {
-					this.setLastName((String) o);
-				}
-			}
-			else if (index == 1) {
-				if (o.getClass() == this.getFirstName().getClass()) {
-					this.setFirstName((String) o);
-				}
-			}
-			else if (index == 2) {
-				if (o.getClass() == this.getEmail().getClass()) {
-					this.setEmail((String) o);
-				}
-			}
-			else if (index == 3) {
-				if (o.getClass() == this.getAddress().getClass()) {
-					this.setAddress((String) o);
-				}
-			}
-			else if (index == 4) {
-				if (o instanceof Integer) {
-					this.setCreditCardNumber((int) o);
-				}
-			}
-			else if (index == 5) {
-				if (o.getClass() == this.getExpiryDate().getClass()) {
-					this.setExpiryDate((Date) o);
-				}
-			}
-			else if (index == 6) {
-				if (o.getClass() == this.getPassword().getClass()) {
-					this.setPassword((String) o); //Add Password setter for User
-				}
-			}
-		}
-	}
-	
-
 }
