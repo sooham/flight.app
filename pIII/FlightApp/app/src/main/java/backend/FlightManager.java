@@ -69,7 +69,9 @@ public class FlightManager implements Serializable{
      *
      * @param newFlight  the flight to add
      */
+
     public void addFlight(Flight newFlight) {
+        /*
         // Add to the Hashmap of Flight
         // Check if key is in Hashmap and create if necessary
         String [] key = {
@@ -97,6 +99,7 @@ public class FlightManager implements Serializable{
         //			create a new itinerary and add
 
         addtoItineraries(newFlight);
+        */
     }
 
     /**
@@ -104,6 +107,7 @@ public class FlightManager implements Serializable{
      * @param f
      */
     private void addtoItineraries(Flight f) {
+        /*
         // check if the flight f is continuous to any key in HashMap of
         // itineraries
 
@@ -150,6 +154,7 @@ public class FlightManager implements Serializable{
         // finally take all the key value pairs in addPairs and put them
         // into Hashmap of itineraries
         itineraries.putAll(addPairs);
+        */
     }
 
     /**
