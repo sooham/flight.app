@@ -302,7 +302,8 @@ public class Flight implements Comparable<Flight>, Serializable {
 					departureDateTime.equals(f.departureDateTime) &&
 					arrivalDateTime.equals(f.arrivalDateTime) &&
 					price == f.price &&
-					numSeats == f.numSeats;
+					numSeats == f.numSeats &&
+					numEmptySeats == f.numEmptySeats;
 		}
 		return false;
 	}
