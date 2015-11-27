@@ -22,7 +22,8 @@ public class Flight implements Comparable<Flight>, Serializable {
 	private Date departureDateTime;
 	private Date arrivalDateTime; 
 	private double price;
-	private int numSeats;
+	private int numSeats;		// the total number of seats in the Flight
+	private int numEmptySeats;		// the number of empty seats in the Flight
 
 	/**
 	 * Generates a new Flight object.
@@ -56,6 +57,7 @@ public class Flight implements Comparable<Flight>, Serializable {
 		this.arrivalDateTime = arrivalDateTime;
 		this.price = price;
 		this.numSeats = numSeats;
+		this.numEmptySeats = numSeats;
 	}
 
 	/**
@@ -68,12 +70,30 @@ public class Flight implements Comparable<Flight>, Serializable {
 	}
 
 	/**
+	 * Sets this flight's airline.
+	 * 
+	 * @param airline  the new airline
+	 */
+	public void setAirline(String airline) {
+		this.airline = airline;
+	}
+
+	/**
 	 * Returns this flight's unique number.
 	 * 
 	 * @return the flightNumber
 	 */
 	public long getNumber() {
 		return number;
+	}
+
+	/**
+	 * Sets this flight's number.
+	 * 
+	 * @param number  the new number
+	 */
+	public void setNumber(long number) {
+		this.number = number;
 	}
 
 	/**
@@ -86,12 +106,29 @@ public class Flight implements Comparable<Flight>, Serializable {
 	}
 
 	/**
+	 * Sets the origin of this Flight.
+	 * @param origin  the origin to set
+	 */
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
+
+	/**
 	 * Returns this flight's destination city.
 	 * 
 	 * @return the destination city
 	 */
 	public String getDestination() {
 		return destination;
+	}
+
+	/**
+	 * Sets the destination of this Flight.
+	 * 
+	 * @param destination  the destination to set
+	 */
+	public void setDestination(String destination) {
+		this.destination = destination;
 	}
 
 	/**
@@ -104,12 +141,30 @@ public class Flight implements Comparable<Flight>, Serializable {
 	}
 
 	/**
+	 * Set the departure Date and time for this Flight.
+	 * 
+	 * @param departureDateTime  the departureDateTime to set
+	 */
+	public void setDepartureDateTime(Date departureDateTime) {
+		this.departureDateTime = departureDateTime;
+	}
+
+	/**
 	 * Returns this flight's arrival date and time with respect to UTC.
 	 * 
 	 * @return the arrivalDateTime
 	 */
 	public Date getArrivalDateTime() {
 		return arrivalDateTime;
+	}
+
+	/**
+	 * Set the arrival Date and time for this Flight.
+	 * 
+	 * @param arrivalDateTime  the arrivalDateTime to set
+	 */
+	public void setArrivalDateTime(Date arrivalDateTime) {
+		this.arrivalDateTime = arrivalDateTime;
 	}
 
 	/**
@@ -124,10 +179,10 @@ public class Flight implements Comparable<Flight>, Serializable {
 	/**
 	 * Sets the price of this Flight
 	 * 
-	 * @param newPrice  the new price of this Flight
+	 * @param price  the new price of this Flight
 	 */
-	public void setPrice(double newPrice) {
-		price = newPrice;
+	public void setPrice(double price) {
+		price = price;
 	}
 	
 	/**
@@ -146,6 +201,24 @@ public class Flight implements Comparable<Flight>, Serializable {
 	 */
 	public void setNumSeats(int numSeats) {
 		this.numSeats = numSeats;
+	}
+
+	/**
+	 * Returns the number of empty seats for this Flight.
+	 * 
+	 * @return the number of empty seats 
+	 */
+	public int getNumEmptySeats() {
+		return numEmptySeats;
+	}
+
+	/**
+	 * Sets the number of empty seats for this Flight
+	 * 
+	 * @param numEmptySeats  the new number of empty seats of this Flight
+	 */
+	public void setNumEmptySeats(int numEmptySeats) {
+		this.numEmptySeats = numEmptySeats;
 	}
 
 	/**
