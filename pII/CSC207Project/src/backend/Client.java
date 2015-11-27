@@ -30,9 +30,9 @@ public class Client extends User implements Serializable {
 	 * 															expiry date.
 	 * @param password  the password for this client.
 	 */
-	public Client(String LastName, String firstName, String email, 
+	public Client(String lastName, String firstName, String email, 
 	String address, int creditCardNumber, Date expiryDate, String password) {
-		super(LastName, firstName, email, address, creditCardNumber,
+		super(lastName, firstName, email, address, creditCardNumber,
 				expiryDate, password);
 	}
 	
@@ -50,9 +50,9 @@ public class Client extends User implements Serializable {
 	 * 															expiry date.
 	 * @param password  the password for this client.
 	 */
-	public Client(String LastName, String firstName, String email, 
+	public Client(String lastName, String firstName, String email, 
 	String address, int creditCardNumber, Date expiryDate) {
-		super(LastName, firstName, email, address, creditCardNumber,
+		super(lastName, firstName, email, address, creditCardNumber,
 				expiryDate);
 	}
 }
