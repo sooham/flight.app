@@ -30,12 +30,10 @@ public class User implements Serializable{
 	private String password;
 
 	private String address;
-
 	private int creditCardNumber;
 	private Date expiryDate;
-
-	private Itinerary selectedItinerary;			// TODO	: Remove
-	private List<Itinerary> bookedItineraries;	// TODO : Remove
+	
+	private List<Itinerary> bookedItineraries;
 	
 	/**
 	 * Creates a new User instance with the given fields. Takes a last name, 
@@ -52,15 +50,32 @@ public class User implements Serializable{
 	 */
 	public User(String lastName, String firstName, String email, String address,
 	int creditCardNumber, Date expiryDate, String password) {
+		this(lastName, firstName, email, address, creditCardNumber, expiryDate);
+		this.password = password;
+	}
+
+	/**
+	 * Creates a new User instance with the given fields. Takes a last name, 
+	 * first name, email, address, credit card number, its expiry date and 
+	 * creates the corresponding User.
+	 *  
+	 * @param lastName  this user's last name. 
+	 * @param firstName  this user's first name. 
+	 * @param email  this user's email. 
+	 * @param address  this user's address. 
+	 * @param creditCardNumber  this user's credit card number. 
+	 * @param expiryDate  a Date indicating this user's credit card expiry date.
+	 */
+	public User(String lastName, String firstName, String email, String address,
+	int creditCardNumber, Date expiryDate) {
 			this.lastName = lastName;
 			this.firstName = firstName;
 			this.email = email;
 			this.address = address;
 			this.creditCardNumber = creditCardNumber;
 			this.expiryDate = expiryDate;
-			this.password = password;
-			this.selectedItinerary = null;							// TODO: Remove
-			this.bookedItineraries = new ArrayList<Itinerary>();	// TODO: Remove
+			this.password = null;
+			bookedItineraries = new ArrayList<>();
 	}
 
 	/**
@@ -109,7 +124,7 @@ public class User implements Serializable{
 	}
 	
 	/**
-	 * Setter for the Client's email address.
+	 * Setter for this Users's email address.
 	 * 
 	 * @param email  this user's new email address.
 	 */
@@ -136,7 +151,7 @@ public class User implements Serializable{
 	}
 	
 	/**
-	 * Getter for the User's credit card number.
+	 * Getter for this User's credit card number.
 	 * 
 	 * @return this user's credit card number.
 	 */
@@ -165,11 +180,29 @@ public class User implements Serializable{
 	/**
 	 * Setter for this User's credit card expiry Date.
 	 * 
-	 * @param expiryDate  a Date representing this user's new  credit card 
+	 * @param expiryDate  a Date representing this user's new credit card 
 	 * expiry date.
 	 */
 	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
+	}
+
+	/**
+	 * Getter for this User's booked itineraries.
+	 * 
+	 * @return this User's booked itineraries.
+	 */
+	public List<Itinerary> getBookedItineraries() {
+		return bookedItineraries;
+	}
+	
+	/**
+	 * Setter for this User's booked itineraries. 
+	 * 
+	 * @param 
+	 */
+	public void setbookedItineraries(List<Itinerary> bookedItineraries) {
+		this.bookedItineraries = bookedItineraries;
 	}
 
 	/**
@@ -183,64 +216,22 @@ public class User implements Serializable{
 	
 	/**
 	 * Setter for the user's password
+	 * 
 	 * @param password The password to be used
 	 */
-	
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	/**
-	 * Adds a User (Client or Administrator) as an instantiated User into 
-	 * UserManager from CSV file. The User added is also serialized and 
-	 * stored in FileDatabase.
+	 * Book an Itinerary for this User. If the itinerary has already been
+	 * booked, does nothing.
 	 * 
-	 * <p>Note that the CSV file must have a valid format of
-	 * "LastName,FirstNames,Email,Address,CreditCardNumber,ExpiryDate" for
-	 * User to be created properly, otherwise will throw IOException.
-	 * 
-	 * @param dir  the path to CSV file. 
-	 * @throws IOException if the CSV file is the wrong format
+	 * @param selectedItinerary  an Itinerary this User wants to book.
 	 */
-	public void addUserFromFile(String dir) throws IOException {
-		FileDatabase.getInstance().addUserFromFile(dir);						
-	}
-	
-	/**
-	 * Adds a Flight as an instantiated Flight into FlightManager from CSV file.
-	 * The Flight added is also serialized and stored in FileDatabase.
-	 * 
-	 * <p>Note that the CSV file must have a valid format of
-	 * "Number,DepartureDateTime,ArrivalDateTime,Airline,Origin,Destination,
-	 * Price" for Flight to be created properly, otherwise will throw 
-	 * IOException.
-	 * 
-	 * @param dir  the path to CSV file. 
-	 * @throws IOException if the CSV file is the wrong format
-	 */
-	public void addFlightFromFile(String dir) throws IOException {
-		FileDatabase.getInstance().addFlightFromFile(dir);
-	}
-
-		
-	/**
-	 * Select an Itinerary from a List of Itinerary for this User.
-	 * 
-	 * @param itineraries  a List of Itinerary.
-	 * @param index  an index indicating the Itinerary to select.
-	 */
-	public void selectItinerary(List<Itinerary> itineraries,			// TODO: Remove
-	int index) {
-		selectedItinerary = itineraries.get(index);
-	}
-	
-	/**
-	 * Book an Itinerary for this User.
-	 * 
-	 * @param selectedItinerary, an Itinerary previously selected.
-	 */
-	public void bookItinerary(Itinerary selectedItinerary) {			// TODO: Remove
-		bookedItineraries.add(selectedItinerary);
+	public void bookItinerary(Itinerary selectedItinerary) {
+		if (!bookedItineraries.contains(selectedItinerary)) {
+			bookedItineraries.add(selectedItinerary);
+		}
 	}
 	
 	/**
@@ -257,13 +248,13 @@ public class User implements Serializable{
 	 */
 	public List<Flight> searchFlights(String origin, String destination, 
 			String departureDate) {
-		return FileDatabase.getInstance().getFlightManger().getFlights( 		// TODO: Check if compatible method, called appropriately?
+		return FileDatabase.getInstance().getFlightManger().getFlights( 
 				origin, destination, departureDate);
 	}
 	
 	/**
-	 * Returns a List of Itineraries given their origin, destination and departure
-	 * date for this User to explore.
+	 * Returns a List of Itineraries given their origin, destination and 
+	 * departure date for this User to explore.
 	 *  
 	 * @param origin  the origin of the Itinerary to search.
 	 * @param destination  the destination of the Itinerary to search.
@@ -275,12 +266,36 @@ public class User implements Serializable{
 	 */
 	public List<Itinerary> seachItineraries(String origin, String destination,
 			String departureDate) {
-		return FileDatabase.getInstance().getFlightManger().getItineraries(		// TODO: Check if compatiable method, called properly?
+		return FileDatabase.getInstance().getFlightManger().getItineraries(
 				origin, destination, departureDate);
 	}
 	
-	// TODO: Where are the methods to sort search results?
-	
+	/**
+	 * Takes in a List of Flight or Itinerary and returns a new List
+	 * sorted by price.
+	 * 
+	 * @param list  the List to sort by price.
+	 * @return a copy of the List list sorted by price.
+	 */
+	public List<? extends Flight> sortByPrice(List<? extends Flight> list) {
+		List<? extends Flight> copyList = new ArrayList<>(list);
+		FileDatabase.getInstance().getFlightManger().sortByPrice(copyList);
+		return copyList;
+	}
+
+	/**
+	 * Takes in a List of Flight or Itinerary and returns a new List
+	 * sorted by duration.
+	 * 
+	 * @param list  the List to sort by duration.
+	 * @return a copy of the List list sorted by duration.
+	 */
+	public List<? extends Flight> sortByDuration(List<? extends Flight> list) {
+		List<? extends Flight> copyList = new ArrayList<>(list);
+		FileDatabase.getInstance().getFlightManger().sortByDuration(list);
+		return copyList;
+	}
+
 	/**
 	 * Returns the information of this User in String.
 	 * 
