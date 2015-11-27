@@ -1,5 +1,6 @@
 package backend;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -74,3 +75,62 @@ public class Admin extends User implements Serializable {
 	}
 }
 	
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+
+
+/**
+ * Adds a User (Client or Administrator) as an instantiated User into 
+ * UserManager from CSV file. The User added is also serialized and 
+ * stored in FileDatabase.
+ * 
+ * <p>Note that the CSV file must have a valid format of
+ * "LastName,FirstNames,Email,Address,CreditCardNumber,ExpiryDate" for
+ * User to be created properly, otherwise will throw IOException.
+ * 
+ * @param dir  the path to CSV file. 
+ * @throws IOException if the CSV file is the wrong format
+ */
+public void addUserFromFile(String dir) throws IOException {
+	FileDatabase.getInstance().addUserFromFile(dir);						
+}
+
+
+	/**
+	 * Adds a User (Client or Administrator) as an instantiated User into 
+	 * UserManager from CSV file. The User added is also serialized and 
+	 * stored in FileDatabase.
+	 * 
+	 * <p>Note that the CSV file must have a valid format of
+	 * "LastName,FirstNames,Email,Address,CreditCardNumber,ExpiryDate" for
+	 * User to be created properly, otherwise will throw IOException.
+	 * 
+	 * @param dir  the path to CSV file. 
+	 * @throws IOException if the CSV file is the wrong format
+	 */
+	public void addUserFromFile(String dir) throws IOException {
+		FileDatabase.getInstance().addUserFromFile(dir);						
+	}
+	
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
+// DO NOT DELETE!!!!
