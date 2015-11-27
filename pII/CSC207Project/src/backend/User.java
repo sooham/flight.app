@@ -26,6 +26,7 @@ public class User implements Serializable{
 
 	private String lastName;
 	private String firstName;
+
 	private String email;
 	private String password;
 
@@ -124,15 +125,6 @@ public class User implements Serializable{
 	}
 	
 	/**
-	 * Setter for this Users's email address.
-	 * 
-	 * @param email  this user's new email address.
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	/**
 	 * Getter for this User's address.
 	 * 
 	 * @return this user's address.
@@ -200,9 +192,9 @@ public class User implements Serializable{
 	/**
 	 * Setter for this User's booked itineraries. 
 	 * 
-	 * @param 
+	 * @param bookedItineraries  the new List of booked Itinerary.
 	 */
-	public void setbookedItineraries(List<Itinerary> bookedItineraries) {
+	public void setBookedItineraries(List<Itinerary> bookedItineraries) {
 		this.bookedItineraries = bookedItineraries;
 	}
 
@@ -214,6 +206,7 @@ public class User implements Serializable{
 	public String getPassword() {
 		return password;
 	}
+
 	
 	/**
 	 * Setter for the user's password
@@ -223,6 +216,7 @@ public class User implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	/**
 	 * Book an Itinerary for this User. If the itinerary has already been
 	 * booked, does nothing.
@@ -232,6 +226,9 @@ public class User implements Serializable{
 	public void bookItinerary(Itinerary selectedItinerary) {
 		if (!bookedItineraries.contains(selectedItinerary)) {
 			bookedItineraries.add(selectedItinerary);
+			// TODO: Decrease the empty seats in Itinerary and its Flights by 1
+			// decrease the number of empty seats in Itinerary by the total
+			// number of Flight in the itinerary
 		}
 	}
 	
@@ -296,6 +293,32 @@ public class User implements Serializable{
 		FileDatabase.getInstance().getFlightManger().sortByDuration(list);
 		return copyList;
 	}
+
+	/** 
+	 * Returns a HashCode value for this for this User. Necessary for using
+	 * with HashMap.
+	 * 
+	 * @return the hashcode for this User.
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		return result;
+	}
+
+
+	/** 
+	 * Indicates if this User is equal to another Object.
+	 * 
+	 * @param obj  an Object.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		return (obj instanceof User && email.equals(((User) obj).getEmail()));
+	}
+
 
 	/**
 	 * Returns the information of this User in String.
