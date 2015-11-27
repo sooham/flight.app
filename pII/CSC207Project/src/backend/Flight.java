@@ -266,7 +266,7 @@ public class Flight implements Comparable<Flight>, Serializable {
 	 * @param numEmptySeats  the new number of empty seats of this Flight
 	 */
 	public void setNumEmptySeats(int numEmptySeats) {
-		if (0 <= numEmptySeats && numEmptySeats <= this.numEmptySeats) {
+		if (0 <= numEmptySeats) {
 			this.numEmptySeats = numEmptySeats;
 		}
 	}
