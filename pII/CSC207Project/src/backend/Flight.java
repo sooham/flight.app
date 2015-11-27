@@ -106,10 +106,19 @@ public class Flight implements Comparable<Flight>, Serializable {
 	}
 
 	/**
-	 * Sets the origin of this Flight.
+	 * Sets the origin of this Flight. If setting to the given origin
+	 * makes this Flight invalid, then leaves this Flight unchanged and
+	 * throws an InvalidFlightException
 	 * @param origin  the origin to set
+	 * @throws InvalidFlightException if this Flight becomes Invalid
 	 */
-	public void setOrigin(String origin) {
+	public void setOrigin(String origin) throws InvalidFlightException {
+		if (origin.equals(destination)) {
+			throw new InvalidFlightException(
+					"Invalid Flight created by setting Origin."
+					);
+		}
+
 		this.origin = origin;
 	}
 
@@ -123,11 +132,21 @@ public class Flight implements Comparable<Flight>, Serializable {
 	}
 
 	/**
-	 * Sets the destination of this Flight.
+	 * Sets the destination of this Flight. If the new destination
+	 * makes this Flight invalid, then leaves this Flight unchanged and
+	 * throws an InvalidFlightException
 	 * 
 	 * @param destination  the destination to set
+	 * @throws InvalidFlightException if this Flight becomes Invalid
 	 */
-	public void setDestination(String destination) {
+	public void setDestination(String destination) throws
+	InvalidFlightException {
+		if (origin.equals(destination)) {
+			throw new InvalidFlightException(
+					"Invalid Flight created by setting Destination."
+					);
+		}
+
 		this.destination = destination;
 	}
 
@@ -142,10 +161,19 @@ public class Flight implements Comparable<Flight>, Serializable {
 
 	/**
 	 * Set the departure Date and time for this Flight.
+	 * If setting to the new departure datetime make this Flight invalid,
+	 * the we leave this Flight unchanged and throw an InvalidFlightException.
 	 * 
 	 * @param departureDateTime  the departureDateTime to set
+	 * @throws InvalidFlightException if this Flight becomes invalid.
 	 */
-	public void setDepartureDateTime(Date departureDateTime) {
+	public void setDepartureDateTime(Date departureDateTime) throws
+	InvalidFlightException {
+		if (arrivalDateTime.getTime() < departureDateTime.getTime()) {
+			throw new InvalidFlightException(
+					"Invalid Flight created by setting DepartureDateTime."
+				);
+		}
 		this.departureDateTime = departureDateTime;
 	}
 
@@ -160,10 +188,20 @@ public class Flight implements Comparable<Flight>, Serializable {
 
 	/**
 	 * Set the arrival Date and time for this Flight.
+	 * If setting to the new arrival datetime creates an Invalid Flight throws
+	 * an InvalidFlightException.
 	 * 
 	 * @param arrivalDateTime  the arrivalDateTime to set
+	 * @throws InvalidFlightException if this Flight becomes Invalid
 	 */
-	public void setArrivalDateTime(Date arrivalDateTime) {
+	public void setArrivalDateTime(Date arrivalDateTime) throws
+	InvalidFlightException {
+		if (arrivalDateTime.getTime() < departureDateTime.getTime()) {
+			throw new InvalidFlightException(
+					"Invalid Flight created by setting ArrivalDateTime."
+				);
+		}
+
 		this.arrivalDateTime = arrivalDateTime;
 	}
 
@@ -182,7 +220,7 @@ public class Flight implements Comparable<Flight>, Serializable {
 	 * @param price  the new price of this Flight
 	 */
 	public void setPrice(double price) {
-		price = price;
+		this.price = price;
 	}
 	
 	/**
@@ -195,12 +233,20 @@ public class Flight implements Comparable<Flight>, Serializable {
 	}
 
 	/**
-	 * Sets the number of seats for this Flight
+	 * Sets the number of seats for this Flight. The new number of Seats
+	 * must be greater than or equal the number of booked seats in this Flight.
+	 * 
+	 * The number of occupied seats in the Flight remain unchanged.	
+	 * TODO: Should this be the way
 	 * 
 	 * @param numSeats  the new number of seats of this Flight
 	 */
 	public void setNumSeats(int numSeats) {
-		this.numSeats = numSeats;
+		int occupiedSeats = this.numSeats - numEmptySeats;
+		if (numSeats >= occupiedSeats) {
+			this.numSeats = numSeats;
+		}
+		setNumEmptySeats(numSeats - occupiedSeats);
 	}
 
 	/**
@@ -213,12 +259,16 @@ public class Flight implements Comparable<Flight>, Serializable {
 	}
 
 	/**
-	 * Sets the number of empty seats for this Flight
+	 * Sets the number of empty seats for this Flight.
+	 * If setting to the number of empty seats removes booked users then do
+	 * nothing.
 	 * 
 	 * @param numEmptySeats  the new number of empty seats of this Flight
 	 */
 	public void setNumEmptySeats(int numEmptySeats) {
-		this.numEmptySeats = numEmptySeats;
+		if (0 <= numEmptySeats && numEmptySeats <= this.numEmptySeats) {
+			this.numEmptySeats = numEmptySeats;
+		}
 	}
 
 	/**
