@@ -15,6 +15,12 @@ public class UserLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login2);
     }
+
+    /**
+     * Calls the SearchForFlights activity if the user entered a valid email and password.
+     * Passes the users email as a variable to use in the SearchForFlights activity.
+     * @param view the view where the butoton is pressed.
+     */
     public void searchFlightIntent(View view) {
         email = (EditText)findViewById(R.id.get_email);
         Intent intent = new Intent(this, SearchForFlights.class);

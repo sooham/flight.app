@@ -3,8 +3,8 @@ package csc207.flightapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
+import backend.*;
 
 public class SearchForFlights extends AppCompatActivity {
 
@@ -13,10 +13,10 @@ public class SearchForFlights extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_for_flights);
         Intent intent = getIntent();
+
+        //Displays the user's email on the top of the app.
         String email = intent.getStringExtra("EMAIL");
         TextView textView = (TextView)findViewById(R.id.display_email);
         textView.setText(email);
-
-
     }
 }
