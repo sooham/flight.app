@@ -31,7 +31,7 @@ public class Itinerary extends Flight implements Serializable {
      * Constructs an Itinerary from a TreeSet of Flight.
      *
      * @param flights  a TreeSet of Flight objects
-     * @throws InvalidItineraryExecption if Itinerary is invalid.
+     * @throws InvalidItineraryException if Itinerary is invalid.
      * @throws InvalidFlightException if Itinerary is invalid.
      */
     public Itinerary(TreeSet<Flight> flights) throws InvalidItineraryException,
