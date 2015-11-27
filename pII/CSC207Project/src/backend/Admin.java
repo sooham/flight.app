@@ -36,9 +36,9 @@ public class Admin extends User implements Serializable {
 	 * 															expiry date.
 	 * @param password  the password for this admin.
 	 */
-	public Admin(String LastName, String firstName, String email,
+	public Admin(String lastName, String firstName, String email,
 	String address, int creditCardNumber, Date expiryDate, String password) {
-		super(LastName, firstName, email, address, creditCardNumber,
+		super(lastName, firstName, email, address, creditCardNumber,
 				expiryDate, password);
 	}
 	
@@ -55,15 +55,15 @@ public class Admin extends User implements Serializable {
 	 * @param expiryDate  a Date indicating this admin's credit card 
 	 * 															expiry date.
 	 */
-	public Admin(String LastName, String firstName, String email,
+	public Admin(String lastName, String firstName, String email,
 	String address, int creditCardNumber, Date expiryDate) {
-		super(LastName, firstName, email, address, creditCardNumber,
+		super(lastName, firstName, email, address, creditCardNumber,
 				expiryDate);
 	}
 
 	/**
-	 * Adds a User (Client or Administrator) as an instantiated User into 
-	 * UserManager from CSV file. The User added is also serialized and 
+	 * Adds or edits a User (Client or Administrator) as an instantiated User 
+	 * into UserManager from CSV file. The User added is also serialized and 
 	 * stored in FileDatabase.
 	 * 
 	 * <p>Note that the CSV file must have a valid format of
@@ -77,10 +77,10 @@ public class Admin extends User implements Serializable {
 		FileDatabase.getInstance().addUserFromFile(dir);						
 	}
 
-
 	/**
-	 * Adds a Flight as an instantiated Flight into FlightManager from CSV 
-	 * file. The Flight added is also serialized and stored in FileDatabase.
+	 * Adds or edits a Flight as an instantiated Flight into FlightManager 
+	 * from CSV file. The Flight adder is also serialized and stored 
+	 * in FileDatabase.
 	 * 
 	 * <p>Note that the CSV file must have a valid format of
 	 * "Number,DepartureDateTime,ArrivalDateTime,Airline,Origin,Destination,
@@ -103,5 +103,4 @@ public class Admin extends User implements Serializable {
 	public void bookFor(Client client, Itinerary itinerary) {
 		client.bookItinerary(itinerary);
 	}
-	
 }
