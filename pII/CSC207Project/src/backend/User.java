@@ -193,7 +193,8 @@ public class User implements Serializable{
 	 * @return this User's booked itineraries.
 	 */
 	public List<Itinerary> getBookedItineraries() {
-		return bookedItineraries;
+		List<Itinerary> copy = new ArrayList<Itinerary>(bookedItineraries);
+		return copy;
 	}
 	
 	/**
