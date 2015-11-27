@@ -16,10 +16,10 @@
         android:hint="Enter Travel Origin"
         android:layout_marginTop="104dp"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/editText"
-        android:layout_alignStart="@+id/editText"
-        android:layout_alignRight="@+id/editText"
-        android:layout_alignEnd="@+id/editText" />
+        android:layout_alignLeft="@+id/destination"
+        android:layout_alignStart="@+id/destination"
+        android:layout_alignRight="@+id/destination"
+        android:layout_alignEnd="@+id/destination" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,12 +29,12 @@
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/search_button"
         android:layout_alignEnd="@+id/search_button"
-        android:id="@+id/textView2" />
+        android:id="@+id/title" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/destination"
         android:hint="Enter Travel Destination"
         android:layout_below="@+id/origin"
         android:layout_alignRight="@+id/departure_date"
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/departure_date"
         android:hint="Enter Departure Date (YYYY-MM-DD)"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/destination"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -63,6 +63,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/display_email"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/title"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
