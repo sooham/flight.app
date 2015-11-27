@@ -180,6 +180,15 @@ public class User implements Serializable{
 	public String getPassword() {
 		return password;
 	}
+	
+	/**
+	 * Setter for the user's password
+	 * @param password The password to be used
+	 */
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	/**
 	 * Adds a User (Client or Administrator) as an instantiated User into 
