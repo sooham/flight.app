@@ -69,7 +69,7 @@ public class User implements Serializable{
      * @param dir the path to client file.
      */
     public void getInfoFromFile(String dir){
-        FileDatabase.getInfoFromFile(dir);
+        //FileDatabase.getInfoFromFile(dir);
     }
 
     /**
@@ -79,7 +79,8 @@ public class User implements Serializable{
      * @param dir the path to flight csv file.
      */
     public void addFlightFromFile(String dir){
-        FileDatabase.addFlightFromFile(dir);
+        //
+        // FileDatabase.addFlightFromFile(dir);
     }
 
     /**
@@ -112,7 +113,7 @@ public class User implements Serializable{
     /**
      * Setter for the Client's first names.
      *
-     * @param firstNames, a String representation of the Client's first names.
+     * @param firstName, a String representation of the Client's first names.
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -236,6 +237,7 @@ public class User implements Serializable{
      *
      * @return a Flight
      */
+    /*
     public Flight viewFlights(String origin, String destination,
                               String departureDate){
         Flight value = null;
@@ -248,6 +250,7 @@ public class User implements Serializable{
 
         return value;
     }
+    */
 
     /**
      * Returns a list itineraries bases on the origin, destination and the
@@ -261,9 +264,9 @@ public class User implements Serializable{
      */
     public ArrayList<Itinerary> viewItineraries(String origin,
                                                 String destination, String departureDate){
-        return FileDatabase.getFlightManger().getItineraries(
-                origin, destination, departureDate
-        );
+        return new ArrayList<Itinerary>();
+                //FileDatabase.getFlightManger().getItineraries(
+                //origin, destination, departureDate);
     }
 
     /**
