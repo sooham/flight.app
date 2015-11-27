@@ -3,17 +3,17 @@ package backend;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * A Client object. Every Client has a first name, last name, email,
+ * address, credit card number and its related expiry date. 
+ * The expiry date is in the format 'YYYY-MM-DD'
+ * 
+ * <p>A Client can search Flight and Itinerary, book Itineraries,
+ * show results sorted by price or total travel time, view and edit its
+ * own information.
+ */
 public class Client extends User implements Serializable {
 	
-	/**
-	 * A Client object. Every Client has a first name, last name, email,
-	 * address, credit card number and its related expiry date. 
-	 * The expiry date is in the format 'YYYY-MM-DD'
-	 * 
-	 * <p>A Client can search Flight and Itinerary, book Itineraries,
-	 * show results sorted by price or total travel time, view and edit its
-	 * own information.
-	 */
 	private static final long serialVersionUID = 7643440842230713877L;
 
 	/**
