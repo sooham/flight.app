@@ -26,11 +26,11 @@ public class ViewSearchedFlights extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_searched_flights);
         table = (TableLayout)findViewById(R.id.flight_table);
-        Intent intent = getIntent();
-        List<Itinerary> itineraries = FLIGHTS.getItineraries(intent.getStringExtra("ORIGIN"),
-                intent.getStringExtra("DESTINATION"),
-                intent.getStringExtra("DEPARTURE_DATE"));
-        createTable(itineraries);
+        //Intent intent = getIntent();
+        //List<Itinerary> itineraries = FLIGHTS.getItineraries(intent.getStringExtra("ORIGIN"),
+                //intent.getStringExtra("DESTINATION"),
+               // intent.getStringExtra("DEPARTURE_DATE"));
+       createTable(25);
     }
 
     /**
@@ -38,20 +38,25 @@ public class ViewSearchedFlights extends AppCompatActivity {
      *
      * @param flights takes the key for what flights to be displayed.
      */
-    private void createTable(List<Itinerary> flights){
-        for (int x = 0; x<flights.size();x++){
+    private void createTable(List<Flight> flights){
+        for (int x = 0; x<flights.size();x++) {
             // Creation row
             final TableRow tableRow = new TableRow(this);
             tableRow.setLayoutParams(new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
-            // Creation textView that displays the all the flghts.
+            // Creation textView that displays the all the Airline for each flight.
             final TextView flightText = new TextView(this);
-            flightText.setText(flights.get(x).getFlights().toString());
+            flightText.setText(flights.get(x).getAirline());
             flightText.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
 
-            // Creation of the textview that displays the duration.
+            // Creation of the textview that displays the flight number.
+            flightText.setText(Objects.toString(flights.get(x).getNumber(), null));
+            flightText.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+            // Creation of the textview that displays the flight number.
             flightText.setText(Objects.toString(flights.get(x).getDuration(), null));
             flightText.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
@@ -64,8 +69,39 @@ public class ViewSearchedFlights extends AppCompatActivity {
             //adds the row to the table
             table.addView(tableRow);
         }
+    }
 
+    private void createTable(int value){
+        for (int x = 0; x<value;x++) {
+            // Creation row
+            TableRow tableRow = new TableRow(this);
+            tableRow.setLayoutParams(new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
+            // Creation textView that displays the all the flghts.
+            TextView flightText = new TextView(this);
+            flightText.setText(Objects.toString(x));
+            flightText.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+            tableRow.addView(flightText);
 
+            // Creation of the textview that displays the duration.
+            TextView flightText2 = new TextView(this);
+            flightText2.setText(Objects.toString(x));;
+            flightText2.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+            tableRow.addView(flightText2);
+
+            // Creation of the textView that displays the price of the trip.
+            TextView flightText3 = new TextView(this);
+            flightText3.setText(Objects.toString(x));
+            flightText3.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+            tableRow.addView(flightText3);
+
+            //adds the row to the table
+            table.addView(tableRow, new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        }
     }
 }

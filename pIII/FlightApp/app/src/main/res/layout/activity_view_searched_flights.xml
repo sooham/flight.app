@@ -7,29 +7,50 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ViewSearchedFlights">
+    tools:context="csc207.flightapp.ViewSearchedFlights">
 
     <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="none"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/flight_table">
+
             <TableRow>
                 <TextView
-                    android:text="Flights"
-                    android:padding="@dimen/activity_horizontal_margin"/>
+                    android:text="Airline"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:layout_width="fill_parent"
+                    android:background="@drawable/cell_shape"/>
+
+                <TextView
+                    android:text="Flight #"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:layout_width="fill_parent"
+                    android:background="@drawable/cell_shape"/>
+
                 <TextView
                     android:text="Duration"
-                    android:padding="@dimen/activity_horizontal_margin"/>
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:layout_width="fill_parent"
+                    android:background="@drawable/cell_shape"/>
+
                 <TextView
-                    android:text="Cost"
-                    android:padding="@dimen/activity_horizontal_margin"/>
+                    android:text="Price"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:layout_width="fill_parent"
+                    android:background="@drawable/cell_shape"/>
             </TableRow>
         </TableLayout>
+        </LinearLayout>
 
     </ScrollView>
 
