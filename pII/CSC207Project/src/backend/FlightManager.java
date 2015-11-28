@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
 import java.util.TreeSet;
 
 /**
@@ -25,8 +27,8 @@ public class FlightManager implements Serializable{
 	 */
 	private static final long serialVersionUID = -7587676537029568714L;
 	
-	public HashMap<String[], ArrayList<Itinerary>> itineraries; 
-	public HashMap<String[], ArrayList<Flight>> flights;
+	public Map<String[], ArrayList<Itinerary>> itineraries; 
+	public Map<String[], ArrayList<Flight>> flights;
 
 	// The SimpleDateFormat is used to turn strings into Date objects
 	private SimpleDateFormat dateFormatter = 
@@ -64,8 +66,8 @@ public class FlightManager implements Serializable{
 	}
 
 	/**
-	 * Adds a flight to this FlightManager. Updates the Hashtable of Flights
-	 * and Itineraries as necessary.
+	 * Adds or edits a flight to this FlightManager. Updates the Hashtable 
+	 * of Flights and Itineraries as necessary.
 	 * 
 	 * @param newFlight  the flight to add
 	 */
@@ -127,7 +129,7 @@ public class FlightManager implements Serializable{
 		// itineraries
 		
 		// holds new pairs of key values for itineraries generated
-		HashMap<String[], ArrayList<Itinerary>> addPairs = new HashMap<>(); 
+		Map<String[], ArrayList<Itinerary>> addPairs = new HashMap<>(); 
 
 		for (String[] key : itineraries.keySet()) {
 			boolean continuous = (key[0] == f.getDestination() ||
@@ -208,7 +210,7 @@ public class FlightManager implements Serializable{
 	 * Sorts a List of Flight or Itinerary by Price.
 	 * @param list  a list of Flight or Itinerary
 	 */
-	public void sortByPrice(ArrayList<? extends Flight> list) {
+	public void sortByPrice(List<? extends Flight> list) {
 		Collections.sort(list, sortPrice);
 	}
 
@@ -216,7 +218,7 @@ public class FlightManager implements Serializable{
 	 * Sorts a List of Flight or Itinerary by Duration.
 	 * @param list  a list of Flight or Itinerary
 	 */
-	public void sortByDuration(ArrayList<? extends Flight> list) {
+	public void sortByDuration(List<? extends Flight> list) {
 		Collections.sort(list, sortDuration);
 	}
 }
