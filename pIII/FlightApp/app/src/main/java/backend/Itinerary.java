@@ -1,9 +1,9 @@
 package backend;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.TreeSet;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeSet;
 
 /**
  * A Flight Itinerary. An Itinerary is a set of Flights for which
@@ -31,7 +31,7 @@ public class Itinerary extends Flight implements Serializable {
      * Constructs an Itinerary from a TreeSet of Flight.
      *
      * @param flights  a TreeSet of Flight objects
-     * @throws InvalidItineraryException if Itinerary is invalid.
+     * @throws InvalidItineraryExecption if Itinerary is invalid.
      * @throws InvalidFlightException if Itinerary is invalid.
      */
     public Itinerary(TreeSet<Flight> flights) throws InvalidItineraryException,
@@ -50,14 +50,22 @@ public class Itinerary extends Flight implements Serializable {
                 flights.last().getDestination(),
                 flights.first().getDepartureDateTime(),
                 flights.last().getArrivalDateTime(),
-                0.0);
+                0.0,
+                0);
 
-        // Set the price of this itinerary
+        // Set the price of this Itinerary
         double totalItineraryPrice = 0.0;
         for (Flight f: flights) {
             totalItineraryPrice += f.getPrice();
         }
         setPrice(totalItineraryPrice);
+
+        // Set the number of seats of this Itinerary
+        int totalNumSeats = 0;
+        for (Flight f: flights) {
+            totalNumSeats +=  f.getNumSeats();
+        }
+        setNumSeats(totalNumSeats);
 
         this.flights = flights;
 
@@ -186,6 +194,7 @@ public class Itinerary extends Flight implements Serializable {
                     getDepartureDateTime() == i.getDepartureDateTime() &&
                     getArrivalDateTime() == i.getArrivalDateTime() &&
                     getPrice() == i.getPrice() &&
+                    getNumSeats() == i.getNumSeats() &&
                     flights == i.getFlights();
         }
         return false;
