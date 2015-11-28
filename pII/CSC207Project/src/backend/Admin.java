@@ -46,6 +46,8 @@ public class Admin extends User implements Serializable {
 	 * Creates a new Admin instance with the given fields. Takes a last name, 
 	 * first name, email, address, credit card number, its expiry date and
 	 * creates the corresponding Admin.
+	 * 
+	 * <p> The password of this Admin is null and can be set later.
 	 *  
 	 * @param lastName  this admin's last name. 
 	 * @param firstName  this admin's first name. 
@@ -62,8 +64,18 @@ public class Admin extends User implements Serializable {
 	}
 
 	/**
-	 * Adds or edits a User (Client or Administrator) as an instantiated User 
-	 * into UserManager from CSV file. The User added is also serialized and 
+	 * Creates a new Admin instance with the given login Information. 
+	 *  
+	 * @param email  this admin's email. 
+	 * @param password  this admin's password. 
+	 */
+	public Admin(String email, String password) {
+		super(email, password);
+	}
+
+	/**
+	 * Adds or edits a Client as an instantiated User 
+	 * into UserManager from CSV file. The Client added is also serialized and 
 	 * stored in FileDatabase.
 	 * 
 	 * <p>Note that the CSV file must have a valid format of
@@ -73,8 +85,8 @@ public class Admin extends User implements Serializable {
 	 * @param dir  the path to CSV file. 
 	 * @throws IOException if the CSV file is the wrong format
 	 */
-	public void addUserFromFile(String dir) throws IOException {
-		FileDatabase.getInstance().addUserFromFile(dir);						
+	public void addClientFromFile(String dir) throws IOException {
+		FileDatabase.getInstance().addClientFromFile(dir);						
 	}
 
 	/**
