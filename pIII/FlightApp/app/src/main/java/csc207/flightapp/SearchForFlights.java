@@ -33,7 +33,7 @@ public class SearchForFlights extends AppCompatActivity {
         origin = (EditText)findViewById(R.id.origin);
         destination = (EditText)findViewById(R.id.destination);
         departureDate = (EditText)findViewById(R.id.departure_date);
-        Intent intent = new Intent(this, SearchForFlights.class);
+        Intent intent = new Intent(this, ViewSearchedFlights.class);
 
         //passes the input information to the view_view_searched_flights.
         intent.putExtra("ORIGIN", origin.getText().toString());
