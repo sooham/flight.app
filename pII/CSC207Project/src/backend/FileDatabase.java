@@ -42,9 +42,13 @@ public class FileDatabase implements Serializable {
 
 	// the singleton instance
 	private static FileDatabase singletonInstance;
+	
 	// name of serialized files
 	private String flightManagerFile = "FlightManager.ser";			
-	private String userManagerFile = "ClientManager.ser";			
+	private String userManagerFile = "UserManager.ser";			
+	
+	// name of passwords file
+	private String passwordsFile = "passwords.txt";
 
 	/**
 	 * Constructs this FileDataBase. Deserializes the manager .ser files 
@@ -102,8 +106,9 @@ public class FileDatabase implements Serializable {
 
 	/**
 	 * Imports the manager classes from the given directory path. If Manager
-	 * serialized files do not exist, the method will create empty versions
-	 * of those files.
+	 * serialized files do not exist, the method will populate the UserManager
+	 * with Users from passwords.txt, creating the starting Users for the app
+	 * then will serialize them into files.
 	 * 
 	 * @param dir  the path to directory where serialized files are stored.
 	 */
@@ -125,25 +130,25 @@ public class FileDatabase implements Serializable {
 			flightManager = (FlightManager) flightStream.readObject();
 		} catch (FileNotFoundException e) {
 			serializedFilesExist = false;
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		if (!serializedFilesExist) {
-			migrateFiles(dir);
+			populateUserManager(dir + passwordsFile);
+			serializeManagers(dir);
 		}
 	}
 	
 	
 	/**
-	 * Takes the path of a directory and saves the serialized ClientManger and
-	 * ItineraryManger objects.
+	 * Takes the path of a directory and serializes this FileDatabase's
+	 *  UserManger and FlightManager objects. This function is used for
+	 *  autosaving when changes are made to the FlightApp at runtime
 	 * 
 	 * @param dir  the path of a directory in the system.
 	 */
-	public void migrateFiles(String dir) {
+	public void serializeManagers(String dir) {
 		try (
 			FileOutputStream userFile = new FileOutputStream(
 					dir + userManagerFile);
@@ -157,22 +162,26 @@ public class FileDatabase implements Serializable {
 			) {
 			userStream.writeObject(userManager);
 			flightStream.writeObject(flightManager);
-		} catch( Exception e) {
+		} catch(Exception e) {
 			// Could be FileNotFound or IOException
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
-	 * Adds a User to UserManager from a given CSV file. 
+	 * Populates this FlightManager's UserManager with all initial Users
+	 * given in passwords.txt file. 
 	 * 
-	 * <p>The CSV file has to follow the format 
-	 * "LastName,FirstNames,Email,Address,CreditCardNumber,ExpiryDate" per
-	 * line for every User to instantiate.
+	 * <p>All Users created will only have email and password fields set,
+	 * other billing and personal information can be added later in the app
+	 * by Admin or by the User itself.
 	 * 
-	 * @param dir  the path to the CSV file. 
+	 * <p> The format of passwords.txt is "Email,Password,Flag" where
+	 * flag is A or C for Admin or Client respectively.
+	 * 
+	 * @param dir  the path to the passwords.txt file
 	 */
-	public void addUserFromFile(String dir) {
+	private void populateUserManager(String dir) {
 		String comma = ",";
 
 		try (FileReader in = new FileReader(dir);
@@ -182,17 +191,68 @@ public class FileDatabase implements Serializable {
 			// go through the CSV file line by line
 			String line;
 			while((line = br.readLine()) != null) {
+				String[] loginInfo = line.split(comma);
+
 				// create a new User
+				User newUser;
+				if (loginInfo[2] == "A") {
+					newUser = new Admin(loginInfo[0], loginInfo[1]);
+				} else {
+					newUser = new Client(loginInfo[0], loginInfo[1]);
+				}
+				
+				// add the User to the UserManager
+				userManager.addUser(newUser);
+			}
+		} catch(FileNotFoundException e) {
+			System.out.println("The file " + dir + 
+			" was not found, or cannot be read.");
+			e.printStackTrace();
+		} catch(IOException e) {
+			e.printStackTrace();
+		} catch(IndexOutOfBoundsException e){
+			System.out.println(
+				"The CSV file given at " + dir + " is not formatted correctly."
+			);
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Adds or edits a Client to UserManager from a given CSV file.
+	 * 
+	 * <p>The CSV file has to follow the format 
+	 * "LastName,FirstNames,Email,Address,CreditCardNumber,ExpiryDate" per
+	 * line for every Client to instantiate.
+	 * 
+	 * <p>If a Client in the CSV file already exists at runtime, then this
+	 * method will overwrite that Client's information.
+	 * 
+	 * @param dir  the path to the CSV file. 
+	 */
+	public void addClientFromFile(String dir) {
+		String comma = ",";
+
+		try (FileReader in = new FileReader(dir);
+			 BufferedReader br = new BufferedReader(in)
+			) {
+			
+			// go through the CSV file line by line
+			String line;
+			while((line = br.readLine()) != null) {
+				// create a new Client
 				String[] values = line.split(comma);
-				User newUser = new User(values[0],
+				Client newClient = new Client(values[0],
 										values[1],
 										values[2],
 										values[3],
 										Integer.parseInt(values[4]), 
-										dateFormatter.parse(values[5]),
-										""						// TODO: This is supposed to be a passoword, please check the passwords.txt
+										dateFormatter.parse(values[5])
 										);
-				userManager.addUser(newUser);
+				
+				// check if this Client already exists in UserManager
+				// if so, edit the client, otherwise just add
+				userManager.addUser(newClient);
 			}
 		} catch(FileNotFoundException e) {
 			System.out.println("The file " + dir + 
@@ -214,12 +274,11 @@ public class FileDatabase implements Serializable {
 	}
 	
 	/**
-	 * Adds a Flight to FlightManager from a given CSV file. 
+	 * Adds or edits a Flight to FlightManager from a given CSV file. 
 	 * 
 	 * <p>The CSV file has to follow the format 
 	 * "Number,DepartureDateTime,ArrivalDateTime,Airline,Origin,Destination,
-	 * Price,NumSeats"
-	 *  per line for every Flight to instantiate.
+	 * Price,NumSeats" per line for every Flight to instantiate.
 	 * 
 	 * @param dir  the path to the CSV file. 
 	 */

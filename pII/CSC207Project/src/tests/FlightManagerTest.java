@@ -6,9 +6,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.TreeSet;
+import java.util.Map;
 import java.util.HashMap;
 import java.text.SimpleDateFormat;
+import java.util.TreeMap;
 import java.text.ParseException;
 
 import backend.FlightManager;
@@ -77,6 +80,8 @@ public class FlightManagerTest {
 	}
 	
 	*/
+	
+	/*
 	@Test
 	public void addFlightShouldCreateValidItineraryList() throws InvalidFlightException, InvalidItineraryException {
 		// This method should be run by itself first without any other tests running
@@ -239,8 +244,124 @@ public class FlightManagerTest {
 		}
 
 		assertEquals(flightManager.itineraries, correctItineraries);
+	} */
+
+	@Test
+	public void doesThisCrapWork() {
+		Flight f = null;
+		Map<ArrayList<String>, ArrayList<Flight>> m = new HashMap<>();
+		try {
+		f = new Flight("--", 616l, "R", "S", dateTimeFormatter.parse("2015-08-19 18:00"),
+				dateTimeFormatter.parse("2015-08-19 23:00"), 700.0, 100);
+		} catch (InvalidFlightException e) {} catch (ParseException e) {}
+
+		ArrayList<String> k = new ArrayList<>();
+		k.add(f.getOrigin());
+		k.add(f.getDestination());
+		k.add(dateFormatter.format(f.getDepartureDateTime()));
+
+		m.putIfAbsent(k, new ArrayList<Flight>());
+		m.get(k).add(f);
+
+		ArrayList<String> key = new ArrayList<>();
+		key.add(f.getOrigin());
+		key.add(f.getDestination());
+		key.add(dateFormatter.format(f.getDepartureDateTime()));
+		assertTrue(m.containsKey(k));
+		assertTrue(m.containsKey(key));
+		assertNotEquals(m.getOrDefault(key, null), null);
+		assertEquals(m.get(k).get(0), f);
 	}
 
+	@Test
+	public void addFlightShouldCreateValidItineraryListSimple() throws InvalidFlightException, InvalidItineraryException {
+		// This method should be run by itself first without any other tests running
+
+		// time conflict, city discontinuity, layover too long, cyclical
+
+		// first add an starting flight
+		Flight startFlight = null;
+		// a flight linking correctly with another itinerary but layover too long
+		Flight startFlightFollowingButLayoverTooLong = null;
+		// a flight can be added to the back of the itinerary
+		Flight startFlightFollowingButLayoverTooLongBack = null;
+
+		try {
+		startFlight = new Flight("--", 616l, "R", "S", dateTimeFormatter.parse("2015-08-19 18:00"),
+				dateTimeFormatter.parse("2015-08-19 23:00"), 700.0, 100);
+		startFlightFollowingButLayoverTooLong = new Flight("<<", 1056l, "S", "W", dateTimeFormatter.parse("2015-08-20 8:00"),
+				dateTimeFormatter.parse("2015-08-20 15:00"), 1400.0, 100);
+		startFlightFollowingButLayoverTooLongBack = new Flight(":^(", 1988l, "W", "X", dateTimeFormatter.parse("2015-08-20 16:00"),
+				dateTimeFormatter.parse("2015-08-20 20:00"), 1800.0, 100);
+		} catch (Exception e) {}
+		
+		ArrayList<Flight> toAddFlights = new ArrayList<>();
+		toAddFlights.add(startFlight);
+		toAddFlights.add(startFlightFollowingButLayoverTooLong);
+		toAddFlights.add(startFlightFollowingButLayoverTooLongBack);
+		
+		//add the flights to the FM
+		for (Flight f : toAddFlights) {
+			flightManager.addFlight(f);
+		}
+		
+		// now check if the correct Flights have been added to flights variable
+		Map<String[], ArrayList<Flight>> correctFlights = new HashMap<>();
+
+		for (Flight f: toAddFlights) {
+			String[] key = {f.getOrigin(), f.getDestination(), dateFormatter.format(f.getDepartureDateTime())};
+			correctFlights.putIfAbsent(key, new ArrayList<Flight>());
+			correctFlights.get(key).add(f);
+		}
+		
+		// check if the keys and values of flight contain the correctFlights keys and values
+		assertEquals(flightManager.flights.size(), correctFlights.size());
+		for (String[] k: flightManager.flights.keySet()) {
+			System.out.println(Arrays.toString(k));
+		}
+		
+		for (String[] k: correctFlights.keySet()) {
+			System.out.println(Arrays.toString(k));
+			assertNotEquals(flightManager.flights.getOrDefault(k, null), null);
+			assertEquals(flightManager.flights.get(k), correctFlights.get(k));
+		}
+
+
+		// now check if the correct Itinerary have been added to itineraries variable
+		// first add every single flight itinerary to the list of itineraries we know exist
+		ArrayList<Itinerary> toCheckItineraries = new ArrayList<>();
+		for (Flight f : toAddFlights) {
+			TreeSet<Flight> t = new TreeSet<>();
+			t.add(f);
+			try {
+			Itinerary it = new Itinerary(t);
+			toCheckItineraries.add(it);
+			} catch (Exception e) {}
+		}
+		
+		// make the Itineraries with more than one Flight and Add them
+		TreeSet<Flight> t1 = new TreeSet<>();
+		
+		t1.add(startFlightFollowingButLayoverTooLong);
+		t1.add(startFlightFollowingButLayoverTooLongBack);
+		
+		Itinerary it1 = new Itinerary(t1);
+		toCheckItineraries.add(it1);
+
+		Map<String[], ArrayList<Itinerary>> correctItineraries = new HashMap<>();
+
+		for (Itinerary i: toCheckItineraries) {
+			String[] key = {i.getOrigin(), i.getDestination(), dateFormatter.format(i.getDepartureDateTime())};
+			correctItineraries.putIfAbsent(key, new ArrayList<Itinerary>());
+			correctItineraries.get(key).add(i);
+		}
+
+		assertEquals(flightManager.itineraries.size(), correctItineraries.size());
+		for (String[] k :correctItineraries.keySet()) {
+			assertTrue(flightManager.itineraries.containsKey(k));
+			assertEquals(flightManager.itineraries.get(k), correctItineraries.get(k));
+		}
+	}
 	/*
 	@Test
 	public void getItinerariesShouldReturnCorrectItineraries() {

@@ -50,16 +50,17 @@ public class Itinerary extends Flight implements Serializable {
 			  flights.last().getDestination(),
 			  flights.first().getDepartureDateTime(),
 			  flights.last().getArrivalDateTime(),
-			  0.0, 0);
+			  0.0,
+			  0);
 			  
-		// Set the price of this itinerary
+		// Set the price of this Itinerary
 		double totalItineraryPrice = 0.0; 
 		for (Flight f: flights) {
 			totalItineraryPrice += f.getPrice();
 		}
 		setPrice(totalItineraryPrice);
 		
-		// Set the number of seats
+		// Set the number of seats of this Itinerary
 		int totalNumSeats = 0;
 		for (Flight f: flights) {
 			totalNumSeats +=  f.getNumSeats();

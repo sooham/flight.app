@@ -26,11 +26,11 @@ public class ItineraryTest {
 		TreeSet<Flight> f = new TreeSet<>();
 		try {
 		f.add(new Flight("ABCDE", rand.nextLong(), "Shanghai", "London", formatter.parse("2015-08-19 10:00"),
-				formatter.parse("2015-08-19 17:00"), 1500.00d));
+				formatter.parse("2015-08-19 17:00"), 1500.00d, 100));
 		f.add(new Flight("China Eastern", rand.nextLong(), "Qatar", "Tehran", formatter.parse("2015-08-18 7:00"),
-				formatter.parse("2015-08-18 18:00"), 2100.00d));
+				formatter.parse("2015-08-18 18:00"), 2100.00d, 200));
 		f.add(new Flight("Emirates", rand.nextLong(), "Tehran", "Shanghai", formatter.parse("2015-08-18 23:00"),
-				formatter.parse("2015-08-19 6:00"), 100.00d));
+				formatter.parse("2015-08-19 6:00"), 100.00d, 300));
 		} catch (ParseException e) {}
 		
 		goodItinerary = new Itinerary(f);
@@ -40,8 +40,8 @@ public class ItineraryTest {
 	public void ItineraryClassShouldThrowErrorWithCycle() throws InvalidItineraryException, InvalidFlightException{
 		TreeSet<Flight> a = new TreeSet<>();
 		try {
-			a.add(new Flight("", 0l, "A", "B", formatter.parse("2015-08-19 12:00"), formatter.parse("2015-08-19 13:00"), 0.0d));
-			a.add(new Flight("", 0l, "B", "A", formatter.parse("2015-08-19 14:00"), formatter.parse("2015-08-19 15:00"), 0.0d));
+			a.add(new Flight("", 0l, "A", "B", formatter.parse("2015-08-19 12:00"), formatter.parse("2015-08-19 13:00"), 0.0d, 100));
+			a.add(new Flight("", 0l, "B", "A", formatter.parse("2015-08-19 14:00"), formatter.parse("2015-08-19 15:00"), 0.0d, 100));
 		} catch (ParseException e) {}
 		new Itinerary(a);
 	}
@@ -50,8 +50,8 @@ public class ItineraryTest {
 	public void ItineraryClassShouldThrowErrorWithWrongTiming() throws InvalidItineraryException, InvalidFlightException{
 		TreeSet<Flight> a = new TreeSet<>();
 		try {
-			a.add(new Flight("", 0l, "A", "B", formatter.parse("2015-08-19 12:00"), formatter.parse("2015-08-19 13:00"), 0.0d));
-			a.add(new Flight("", 0l, "B", "C", formatter.parse("2015-08-19 1:00"), formatter.parse("2015-08-19 3:00"), 0.0d));
+			a.add(new Flight("", 0l, "A", "B", formatter.parse("2015-08-19 12:00"), formatter.parse("2015-08-19 13:00"), 0.0d, 100));
+			a.add(new Flight("", 0l, "B", "C", formatter.parse("2015-08-19 1:00"), formatter.parse("2015-08-19 3:00"), 0.0d, 100));
 		} catch (ParseException e) {}
 		new Itinerary(a);
 	}
@@ -89,15 +89,20 @@ public class ItineraryTest {
 	public void getPriceShouldReturnCorrectValue() {
 		assertTrue(goodItinerary.getPrice() == (double) 3700.00);
 	}
+
+	@Test
+	public void getNumSeatsShouldReturnCorrectValue() {
+		assertTrue(goodItinerary.getNumSeats() == 600);
+	}
 	
 	@Test(expected=InvalidItineraryException.class)
 	public void ItineraryConstructorShouldErrorWhenCyclic() throws InvalidItineraryException, InvalidFlightException {
 		TreeSet<Flight> cyclicTS = new TreeSet<>();
 		try {
-			cyclicTS.add(new Flight("", 0l, "A", "B", formatter.parse("2015-08-19 12:00"), formatter.parse("2015-08-19 13:00"), 0.0d));
-			cyclicTS.add(new Flight("", 0l, "B", "C", formatter.parse("2015-08-19 14:00"), formatter.parse("2015-08-19 15:00"), 0.0d));
-			cyclicTS.add(new Flight("", 0l, "C", "A", formatter.parse("2015-08-19 16:00"), formatter.parse("2015-08-19 17:00"), 0.0d));
-			cyclicTS.add(new Flight("", 0l, "A", "E", formatter.parse("2015-08-19 18:00"), formatter.parse("2015-08-19 19:00"), 0.0d));
+			cyclicTS.add(new Flight("", 0l, "A", "B", formatter.parse("2015-08-19 12:00"), formatter.parse("2015-08-19 13:00"), 0.0d, 100));
+			cyclicTS.add(new Flight("", 0l, "B", "C", formatter.parse("2015-08-19 14:00"), formatter.parse("2015-08-19 15:00"), 0.0d, 200));
+			cyclicTS.add(new Flight("", 0l, "C", "A", formatter.parse("2015-08-19 16:00"), formatter.parse("2015-08-19 17:00"), 0.0d, 300));
+			cyclicTS.add(new Flight("", 0l, "A", "E", formatter.parse("2015-08-19 18:00"), formatter.parse("2015-08-19 19:00"), 0.0d, 200));
 		} catch (ParseException e) {}
 		new Itinerary(cyclicTS);
 		
@@ -107,10 +112,10 @@ public class ItineraryTest {
 	public void ItineraryConstructorShouldErrorWhenDiscontinuous() throws InvalidFlightException, InvalidItineraryException {
 		TreeSet<Flight> discontTS = new TreeSet<>();
 		try {
-			discontTS.add(new Flight("", 0l, "A", "B", formatter.parse("2015-08-19 12:00"), formatter.parse("2015-08-19 13:00"), 0.0d));
-			discontTS.add(new Flight("", 0l, "B", "C", formatter.parse("2015-08-19 14:00"), formatter.parse("2015-08-19 15:00"), 0.0d));
-			discontTS.add(new Flight("", 0l, "D", "E", formatter.parse("2015-08-19 16:00"), formatter.parse("2015-08-19 17:00"), 0.0d));
-			discontTS.add(new Flight("", 0l, "E", "F", formatter.parse("2015-08-19 18:00"), formatter.parse("2015-08-19 19:00"), 0.0d));
+			discontTS.add(new Flight("", 0l, "A", "B", formatter.parse("2015-08-19 12:00"), formatter.parse("2015-08-19 13:00"), 0.0d, 100));
+			discontTS.add(new Flight("", 0l, "B", "C", formatter.parse("2015-08-19 14:00"), formatter.parse("2015-08-19 15:00"), 0.0d, 100));
+			discontTS.add(new Flight("", 0l, "D", "E", formatter.parse("2015-08-19 16:00"), formatter.parse("2015-08-19 17:00"), 0.0d, 100));
+			discontTS.add(new Flight("", 0l, "E", "F", formatter.parse("2015-08-19 18:00"), formatter.parse("2015-08-19 19:00"), 0.0d, 100));
 		} catch (ParseException e) {}
 		new Itinerary(discontTS);
 	}
@@ -119,10 +124,10 @@ public class ItineraryTest {
 	public void ItineraryConstructorShouldErrorWhenLayoverTooLong() throws InvalidFlightException, InvalidItineraryException {
 		TreeSet<Flight> longlayoverTS = new TreeSet<>();
 		try {
-			longlayoverTS.add(new Flight("", 0l, "A", "B", formatter.parse("2015-08-19 5:59"), formatter.parse("2015-08-19 7:59"), 0.0d));
-			longlayoverTS.add(new Flight("", 0l, "B", "C", formatter.parse("2015-08-19 14:00"), formatter.parse("2015-08-19 15:00"), 0.0d));
-			longlayoverTS.add(new Flight("", 0l, "C", "D", formatter.parse("2015-08-19 16:00"), formatter.parse("2015-08-19 17:00"), 0.0d));
-			longlayoverTS.add(new Flight("", 0l, "D", "E", formatter.parse("2015-08-19 18:00"), formatter.parse("2015-08-19 19:00"), 0.0d));
+			longlayoverTS.add(new Flight("", 0l, "A", "B", formatter.parse("2015-08-19 5:59"), formatter.parse("2015-08-19 7:59"), 0.0d, 100));
+			longlayoverTS.add(new Flight("", 0l, "B", "C", formatter.parse("2015-08-19 14:00"), formatter.parse("2015-08-19 15:00"), 0.0d, 100));
+			longlayoverTS.add(new Flight("", 0l, "C", "D", formatter.parse("2015-08-19 16:00"), formatter.parse("2015-08-19 17:00"), 0.0d, 100));
+			longlayoverTS.add(new Flight("", 0l, "D", "E", formatter.parse("2015-08-19 18:00"), formatter.parse("2015-08-19 19:00"), 0.0d, 100));
 		} catch (ParseException e) {}
 		new Itinerary(longlayoverTS);
 	}
@@ -132,11 +137,11 @@ public class ItineraryTest {
 		TreeSet<Flight> t = new TreeSet<>();
 		try {
 		t.add(new Flight("China Eastern", rand.nextLong(), "Qatar", "Tehran", formatter.parse("2015-08-18 7:00"),
-				formatter.parse("2015-08-18 18:00"), 2100.00d));
+				formatter.parse("2015-08-18 18:00"), 2100.00d, 100));
 		t.add(new Flight("Emirates", rand.nextLong(), "Tehran", "Shanghai", formatter.parse("2015-08-18 23:00"),
-				formatter.parse("2015-08-19 6:00"), 100.00d));
+				formatter.parse("2015-08-19 6:00"), 100.00d, 100));
 		t.add(new Flight("ABCDE", rand.nextLong(), "Shanghai", "London", formatter.parse("2015-08-19 10:00"),
-				formatter.parse("2015-08-19 17:00"), 1500.00d));
+				formatter.parse("2015-08-19 17:00"), 1500.00d, 100));
 		} catch (ParseException e) {}
 		assertEquals(goodItinerary.getFlights(), t);
 	}
@@ -150,10 +155,10 @@ public class ItineraryTest {
 	public void ConstructorShouldThrowExceptionForDiscontinousItinerary() throws InvalidFlightException, InvalidItineraryException {
 		TreeSet<Flight> discontTS = new TreeSet<>();
 		try {
-			discontTS.add(new Flight("", 0l, "A", "B", formatter.parse("2015-08-19 7:00"), formatter.parse("2015-08-19 13:00"), 0.0d));
-			discontTS.add(new Flight("", 0l, "B", "C", formatter.parse("2015-08-19 12:00"), formatter.parse("2015-08-19 15:00"), 0.0d));
-			discontTS.add(new Flight("", 0l, "C", "D", formatter.parse("2015-08-19 16:00"), formatter.parse("2015-08-19 17:00"), 0.0d));
-			discontTS.add(new Flight("", 0l, "D", "E", formatter.parse("2015-08-19 18:00"), formatter.parse("2015-08-19 19:00"), 0.0d));
+			discontTS.add(new Flight("", 0l, "A", "B", formatter.parse("2015-08-19 7:00"), formatter.parse("2015-08-19 13:00"), 0.0d, 100));
+			discontTS.add(new Flight("", 0l, "B", "C", formatter.parse("2015-08-19 12:00"), formatter.parse("2015-08-19 15:00"), 0.0d, 100));
+			discontTS.add(new Flight("", 0l, "C", "D", formatter.parse("2015-08-19 16:00"), formatter.parse("2015-08-19 17:00"), 0.0d, 100));
+			discontTS.add(new Flight("", 0l, "D", "E", formatter.parse("2015-08-19 18:00"), formatter.parse("2015-08-19 19:00"), 0.0d, 100));
 		} catch (ParseException e) {}
 		new Itinerary(discontTS);
 	}
@@ -162,10 +167,10 @@ public class ItineraryTest {
 	public void isValidShouldReturnTrueWithLayOverOfSixHours() throws InvalidItineraryException, InvalidFlightException {
 		TreeSet<Flight> correctLayOverTS = new TreeSet<>();
 		try {
-			correctLayOverTS.add(new Flight("", 0l, "A", "B", formatter.parse("2015-08-19 5:00"), formatter.parse("2015-08-19 06:00"), 0.0d));
-			correctLayOverTS.add(new Flight("", 0l, "B", "C", formatter.parse("2015-08-19 12:00"), formatter.parse("2015-08-19 13:00"), 0.0d));
-			correctLayOverTS.add(new Flight("", 0l, "C", "D", formatter.parse("2015-08-19 19:00"), formatter.parse("2015-08-19 20:00"), 0.0d));
-			correctLayOverTS.add(new Flight("", 0l, "D", "E", formatter.parse("2015-08-20 2:00"), formatter.parse("2015-08-20 3:00"), 0.0d));
+			correctLayOverTS.add(new Flight("", 0l, "A", "B", formatter.parse("2015-08-19 5:00"), formatter.parse("2015-08-19 06:00"), 0.0d, 100));
+			correctLayOverTS.add(new Flight("", 0l, "B", "C", formatter.parse("2015-08-19 12:00"), formatter.parse("2015-08-19 13:00"), 0.0d, 100));
+			correctLayOverTS.add(new Flight("", 0l, "C", "D", formatter.parse("2015-08-19 19:00"), formatter.parse("2015-08-19 20:00"), 0.0d, 100));
+			correctLayOverTS.add(new Flight("", 0l, "D", "E", formatter.parse("2015-08-20 2:00"), formatter.parse("2015-08-20 3:00"), 0.0d, 100));
 		} catch (ParseException e) {}
 		Itinerary correctLayover = new Itinerary(correctLayOverTS);
 		assertTrue(correctLayover.isValid());
@@ -176,14 +181,14 @@ public class ItineraryTest {
 		Itinerary newItinerary = null;
 		try {
 			newItinerary = goodItinerary.addFlight(new Flight("BA", rand.nextLong(), "London", "Barcelona", formatter.parse("2015-08-19 19:00"),
-					formatter.parse("2015-08-19 23:00"), 300.00d));
+					formatter.parse("2015-08-19 23:00"), 300.00d, 100));
 		} catch (ParseException e) {}
 		assertNotEquals(newItinerary.getFlights(), goodItinerary.getFlights());
 		assertNotEquals(newItinerary, goodItinerary);
 
 		try {
 			newItinerary.addFlight(new Flight("SA", rand.nextLong(), "Barcelona", "Frankfurt", formatter.parse("2015-08-20 00:00"),
-					formatter.parse("2015-08-20 5:00"), 600.00d));
+					formatter.parse("2015-08-20 5:00"), 600.00d, 100));
 		} catch (ParseException e) {}
 		assertNotEquals(newItinerary.getFlights(), goodItinerary.getFlights());
 		assertNotEquals(newItinerary, goodItinerary);

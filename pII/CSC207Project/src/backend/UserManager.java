@@ -12,11 +12,11 @@ import java.io.Serializable;
  * <p>This class provides methods to search and view stored User information,
  * create new Users etc.
  */
-public class UserManager implements Serializable{
+public class UserManager implements Serializable {
 	
-	private static final long serialVersionUID = 1772117296747939656L;
+	private final long serialVersionUID = 1772117296747939656L;
 
-	public static List<User> users; // The List of Users in the manager
+	public List<User> users; // The List of Users in the manager
 	
 	// Singleton Instance
 	private static UserManager singletonInstance;
@@ -44,12 +44,54 @@ public class UserManager implements Serializable{
 	}
 
 	/**
-	 * Adds a User to this UserManager. 
+	 * Adds a User to this UserManager, if this User already exists in this
+	 * UserManager, edits that User's information. 
 	 * 
-	 * @param u  User that is to be added
+	 * @param u  User that is to be added or edited
 	 */
-	public void addUser(User u){
+	public void addUser(User u) {
+		User existing;
+		if ((existing = getUserWithEmail(u.getEmail())) != null) {
+			// then the User is being updated
+			users.remove(existing);
+		}
 		users.add(u);
+	}
+
+	/**
+	 * Returns true if and only if a User with given login credentials 
+	 * exists in this UserManager. To get the User with given credentials
+	 * use UserManager.getUserWithEmail.
+	 * 
+	 * @return true if a User exists in this UserManager with given login
+	 * information
+	 */
+	public boolean loginCredentialsCorrect(String email, String password) {
+		for (User u: users) {
+			if (u.getEmail().equals(email) && 
+				u.getPassword().equals(password)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	/**
+	 * Returns a User with the given email from this UserManager. If the User
+	 * does not exist then return null.
+	 * 
+	 * @param email the email of the User 
+	 * @return the User with the given email or null 
+	 */
+	public User getUserWithEmail(String email) {
+		for (User u: users) {
+			if (u.getEmail().equals(email)) {
+				return u;
+			}
+		}
+
+		return null;
 	}
 	
 	/**
@@ -83,69 +125,13 @@ public class UserManager implements Serializable{
 
 		return matchingUsers;
 	}
-	
-	/**
-	 * Returns a List of User based on the credit card number						TODO: Do we really need this?
-	 * and its expiry date from this UsertManager.
-	 * 
-	 * @param creditCardNumber  the credit card number to search for
-	 * @param expiryDate  the expiration date to search for
-	 * @return a List of User that meets search criterion. 
-	 */
-	public List<User> getUser(int creditCardNumber, Date expiryDate) {
-		List<User> matchingUsers = new ArrayList<User>();
-
-		for (User u: users) {
-			if (u.getCreditCardNumber() == creditCardNumber &&
-				u.getExpiryDate() == expiryDate) {
-				matchingUsers.add(u);
-			}
-		}
-
-		return matchingUsers;
-	}
-
-	/**
-	 * Returns the index of the User in this UserManager. If the User is		// TODO: Do we need this?
-	 * not there returns -1. 
-	 * 
-	 * @param user  a User object. 
-	 * @return returns index representing the User in this UserManager.
-	 * If the User does not exist returns -1.
-	 */
-	public int getUserIndex(User user) {
-		return users.indexOf(user);
-	}
-	
-	/**
-	 * Returns the index of the User with given fields in this			TODO: Do we need this?
-	 * UserManager. If the User is not there returns -1. 
-	 * 
-	 * @param lastName  the last name of the user.
-	 * @param firstName  the first name of the user.
-	 * @param email  the unique email address for the user. 
-	 * @param address  the billing address for the user.
-	 * @param creditCardNum  the credit card number for the user.
-	 * @param expiryDate  the expiry-date of the credit card number. 
-	 * @param password  the password for the user.
-	 * @return the index representing the user in this UserManager. If User
-	 * does not exist return -1. 
-	 */
-	public int getUserIndex(String lastName, String firstName, String email,
-			String address, int creditCardNum, Date expiryDate, String password){
-		User user = new User(
-			lastName, firstName, email, address, creditCardNum, expiryDate, password
-			);
-		return getUserIndex(user);	
-	}
-	
 
 	/**
 	 * Returns the List of User from this UserManager.
 	 * 
 	 * @return the users
 	 */
-	public List<User> getClients() {
+	public List<User> getUsers() {
 		return users;
 	}
 	
