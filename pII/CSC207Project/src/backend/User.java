@@ -51,8 +51,14 @@ public class User implements Serializable{
 	 */
 	public User(String lastName, String firstName, String email, String address,
 	int creditCardNumber, Date expiryDate, String password) {
-		this(lastName, firstName, email, address, creditCardNumber, expiryDate);
+		this.lastName = lastName;
+		this.firstName = firstName;
+		this.email = email;
+		this.address = address;
+		this.creditCardNumber = creditCardNumber;
+		this.expiryDate = expiryDate;
 		this.password = password;
+		bookedItineraries = new ArrayList<>();
 	}
 
 	/**
@@ -69,14 +75,18 @@ public class User implements Serializable{
 	 */
 	public User(String lastName, String firstName, String email, String address,
 	int creditCardNumber, Date expiryDate) {
-			this.lastName = lastName;
-			this.firstName = firstName;
-			this.email = email;
-			this.address = address;
-			this.creditCardNumber = creditCardNumber;
-			this.expiryDate = expiryDate;
-			this.password = null;
-			bookedItineraries = new ArrayList<>();
+		this(lastName, firstName, email, address, 
+				creditCardNumber, expiryDate, null);
+	}
+
+	/**
+	 * Creates a new User instance with given login information. 
+	 *  
+	 * @param email  this user's email. 
+	 * @param password  this user's password. 
+	 */
+	public User(String email, String password) {
+		this(null, null, email, null, 0, null, password);
 	}
 
 	/**
