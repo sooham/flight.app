@@ -40,6 +40,8 @@ public class Client extends User implements Serializable {
 	 * Creates a new Client instance with the given fields. Takes a last name, 
 	 * first name, email, address, credit card number, its expiry date and 
 	 * creates the corresponding Client.
+	 * 
+	 * <p>The password is null and must be set later.
 	 *  
 	 * @param lastName  this client's last name. 
 	 * @param firstName  this client's first name. 
@@ -54,5 +56,15 @@ public class Client extends User implements Serializable {
 	String address, int creditCardNumber, Date expiryDate) {
 		super(lastName, firstName, email, address, creditCardNumber,
 				expiryDate);
+	}
+
+	/**
+	 * Creates a new Client instance with the given login Information. 
+	 *  
+	 * @param email  this client's email. 
+	 * @param passowrd  this client's password. 
+	 */
+	public Client(String email, String password) {
+		super(email, password);
 	}
 }
