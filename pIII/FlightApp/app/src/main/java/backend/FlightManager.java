@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.TreeSet;
 
 /**
  * A FlightManager object. FlightManager is a singleton responsible for handling
@@ -15,9 +18,8 @@ import java.util.HashMap;
  * Flights and Itinerary by departure date, origin and / or destination.
  */
 public class FlightManager implements Serializable{
-    /**
-     * This FlightManager stores all Flights and Itineraries
-     * in a HashMap mapping array [Origin, Destination, DepartureDateTime]
+    /* This FlightManager stores all Flights and Itineraries
+     * in a HashMap mapping array [Origin, Destination, DepartureDate]
      * (where time are strings to be parse by SimpleDateFormat)
      * to ArrayList of Itinerary or Flight
      *
@@ -25,19 +27,19 @@ public class FlightManager implements Serializable{
      */
     private static final long serialVersionUID = -7587676537029568714L;
 
-    public static HashMap<String[], ArrayList<Itinerary>> itineraries;
-    public static HashMap<String[], ArrayList<Flight>> flights;
+    public Map<String[], ArrayList<Itinerary>> itineraries;
+    public Map<String[], ArrayList<Flight>> flights;
 
     // The SimpleDateFormat is used to turn strings into Date objects
-    private static SimpleDateFormat dateFormatter =
-            new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private SimpleDateFormat dateFormatter =
+            new SimpleDateFormat("yyyy-MM-dd");
 
     // The singleton instance
     private static FlightManager singletonInstance;
 
     // Comparator objects for comparing by Price and Duration
-    private static PriceComparator<Flight> sortPrice;
-    private static DurationComparator<Flight> sortDuration;
+    private PriceComparator<Flight> sortPrice;
+    private DurationComparator<Flight> sortDuration;
 
     /**
      * Constructs an empty FlightManager object.
@@ -64,14 +66,12 @@ public class FlightManager implements Serializable{
     }
 
     /**
-     * Adds a flight to this FlightManager. Updates the Hashtable of Flights
-     * and Itineraries as necessary.
+     * Adds or edits a flight to this FlightManager. Updates the Hashtable
+     * of Flights and Itineraries as necessary.
      *
      * @param newFlight  the flight to add
      */
-
     public void addFlight(Flight newFlight) {
-        /*
         // Add to the Hashmap of Flight
         // Check if key is in Hashmap and create if necessary
         String [] key = {
@@ -80,13 +80,12 @@ public class FlightManager implements Serializable{
                 dateFormatter.format(newFlight.getDepartureDateTime())
         };
 
-        ArrayList<Flight> value = flights.putIfAbsent(
-                key, new ArrayList<Flight>()
-        );
+        if (!flights.containsKey(key)) {
+            // add the key and value
+            flights.put(key, new ArrayList<Flight>());
+        }
 
-        if (value != null && value.contains(newFlight)) {
-            return;
-        } else {
+        if (!flights.get(key).contains(newFlight)) {
             flights.get(key).add(newFlight);
         }
 
@@ -99,20 +98,38 @@ public class FlightManager implements Serializable{
         //			create a new itinerary and add
 
         addtoItineraries(newFlight);
-        */
     }
 
     /**
-     * Updates the HashMap of Itineraries in this FlightManager
-     * @param f
+     * Updates the HashMap of Itineraries in this FlightManager when adding
+     * a new Flight.
+     *
+     * @param f  the new Flight object to add.
      */
     private void addtoItineraries(Flight f) {
-        /*
+        // A single Flight alone is also an itinerary, so we can first add
+        // that
+        TreeSet<Flight> t = new TreeSet<>();
+        t.add(f);
+
+        try {
+            Itinerary trivialItinerary = new Itinerary(t);
+            String[] key = {
+                    f.getOrigin(),
+                    f.getDestination(),
+                    dateFormatter.format(f.getDepartureDateTime())
+            };
+            itineraries.putIfAbsent(key, new ArrayList<Itinerary>());
+            itineraries.get(key).add(trivialItinerary);
+        } catch(Exception e) {
+            // This exception will not be thrown since Flight is valid
+        }
+
         // check if the flight f is continuous to any key in HashMap of
         // itineraries
 
         // holds new pairs of key values for itineraries generated
-        HashMap<String[], ArrayList<Itinerary>> addPairs = new HashMap<>();
+        Map<String[], ArrayList<Itinerary>> addPairs = new HashMap<>();
 
         for (String[] key : itineraries.keySet()) {
             boolean continuous = (key[0] == f.getDestination() ||
@@ -120,7 +137,7 @@ public class FlightManager implements Serializable{
 
             if (continuous) {
                 // we can just add this flight to all the Itinerary in
-                // the map, time and non cyclic logic is dealt with
+                // the mapped values, time and non cyclic logic is dealt with
                 // by Itinerary.addFlight() method
                 for (Itinerary it : itineraries.get(key)) {
                     try {
@@ -145,7 +162,7 @@ public class FlightManager implements Serializable{
                             addPairs.get(newKey).add(newItinerary);
                         }
                     } catch (InvalidItineraryException e) {
-
+                        // The timing of the itinerary invalid
                     }
                 }
             }
@@ -154,26 +171,6 @@ public class FlightManager implements Serializable{
         // finally take all the key value pairs in addPairs and put them
         // into Hashmap of itineraries
         itineraries.putAll(addPairs);
-        */
-    }
-
-    /**
-     * Gets all Itinerary in this FlightManager by given origin and
-     * destination.
-     *
-     * @param origin  the origin of the Itinerary
-     * @param destination  the destination of the Itinerary
-     * @return an ArrayList of all Itinerary meeting criterion
-     */
-    public ArrayList<Itinerary> getItineraries(String origin,
-                                               String destination) {
-        ArrayList<Itinerary> result = new ArrayList<>();
-        for (String[] key: itineraries.keySet()) {
-            if (key[0] == origin && key[1] == destination) {
-                result.addAll(itineraries.get(key));
-            }
-        }
-        return result;
     }
 
     /**
@@ -189,30 +186,9 @@ public class FlightManager implements Serializable{
     public ArrayList<Itinerary> getItineraries(String origin,
                                                String destination, String departureDate) {
         String[] key = {origin, destination, departureDate};
-        if(itineraries.containsKey(key)){
-            return itineraries.get(key);
-        }
-        return new ArrayList<Itinerary>();
+        return itineraries.getOrDefault(key, new ArrayList<Itinerary>());
     }
 
-    /**
-     * Gets all Flight in this FlightManager by given origin and
-     * destination.
-     *
-     * @param origin  the origin of the Flight
-     * @param destination  the destination of the Flight
-     * @return an ArrayList of all Flight meeting criterion
-     */
-    public ArrayList<Flight> getFlights(String origin,
-                                        String destination) {
-        ArrayList<Flight> result = new ArrayList<>();
-        for (String[] key: flights.keySet()) {
-            if (key[0] == origin && key[1] == destination) {
-                result.addAll(flights.get(key));
-            }
-        }
-        return result;
-    }
 
     /**
      * Gets all Flight in this FlightManager by given origin, destination
@@ -227,17 +203,14 @@ public class FlightManager implements Serializable{
     public ArrayList<Flight> getFlights(String origin, String destination,
                                         String departureDate) {
         String[] key = {origin, destination, departureDate};
-        if(flights.containsKey(key)){
-            return flights.get(key);
-        }
-        return new ArrayList<Flight>();
+        return flights.getOrDefault(key, new ArrayList<Flight>());
     }
 
     /**
      * Sorts a List of Flight or Itinerary by Price.
      * @param list  a list of Flight or Itinerary
      */
-    public void sortByPrice(ArrayList<? extends Flight> list) {
+    public void sortByPrice(List<? extends Flight> list) {
         Collections.sort(list, sortPrice);
     }
 
@@ -245,7 +218,8 @@ public class FlightManager implements Serializable{
      * Sorts a List of Flight or Itinerary by Duration.
      * @param list  a list of Flight or Itinerary
      */
-    public void sortByDuration(ArrayList<? extends Flight> list) {
+    public void sortByDuration(List<? extends Flight> list) {
         Collections.sort(list, sortDuration);
     }
 }
+
