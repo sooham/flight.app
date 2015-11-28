@@ -98,7 +98,7 @@ Monday Nov 23, first Planning meeting:
             Finish all faulty methods, classes from Phase II.
 
             Write updated CRC cards to reflect frontend Activities and
-            Backend changes in requirements file
+            Backend changes as stated in the requirements list
 
             Figure out how to join Android Studio and SVN seamlessly
 
@@ -121,3 +121,57 @@ Monday Nov 23, first Planning meeting:
 
             Update FileDatabase CSV reading methods to account
             for addition of seat numbering
+
+
+Friday Nov 27, second Planning meeting:
+    Notes:
+        All people present. Chris had knee surgery, he might need some time
+        to recover.
+
+    Problems encountered:
+        Even though backend is mostly finished, Sooham found that we need
+        to change the data structure representation for FlightManager due
+        to HashMap identifying String[] keys based on memory referencing,
+        not value.
+
+    Tasks completed:
+        Sooham:
+            All tasks completed
+            Helped Badis with Backend Login
+
+        Angad:
+            All tasks completed
+
+        Badis:
+            All tasks completed.
+
+        Chris:
+            All tasks completed.
+
+    Accomplished in meeting:
+        Talked about progress and problems, for Sooham's issue with the data
+        structure, the team has decided to change the FlightManager to take
+        in an ArrayList of String rather than String[].
+
+        We have also looked at where we lost marks in the previous assignment,
+        based on the feedback of pII, we have decided to change Itinerary to
+        to become and Iterator of Flight, rather than a subclass of Flight.
+
+    Tasks for this week:
+        Sooham:
+            Write updated CRC cards to reflect backend changes.
+            Keep updating bakend
+
+        Angad:
+            Get Login Activity to log in user, if that is completed, work
+            on making Activity for Users (Admin or Client) to edit their
+            own personal information (please see getters and setters for User class)
+
+        Badis:
+            Help create a logo for the app using graphic design skills
+
+        Chris:
+            Talk to Angad and get the app running on your Android studio.
+            Try to work on Driver.java after reading through updated backend code from
+             Sooham.
+
