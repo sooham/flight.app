@@ -44,7 +44,7 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
 	String destination, Date departureDateTime, Date arrivalDateTime,
 	double price, int numSeats) throws InvalidFlightException {
 		if (((arrivalDateTime.getTime() - departureDateTime.getTime()) < 0) ||
-			 origin.equals(destination)) {
+			 origin.equals(destination) || price < 0.0 || numSeats < 0) {
 			throw new InvalidFlightException(
 					"The Flight constructor inupts were invalid"
 					);
