@@ -9,7 +9,7 @@ import java.util.Comparator;
  * 
  * @param T a subclass of Flight object to compare by price
  */
-public class PriceComparator<T extends Flight> implements Comparator<T>, 
+public class PriceComparator<T extends Transport> implements Comparator<T>, 
 Serializable {
 
 	private static final long serialVersionUID = -7067868135052897832L;
