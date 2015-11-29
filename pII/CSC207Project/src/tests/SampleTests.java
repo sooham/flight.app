@@ -1,4 +1,4 @@
-package driver;
+package tests;
 
 import static org.junit.Assert.*;
 
@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SampleTest {
+public class SampleTests {
 
     // NOTE: set the PATH variable to the location of the input csv files.
     public static final String PATH = "~/Dropbox/U of T/CSC207/group_0765/pII/sampleTests/";

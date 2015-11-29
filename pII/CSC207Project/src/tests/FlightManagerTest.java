@@ -1,24 +1,25 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeSet;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.TreeSet;
-import java.util.Map;
-import java.util.HashMap;
-import java.text.SimpleDateFormat;
-import java.util.TreeMap;
-import java.text.ParseException;
-
-import backend.FlightManager;
-import backend.Itinerary;
 import backend.Flight;
-import backend.InvalidItineraryException;
+import backend.FlightManager;
 import backend.InvalidFlightException;
+import backend.InvalidItineraryException;
+import backend.Itinerary;
 
 public class FlightManagerTest {
 	private FlightManager flightManager;
