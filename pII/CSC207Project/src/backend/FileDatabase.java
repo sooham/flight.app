@@ -113,8 +113,6 @@ public class FileDatabase implements Serializable {
 	 * @param dir  the path to directory where serialized files are stored.
 	 */
 	public void deserializeManagers(String dir) {
-		boolean serializedFilesExist = true;
-
 		try (
 			FileInputStream userFile = new 
 				FileInputStream(dir + userManagerFile);
@@ -129,22 +127,18 @@ public class FileDatabase implements Serializable {
 			userManager = (UserManager) userStream.readObject();
 			flightManager = (FlightManager) flightStream.readObject();
 		} catch (FileNotFoundException e) {
-			serializedFilesExist = false;
+			// Serialized files do not exist
+			populateUserManager(dir + passwordsFile);
+			serializeManagers(dir);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		if (!serializedFilesExist) {
-			populateUserManager(dir + passwordsFile);
-			serializeManagers(dir);
-		}
 	}
-	
 	
 	/**
 	 * Takes the path of a directory and serializes this FileDatabase's
 	 *  UserManger and FlightManager objects. This function is used for
-	 *  autosaving when changes are made to the FlightApp at runtime
+	 *  autosaving when changes are made to the FlightApp at runtime.
 	 * 
 	 * @param dir  the path of a directory in the system.
 	 */
@@ -168,6 +162,8 @@ public class FileDatabase implements Serializable {
 		}
 	}
 	
+	// TODO: Make a general, CSV file reading helper function
+
 	/**
 	 * Populates this FlightManager's UserManager with all initial Users
 	 * given in passwords.txt file. 
@@ -306,7 +302,8 @@ public class FileDatabase implements Serializable {
 											Double.parseDouble(values[6]),
 											Integer.parseInt(values[7])
 											);
-				flightManager.addFlight(newFlight);
+				// add or edit the Flight information in FlightManager
+				flightManager.update(newFlight);
 				} catch(InvalidFlightException e) {
 					System.out.println("A Flight in the CSV was invalid.");
 				}
