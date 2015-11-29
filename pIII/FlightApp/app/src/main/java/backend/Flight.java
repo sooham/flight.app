@@ -11,7 +11,7 @@ import java.util.Date;
  * The natural ordering for Flights will be by Date, hence implements
  * Comparable.
  */
-public class Flight implements Comparable<Flight>, Serializable {
+public class Flight implements Comparable<Flight>, Serializable, Transport {
 
     private static final long serialVersionUID = 4362700743234104218L;
 
@@ -263,9 +263,14 @@ public class Flight implements Comparable<Flight>, Serializable {
      * If setting to the number of empty seats removes booked users then do
      * nothing.
      *
+     * <p> This function is private because it does not make sense for
+     * an Admin to edit the number of seats that are empty in a Flight.
+     * An Admin rather edit the number of people who booked this Flight
+     * or this Flights total seats.
+     *
      * @param numEmptySeats  the new number of empty seats of this Flight
      */
-    public void setNumEmptySeats(int numEmptySeats) {
+    private void setNumEmptySeats(int numEmptySeats) {
         if (0 <= numEmptySeats) {
             this.numEmptySeats = numEmptySeats;
         }
@@ -280,29 +285,22 @@ public class Flight implements Comparable<Flight>, Serializable {
      */
     @Override
     public int compareTo(Flight other) {
-
         return departureDateTime.compareTo(other.getDepartureDateTime());
     }
 
     /**
      * Compares this flight and another Object. Returns true iff other object
-     * is a Flight and has identical fields.
+     * is a Flight with idential airline and flight number.
      *
      * @param object  an Object to compare.
-     * @return true iff object is a Flight and has identical fields.
+     * @return true iff object is a Flight and has identical airline and
+     * flight number.
      */
     @Override
     public boolean equals(Object object) {
         if (object instanceof Flight) {
             Flight f = (Flight) object;
-            return number == f.number &&
-                    airline.equals(f.airline) &&
-                    origin.equals(f.origin) &&
-                    destination.equals(f.destination) &&
-                    departureDateTime.equals(f.departureDateTime) &&
-                    arrivalDateTime.equals(f.arrivalDateTime) &&
-                    price == f.price &&
-                    numSeats == f.numSeats;
+            return airline.equals(f.airline) && number == f.number;
         }
         return false;
     }

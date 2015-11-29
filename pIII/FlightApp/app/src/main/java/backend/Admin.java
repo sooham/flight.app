@@ -66,12 +66,17 @@ public class Admin extends User implements Serializable {
     /**
      * Creates a new Admin instance with the given login Information.
      *
+     * <p>All other information is set to null and can be reset later.
+     *
      * @param email  this admin's email.
      * @param password  this admin's password.
      */
     public Admin(String email, String password) {
         super(email, password);
     }
+
+    // TODO: Don't know if I need these methods to be there,
+    // FileDatabase already implements these
 
     /**
      * Adds or edits a Client as an instantiated User
@@ -105,6 +110,9 @@ public class Admin extends User implements Serializable {
     public void addFlightFromFile(String dir) throws IOException {
         FileDatabase.getInstance().addFlightFromFile(dir);
     }
+
+    // TODO: Don't know if I need this method here, Client already implements
+    // this method
 
     /**
      * This User adds an Itinerary to a Client's booked Itineraries.

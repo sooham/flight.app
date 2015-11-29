@@ -2,27 +2,26 @@ package backend;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
 /**
- * A Flight Itinerary. An Itinerary is a set of Flights for which
+ * A Flight Itinerary. An Itinerary is a sorted set of Flights for which
  * every previous flight's destination is the following flight's origin and
  * every previous flight arrives less than 6 hours before the following
  * flight's departure.
  *
  * Additional restriction such as no repetition of origin and destinations
  * is imposed to prevent inefficient routes.
- *
- * Itineraries have all fields inherited from Flight and a TreeSet of flights,
- * due to no cycles. Every Itinerary has a unique identifier number.
  */
-public class Itinerary extends Flight implements Serializable {
+public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
+        Serializable, Transport {
 
     private static final long SIX_HOURS_TO_MILLISECONDS = (long) 2.16e+7;
 
     private static final long serialVersionUID = 7985656353564622420L;
-    private static long idCount = 0l; // the ID to be assigned next Itinerary
 
     private TreeSet<Flight> flights;	// the Set of flights in sequence for
     // this Itinerary
@@ -32,41 +31,13 @@ public class Itinerary extends Flight implements Serializable {
      *
      * @param flights  a TreeSet of Flight objects
      * @throws InvalidItineraryExecption if Itinerary is invalid.
-     * @throws InvalidFlightException if Itinerary is invalid.
      */
-    public Itinerary(TreeSet<Flight> flights) throws InvalidItineraryException,
-            InvalidFlightException {
+    public Itinerary(TreeSet<Flight> flights) throws InvalidItineraryException {
 		/* TreeSets are used because they automatically maintain natural
-		 * ordering of the elements, have methods like first and last to
+		 * ordering of the Flights, have methods like first and last to
 		 * get the first and last flights in the set and headset(), tailset()
 		 * to get all flights before or after a given flight.
-		 *
-		 * Because we will Itineraries directly into files, there is no
-		 * need to modify the middle elements of the set of Flights.
 		 */
-        super(flights.first().getAirline(),
-                idCount,
-                flights.first().getOrigin(),
-                flights.last().getDestination(),
-                flights.first().getDepartureDateTime(),
-                flights.last().getArrivalDateTime(),
-                0.0,
-                0);
-
-        // Set the price of this Itinerary
-        double totalItineraryPrice = 0.0;
-        for (Flight f: flights) {
-            totalItineraryPrice += f.getPrice();
-        }
-        setPrice(totalItineraryPrice);
-
-        // Set the number of seats of this Itinerary
-        int totalNumSeats = 0;
-        for (Flight f: flights) {
-            totalNumSeats +=  f.getNumSeats();
-        }
-        setNumSeats(totalNumSeats);
-
         this.flights = flights;
 
         // check if valid
@@ -75,9 +46,68 @@ public class Itinerary extends Flight implements Serializable {
                     "The constructor was given an invalid Flight sequence."
             );
         }
+    }
 
-        // increase idCount
-        idCount++;
+    /**
+     * Returns this itinerary's origin city.
+     *
+     * @return the origin city
+     */
+    public String getOrigin() {
+        return flights.first().getOrigin();
+    }
+
+    /**
+     * Returns this itinerary's destination city.
+     *
+     * @return the destination city
+     */
+    public String getDestination() {
+        return flights.last().getDestination();
+    }
+
+    /**
+     * Returns this itinerary's departing date and time with respect to UTC.
+     *
+     * @return the departureDateTime
+     */
+    public Date getDepartureDateTime() {
+        return flights.first().getDepartureDateTime();
+    }
+
+    /**
+     * Returns this itinerary's arrival date and time with respect to UTC.
+     *
+     * @return the arrivalDateTime
+     */
+    public Date getArrivalDateTime() {
+        return flights.last().getArrivalDateTime();
+    }
+
+    /**
+     * Returns the ticket price for this Itinerary.
+     *
+     * @return the price
+     */
+    public double getPrice() {
+        double totalPrice = 0.0;
+        for (Flight f: flights) {
+            totalPrice += f.getPrice();
+        }
+        return totalPrice;
+    }
+
+    /**
+     * Returns the total travel time of this Itinerary in minutes.
+     *
+     * @return the number of minutes between departure and arrival time.
+     */
+    public long getDuration() {
+        final int TO_MINUTE= 60000; // milliseconds
+        return (
+                getArrivalDateTime().getTime()
+                        - getDepartureDateTime().getTime()
+        ) / TO_MINUTE;
     }
 
     /**
@@ -92,14 +122,17 @@ public class Itinerary extends Flight implements Serializable {
     /**
      * Returns if this Itinerary is traversable. An Itinerary is traversable
      * if and only if all flights in the Itinerary form a continuous,
-     * non-cyclic path in time and cities AND all
-     * layovers are less than 6 hours long.
+     * non-cyclic path in time and cities AND all layovers are
+     * less than 6 hours long.
      *
      * @return a boolean indicating if the Flight in flights are traversable.
      */
     public boolean isValid() {
         // check there is no repetition of origins and destinations
         // and all Flights depart where the previous one arrives
+        if (flights.isEmpty()) {
+            return false;
+        }
         if (flights.size() == 1) {
             return true;
         }
@@ -154,15 +187,8 @@ public class Itinerary extends Flight implements Serializable {
         // Create a new TreeSet, being careful not to alias
         TreeSet<Flight> newFlights = (TreeSet<Flight>) flights.clone();
         newFlights.add(newFlight);
-
-        try {
-            Itinerary newItinerary = new Itinerary(newFlights);
-            return newItinerary;
-        } catch (InvalidFlightException e) {
-            throw new InvalidItineraryException(
-                    "The flight added created an invalid Itinerary"
-            );
-        }
+        Itinerary newItinerary = new Itinerary(newFlights);
+        return newItinerary;
     }
 
     /**
@@ -171,7 +197,7 @@ public class Itinerary extends Flight implements Serializable {
      */
     @Override
     public String toString() {
-        return "Itinerary " + getNumber() + " from " + getOrigin() + " to "
+        return "Itinerary " + " from " + getOrigin() + " to "
                 + getDestination() + " (" + getDepartureDateTime() + " --- "
                 + getArrivalDateTime() + ")";
     }
@@ -181,22 +207,33 @@ public class Itinerary extends Flight implements Serializable {
      * is a Itinerary and has identical fields.
      *
      * @param object  an Object to compare.
-     * @return true iff object is a Flight and has identical fields.
+     * @return true iff object is a Itinerary and has identical fields.
      */
     @Override
     public boolean equals(Object object) {
         if (object instanceof Itinerary) {
-            Itinerary i = (Itinerary) object;
-            return getNumber() == i.getNumber() &&
-                    getAirline() == i.getAirline() &&
-                    getOrigin() == i.getOrigin() &&
-                    getDestination() == i.getDestination() &&
-                    getDepartureDateTime() == i.getDepartureDateTime() &&
-                    getArrivalDateTime() == i.getArrivalDateTime() &&
-                    getPrice() == i.getPrice() &&
-                    getNumSeats() == i.getNumSeats() &&
-                    flights == i.getFlights();
+            return flights.equals(((Itinerary) object).getFlights());
         }
         return false;
+    }
+
+    /**
+     * Returns an iterator over the TreeSet of elements of type Flight
+     */
+    @Override
+    public Iterator<Flight> iterator() {
+        return flights.iterator();
+    }
+
+    /**
+     * Returns an integer that shows relative departure time (less, equals
+     * or more than) another Itinerary object.
+     *
+     * @param other  a Itinerary object
+     * @returns an integer representing the relative departure times.
+     */
+    @Override
+    public int compareTo(Itinerary other) {
+        return getDepartureDateTime().compareTo(other.getDepartureDateTime());
     }
 }

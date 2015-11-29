@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +28,8 @@ public class FlightManager implements Serializable{
      */
     private static final long serialVersionUID = -7587676537029568714L;
 
-    public Map<String[], ArrayList<Itinerary>> itineraries;
-    public Map<String[], ArrayList<Flight>> flights;
+    public Map<List<String>, List<Itinerary>> itineraries;
+    public Map<List<String>, List<Flight>> flights;
 
     // The SimpleDateFormat is used to turn strings into Date objects
     private SimpleDateFormat dateFormatter =
@@ -38,8 +39,8 @@ public class FlightManager implements Serializable{
     private static FlightManager singletonInstance;
 
     // Comparator objects for comparing by Price and Duration
-    private PriceComparator<Flight> sortPrice;
-    private DurationComparator<Flight> sortDuration;
+    private PriceComparator<Transport> sortPrice;
+    private DurationComparator<Transport> sortDuration;
 
     /**
      * Constructs an empty FlightManager object.
@@ -66,30 +67,23 @@ public class FlightManager implements Serializable{
     }
 
     /**
-     * Adds or edits a flight to this FlightManager. Updates the Hashtable
-     * of Flights and Itineraries as necessary.
+     * Updates a flight in this FlightManager.
      *
-     * @param newFlight  the flight to add
+     * <p> If the given flight already exists in this FlightManager
+     * (has the same airline and flight number) then this method will overwrite
+     * any changes to the flight in this FlightManager. Otherwise it will add
+     * the flight to this FlightManager.
+     *
+     * @param flight  the Flight to update this FlightManager with.
      */
-    public void addFlight(Flight newFlight) {
-        // Add to the Hashmap of Flight
-        // Check if key is in Hashmap and create if necessary
-        String [] key = {
-                newFlight.getOrigin(),
-                newFlight.getDestination(),
-                dateFormatter.format(newFlight.getDepartureDateTime())
-        };
+    public void update(Flight flight) {
+        // update to the Hashmap of Flight
+        updateFlightsHashMap(flight);
+        // update to the Hashmap of Itinerary
+        updateItinerariesHashMap(flight);
 
-        if (!flights.containsKey(key)) {
-            // add the key and value
-            flights.put(key, new ArrayList<Flight>());
-        }
-
-        if (!flights.get(key).contains(newFlight)) {
-            flights.get(key).add(newFlight);
-        }
-
-        // Add to the Hashmap of Itinerary
+        // first create the key
+        // Add or to the Hashmap of Itinerary
         // If the flight is connected to any itinerary X
         // 		add the flight to the itinerary X
         //		store the new itinerary in FlightManager itineraries
@@ -97,96 +91,137 @@ public class FlightManager implements Serializable{
         //		if the flight is not connected to any itinerary
         //			create a new itinerary and add
 
-        addtoItineraries(newFlight);
     }
 
     /**
-     * Updates the HashMap of Itineraries in this FlightManager when adding
-     * a new Flight.
+     * Updates the flights HashMap with given flight.
      *
-     * @param f  the new Flight object to add.
+     * <p>If the given flight already exists
+     * (has the same airline and flight number) then this method will overwrite
+     * any changes to the flight in the flights HashMap.
+     *
+     * @param flight  the Flight to update the flights HashMap with.
      */
-    private void addtoItineraries(Flight f) {
-        // A single Flight alone is also an itinerary, so we can first add
-        // that
-        TreeSet<Flight> t = new TreeSet<>();
-        t.add(f);
-
-        try {
-            Itinerary trivialItinerary = new Itinerary(t);
-            String[] key = {
-                    f.getOrigin(),
-                    f.getDestination(),
-                    dateFormatter.format(f.getDepartureDateTime())
-            };
-            itineraries.putIfAbsent(key, new ArrayList<Itinerary>());
-            itineraries.get(key).add(trivialItinerary);
-        } catch(Exception e) {
-            // This exception will not be thrown since Flight is valid
+    private void updateFlightsHashMap(Flight flight) {
+        // If we are editing the HashMap, then we will
+        // have to remove all flights with the same airline and flight number
+        // from the HashMap (because the flight could have changed origin
+        // destination or departure date)
+        // TODO: verify if the loop below remove() aliases
+        for (List<Flight> value: flights.values()) {
+            value.remove(flight);
         }
+        // Regardless of adding or editing we will have to place
+        // the flight to its corresponding key
+        List<String> key = getKey(flight);
+        flights.putIfAbsent(key, new ArrayList<Flight>());
+        flights.get(key).add(flight);
+    }
 
-        // check if the flight f is continuous to any key in HashMap of
-        // itineraries
-
-        // holds new pairs of key values for itineraries generated
-        Map<String[], ArrayList<Itinerary>> addPairs = new HashMap<>();
-
-        for (String[] key : itineraries.keySet()) {
-            boolean continuous = (key[0] == f.getDestination() ||
-                    key[1] == f.getOrigin());
-
-            if (continuous) {
-                // we can just add this flight to all the Itinerary in
-                // the mapped values, time and non cyclic logic is dealt with
-                // by Itinerary.addFlight() method
-                for (Itinerary it : itineraries.get(key)) {
-                    try {
-                        // make a new itinerary with flight f
-                        Itinerary newItinerary = it.addFlight(f);
-                        // make the key for this itinerary
-                        String[] newKey = {
-                                newItinerary.getOrigin(),
-                                newItinerary.getDestination(),
-                                dateFormatter.format(
-                                        newItinerary.getDepartureDateTime()
-                                )};
-
-                        // check if this key already exists in itineraries
-                        if (itineraries.containsKey(newKey)) {
-                            itineraries.get(newKey).add(newItinerary);
-                        } else {
-                            // put in addPairs
-                            addPairs.putIfAbsent(
-                                    newKey, new ArrayList<Itinerary>()
-                            );
-                            addPairs.get(newKey).add(newItinerary);
-                        }
-                    } catch (InvalidItineraryException e) {
-                        // The timing of the itinerary invalid
-                    }
+    /**
+     * Updates the itinerary HashMap with given flight.
+     *
+     * <p>If the given flight already exists
+     * (has the same airline and flight number) then this method will overwrite
+     * any changes to the flight in the itinerary HashMap.
+     *
+     * @param flight  the Flight to update the itineraries HashMap with.
+     */
+    private void updateItinerariesHashMap(Flight flight) {
+        // If we are editing the HashMap, then we will
+        // have to remove all itineraries containing the flight with the
+        // same airline and flight number from the HashMap
+        // (because the flight could have changed origin
+        // destination or departure date) making the itinerary invalid
+        // TODO: Make this code block work
+        for (List<Itinerary> value: itineraries.values()) {
+            for (Itinerary it: new ArrayList<Itinerary>(value)) {
+                if (it.getFlights().contains(flight)) {
+                    value.remove(it);
                 }
             }
         }
 
-        // finally take all the key value pairs in addPairs and put them
-        // into Hashmap of itineraries
-        itineraries.putAll(addPairs);
+        // now that we have removed all the previous occurrences of the
+        // flight, we can create new itineraries
+        addToItineraries(flight);
     }
 
     /**
-     * Gets all Itinerary in this FlightManager by given origin, destination
+     * Adds a new flight not in the itineraries HashMap to the itineraries
+     * HashMap.
+     *
+     * @param flight  the new flight to add.
+     */
+    /*
+    private void addToItineraries(Flight flight) {
+        // We first add the Flight by itself as an Itinerary in the HashMap
+        TreeSet<Flight> singleFlight = new TreeSet<>();
+        try {
+            Itinerary trivialItinerary = new Itinerary(singleFlight);
+            List<String> key = getKey(flight);
+            itineraries.putIfAbsent(key, new ArrayList<Itinerary>());
+            itineraries.get(key).add(trivialItinerary);
+        } catch(InvalidItineraryException e) {//cannot happen}
+
+        // check if flight is continuous to any key in itineraries and add
+
+        // holds new pairs of key values generated
+        Map<List<String>, List<Itinerary>> newKeyValuePairs = new HashMap<>();
+
+        for (List<String> itKey : itineraries.keySet()) {
+            boolean continuous = (itKey.get(0) == flight.getDestination() ||
+                    itKey.get(1) == flight.getOrigin());
+
+            if (continuous) {
+                // we can just add this flight to all Itinerary mapped by itKey
+                // time and non cyclic logic is dealt with by
+                // Itinerary.addFlight() method
+                for (Itinerary it : itineraries.get(itKey)) {
+                    // make a new itinerary with flight
+                    try {
+                        Itinerary newItinerary = it.addFlight(flight);
+                        // make the key for this itinerary
+                        List<String> newKey = getKey(newItinerary);
+                        // check if this key already exists in itineraries Map
+                        if (itineraries.containsKey(newKey)) {
+                            itineraries.get(newKey).add(newItinerary);
+                        } else {
+                            // put in addPairs
+                            newKeyValuePairs.putIfAbsent(
+                                    newKey, new ArrayList<Itinerary>()
+                            );
+                            newKeyValuePairs.get(newKey).add(newItinerary);
+                        }
+                    } catch (InvalidItineraryException e) {//nothing}
+                }
+            }
+        }
+        // finally take all the key value pairs and put them into HashMap
+        itineraries.putAll(newKeyValuePairs);
+    }
+   */
+
+    /**
+     * Gets all itineraries in this FlightManager by given origin, destination
      * and departure date.
      *
      * @param origin  the origin of the Itinerary
      * @param destination  the destination of the Itinerary
      * @param departureDate  the departure date of the Itinerary
-     * @return an ArrayList of all Itinerary meeting criterion, if criterion
-     * is not met return empty ArrayList of Itinerary
+     * @return an List of all Itinerary meeting criterion, if criterion
+     * is not met return empty List of Itinerary
      */
-    public ArrayList<Itinerary> getItineraries(String origin,
-                                               String destination, String departureDate) {
-        String[] key = {origin, destination, departureDate};
-        return itineraries.getOrDefault(key, new ArrayList<Itinerary>());
+    public List<Itinerary> getItineraries(String origin,
+                                          String destination, String departureDate) {
+        List<String> key = new ArrayList<>();
+        key.add(origin);
+        key.add(destination);
+        key.add(departureDate);
+        if( itineraries.containsKey(key)){
+            return itineraries.get(key);
+        }
+        return new ArrayList<Itinerary>();
     }
 
 
@@ -197,20 +232,26 @@ public class FlightManager implements Serializable{
      * @param origin  the origin of the Flight
      * @param destination  the destination of the Flight
      * @param departureDate  the departure date of the Flight
-     * @return an ArrayList of all Flight meeting criterion, if criterion
-     * is not met return empty ArrayList of Flight
+     * @return an List of all Flight meeting criterion, if criterion
+     * is not met return empty List of Flight
      */
-    public ArrayList<Flight> getFlights(String origin, String destination,
-                                        String departureDate) {
-        String[] key = {origin, destination, departureDate};
-        return flights.getOrDefault(key, new ArrayList<Flight>());
+    public List<Flight> getFlights(String origin, String destination,
+                                   String departureDate) {
+        List<String> key = new ArrayList<>();
+        key.add(origin);
+        key.add(destination);
+        key.add(departureDate);
+        if(flights.containsKey(key)){
+            return flights.get(key);
+        }
+        return new ArrayList<Flight>();
     }
 
     /**
      * Sorts a List of Flight or Itinerary by Price.
      * @param list  a list of Flight or Itinerary
      */
-    public void sortByPrice(List<? extends Flight> list) {
+    public void sortByPrice(List<? extends Transport> list) {
         Collections.sort(list, sortPrice);
     }
 
@@ -218,8 +259,24 @@ public class FlightManager implements Serializable{
      * Sorts a List of Flight or Itinerary by Duration.
      * @param list  a list of Flight or Itinerary
      */
-    public void sortByDuration(List<? extends Flight> list) {
+    public void sortByDuration(List<? extends Transport> list) {
         Collections.sort(list, sortDuration);
+    }
+
+    /**
+     * Returns the key for the given Transport to use with this FlightManager.
+     *
+     * @param t a Transport.
+     * @return the key List<String> stating origin, destination and departure
+     * date.
+     */
+    private List<String> getKey(Transport t) {
+        List<String> key = new ArrayList<>();
+        key.add(t.getOrigin());
+        key.add(t.getDestination());
+        key.add(dateFormatter.format(t.getDepartureDateTime()));
+
+        return key;
     }
 }
 
