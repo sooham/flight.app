@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 
  * @param T a subclass of Flight object to compare by duration
  */
-public class DurationComparator<T extends Flight> implements Comparator<T>, 
+public class DurationComparator<T extends Transport> implements Comparator<T>, 
 Serializable {
 
 	private static final long serialVersionUID = 7448765617847258913L;
