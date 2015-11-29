@@ -61,8 +61,10 @@ public class Client extends User implements Serializable {
     /**
      * Creates a new Client instance with the given login Information.
      *
+     * <p> All other information is set to null and can be set later.
+     *
      * @param email  this client's email.
-     * @param passowrd  this client's password.
+     * @param password  this client's password.
      */
     public Client(String email, String password) {
         super(email, password);
