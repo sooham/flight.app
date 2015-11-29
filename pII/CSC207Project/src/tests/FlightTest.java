@@ -16,33 +16,39 @@ public class FlightTest {
 
 
 	@Before
-	public void setUp() throws InvalidFlightException{
-	testFlight = new Flight("American Airlines", 123l, "A",
-	"B", new Date(2015, 11, 10, 7, 30), new Date(2015, 11, 11, 12, 30), 1500.0, 300);
+	public void setUp() throws InvalidFlightException {
+		testFlight = new Flight("American Airlines", 123l, "A", "B", 
+				new Date(2015, 11, 10, 7, 30), new Date(2015, 11, 11, 12, 30),
+				1500.0, 300);
 	}
 
 	@Test(expected=InvalidFlightException.class) 
-	public void flightClassShouldThrowErrorWithCycle() throws InvalidFlightException{
-	new Flight("Emirates", 516l, "W",
-	"W", new Date(2015, 11, 10, 7, 30), new Date(2015, 11, 11, 12, 30), 0.0, 500);
+	public void flightClassShouldThrowErrorWithCycle() 
+			throws InvalidFlightException{
+	new Flight("Emirates", 516l, "W", "W", new Date(2015, 11, 10, 7, 30),
+			new Date(2015, 11, 11, 12, 30), 0.0, 500);
 	}
 		
 	@Test(expected=InvalidFlightException.class) 
-	public void flightClassShouldThrowErrorWithWrongTiming() throws InvalidFlightException{
-	new Flight("Emirates", 516l, "W",
-	"X", new Date(2015, 11, 10, 7, 30), new Date(2015, 11, 10, 6, 30), 0.0, 500);
+	public void flightClassShouldThrowErrorWithWrongTiming() 
+			throws InvalidFlightException{
+	new Flight("Emirates", 516l, "W", "X", 
+			new Date(2015, 11, 10, 7, 30), new Date(2015, 11, 10, 6, 30), 
+			0.0, 500);
 	}
 	
 	@Test(expected=InvalidFlightException.class) 
-	public void flightClassShouldThrowErrorWithNegativePrice() throws InvalidFlightException{
-	new Flight("Emirates", 516l, "W",
-	"X", new Date(2015, 11, 10, 7, 30), new Date(2015, 11, 10, 8, 30), -10.0, 500);
+	public void flightClassShouldThrowErrorWithNegativePrice() 
+			throws InvalidFlightException{
+	new Flight("Emirates", 516l, "W", "X", new Date(2015, 11, 10, 7, 30), 
+			new Date(2015, 11, 10, 8, 30), -10.0, 500);
 	}
 
 	@Test(expected=InvalidFlightException.class) 
-	public void flightClassShouldThrowErrorWithNegativeSeats() throws InvalidFlightException{
-	new Flight("Emirates", 516l, "W",
-	"X", new Date(2015, 11, 10, 7, 30), new Date(2015, 11, 10, 8, 30), 30.0, -200);
+	public void flightClassShouldThrowErrorWithNegativeSeats() 
+			throws InvalidFlightException{
+	new Flight("Emirates", 516l, "W", "X", new Date(2015, 11, 10, 7, 30), 
+			new Date(2015, 11, 10, 8, 30), 30.0, -200);
 	}
 
 	@Test
@@ -51,9 +57,12 @@ public class FlightTest {
 	}
 
 	@Test
-	public void setAirlineShouldChangeValue() throws InvalidFlightException {
-		Flight f = new Flight("Emirates", 303l, "S", "T", new Date(2016, 8, 19, 01, 00), 
-				new Date(2016, 8, 19, 03, 00), 100.0, 50);
+	public void setAirlineShouldChangeValue() 
+			throws InvalidFlightException {
+		Flight f = new Flight("Emirates", 303l, "S", "T", 
+				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
+				100.0, 50);
+
 		f.setAirline("China Eastern");
 		assertEquals(f.getAirline(), "China Eastern");
 	}
@@ -65,8 +74,10 @@ public class FlightTest {
 	
 	@Test
 	public void setNumberShouldChangeValue() throws InvalidFlightException {
-		Flight f = new Flight("Emirates", 303l, "S", "T", new Date(2016, 8, 19, 01, 00), 
-				new Date(2016, 8, 19, 03, 00), 100.0, 50);
+		Flight f = new Flight("Emirates", 303l, "S", "T", 
+				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
+				100.0, 50);
+
 		f.setNumber(513l);
 		assertEquals(f.getNumber(), 513l);
 	}
@@ -78,16 +89,21 @@ public class FlightTest {
 
 	@Test
 	public void setOriginShouldChangeValue() throws InvalidFlightException {
-		Flight f = new Flight("Emirates", 303l, "S", "T", new Date(2016, 8, 19, 01, 00), 
-				new Date(2016, 8, 19, 03, 00), 100.0, 50);
+		Flight f = new Flight("Emirates", 303l, "S", "T", 
+				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
+				100.0, 50);
+
 		f.setOrigin("R");
 		assertEquals(f.getOrigin(), "R");
 	}
 
 	@Test(expected=InvalidFlightException.class)
-	public void setOriginShouldThrowErrorIfCycle() throws InvalidFlightException {
-		Flight f = new Flight("Emirates", 303l, "S", "T", new Date(2016, 8, 19, 01, 00), 
-				new Date(2016, 8, 19, 03, 00), 100.0, 50);
+	public void setOriginShouldThrowErrorIfCycle() 
+			throws InvalidFlightException {
+		Flight f = new Flight("Emirates", 303l, "S", "T", 
+				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
+				100.0, 50);
+
 		f.setOrigin("T");
 	}
 
@@ -97,79 +113,100 @@ public class FlightTest {
 	}
 
 	@Test
-	public void setDestinationShouldChangeValue() throws InvalidFlightException {
-		Flight f = new Flight("Emirates", 303l, "S", "T", new Date(2016, 8, 19, 01, 00), 
-				new Date(2016, 8, 19, 03, 00), 100.0, 50);
+	public void setDestinationShouldChangeValue() 
+			throws InvalidFlightException {
+		Flight f = new Flight("Emirates", 303l, "S", "T", 
+				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
+				100.0, 50);
+
 		f.setDestination("U");
 		assertEquals(f.getDestination(), "U");
 	}
 
 	@Test(expected=InvalidFlightException.class)
-	public void setDestinationShouldThrowErrorIfCycle() throws InvalidFlightException {
-		Flight f = new Flight("Emirates", 303l, "S", "T", new Date(2016, 8, 19, 01, 00), 
-				new Date(2016, 8, 19, 03, 00), 100.0, 50);
+	public void setDestinationShouldThrowErrorIfCycle() 
+			throws InvalidFlightException {
+		Flight f = new Flight("Emirates", 303l, "S", "T", 
+				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
+				100.0, 50);
+
 		f.setDestination("S");
 	}
 
 	@Test
 	public void getDepartureDateTimeShouldReturnCorrectValue() {
-		assertEquals(testFlight.getDepartureDateTime(), new Date(2015, 11, 10, 7, 30));
+		assertEquals(
+				testFlight.getDepartureDateTime(), 
+				new Date(2015, 11, 10, 7, 30)
+				);
 	}
 	
 	@Test
-	public void setDepartureDateTimeShouldChangeValue() throws InvalidFlightException {
-		Flight f = new Flight("Emirates", 303l, "S", "T", new Date(2016, 8, 19, 01, 00), 
-				new Date(2016, 8, 19, 03, 00), 100.0, 50);
-		f.setDepartureDateTime(new Date(2016, 8, 9, 02, 15));
-		assertEquals(f.getDepartureDateTime(), new Date(2016, 8, 9, 02, 15));
+	public void setDepartureDateTimeShouldChangeValue() 
+			throws InvalidFlightException {
+		Flight f = new Flight("Emirates", 303l, "S", "T", 
+				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
+				100.0, 50);
+
+		f.setDepartureDateTime(new Date(2016, 8, 19, 02, 15));
+		assertEquals(f.getDepartureDateTime(), new Date(2016, 8, 19, 02, 15));
 	}
 
 	@Test(expected=InvalidFlightException.class)
-	public void setDepartureDateTimeShouldThrowErrorIfNegativeTime() throws InvalidFlightException {
-		Flight f = new Flight("Emirates", 303l, "S", "T", new Date(2016, 8, 19, 01, 00), 
-				new Date(2016, 8, 19, 03, 00), 100.0, 50);
+	public void setDepartureDateTimeShouldThrowErrorIfNegativeTime() 
+			throws InvalidFlightException {
+		Flight f = new Flight("Emirates", 303l, "S", "T", 
+				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
+				100.0, 50);
+
 		f.setDepartureDateTime(new Date(2016, 9, 1, 10, 30));
 	}
 
 	@Test
 	public void getArrivalDateTimeShouldReturnCorrectValue() {
-		assertEquals(testFlight.getArrivalDateTime(), new Date(2015, 11, 11, 12, 30));
+		assertEquals(
+				testFlight.getArrivalDateTime(),
+				new Date(2015, 11, 11, 12, 30)
+				);
 	}
 
 	@Test
-	public void setArrivalDateTimeShouldChangeValue() throws InvalidFlightException {
-		Flight f = new Flight("Emirates", 303l, "S", "T", new Date(2016, 8, 19, 01, 00), 
-				new Date(2016, 8, 19, 03, 00), 100.0, 50);
+	public void setArrivalDateTimeShouldChangeValue() 
+			throws InvalidFlightException {
+		Flight f = new Flight("Emirates", 303l, "S", "T", 
+				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
+				100.0, 50);
+
 		f.setArrivalDateTime(new Date(2016, 8, 19, 02, 15));
 		assertEquals(f.getArrivalDateTime(), new Date(2016, 8, 19, 02, 15));
 	}
 
 	@Test(expected=InvalidFlightException.class)
-	public void setArrivalDateTimeShouldThrowErrorIfNegativeTime() throws InvalidFlightException {
-		Flight f = new Flight("Emirates", 303l, "S", "T", new Date(2016, 8, 19, 01, 00), 
-				new Date(2016, 8, 19, 03, 00), 100.0, 50);
+	public void setArrivalDateTimeShouldThrowErrorIfNegativeTime() 
+			throws InvalidFlightException {
+		Flight f = new Flight("Emirates", 303l, "S", "T", 
+				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
+				100.0, 50);
+
 		f.setArrivalDateTime(new Date(2015, 12, 10, 00, 30));
 	}
 
 	@Test
 	public void getPriceShouldReturnCorrectValue() {
-		assertTrue(testFlight.getPrice() == (double) 1500.00);
+		assertTrue(testFlight.getPrice() == 1500.00);
 	}
 
 	@Test
-	public void setPriceShouldChangePriceIfCorrect() throws InvalidFlightException {
-		Flight f = new Flight("Emirates", 303l, "S", "T", new Date(2016, 8, 19, 01, 00), 
-				new Date(2016, 8, 19, 03, 00), 100.0, 50);
+	public void setPriceShouldChangePriceIfCorrect() 
+			throws InvalidFlightException {
+		Flight f = new Flight("Emirates", 303l, "S", "T", 
+				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
+				100.0, 50);
+
 		f.setPrice(250.12);
 		assertTrue(f.getPrice() == 250.12);
-	}
-	
-	@Test
-	public void setPriceShouldNotChangeIfIncorrect() throws InvalidFlightException {
-		Flight f = new Flight("Emirates", 303l, "S", "T", new Date(2016, 8, 19, 01, 00), 
-				new Date(2016, 8, 19, 03, 00), 100.0, 50);
 		f.setPrice(-23.0);
-		assertTrue(f.getPrice() == 100.0);
+		assertTrue(f.getPrice() == 250.12);
 	}
 
 	@Test
@@ -179,8 +216,10 @@ public class FlightTest {
 
 	@Test
 	public void setNumSeats() throws InvalidFlightException {
-		Flight f = new Flight("Emirates", 303l, "S", "T", new Date(2016, 8, 19, 01, 00), 
-				new Date(2016, 8, 19, 03, 00), 100.0, 50);
+		Flight f = new Flight("Emirates", 303l, "S", "T", 
+				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
+				100.0, 50);
+
 		f.setNumSeats(70);
 		assertEquals(f.getNumSeats(), 70);
 		assertEquals(f.getNumEmptySeats(), 70);
@@ -204,16 +243,19 @@ public class FlightTest {
 	}
 	
 	@Test
-	public void getNumEmptySeatsReturnsCorrectValue() throws InvalidFlightException {
-		Flight f = new Flight("Emirates", 303l, "S", "T", new Date(2016, 8, 19, 01, 00), 
-				new Date(2016, 8, 19, 03, 00), 100.0, 70);
+	public void getNumEmptySeatsReturnsCorrectValue() 
+			throws InvalidFlightException {
+		Flight f = new Flight("Emirates", 303l, "S", "T", 
+				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
+				100.0, 50);
+
 		assertTrue(!f.isFull());
-		assertEquals(f.getNumSeats(), 70);
-		assertEquals(f.getNumEmptySeats(), 70);
+		assertEquals(f.getNumSeats(), 50);
+		assertEquals(f.getNumEmptySeats(), 50);
 		f.bookSeat();
 		assertTrue(!f.isFull());
-		assertEquals(f.getNumSeats(), 70);
-		assertEquals(f.getNumEmptySeats(), 69);
+		assertEquals(f.getNumSeats(), 50);
+		assertEquals(f.getNumEmptySeats(), 49);
 		f.setNumSeats(2);
 		assertTrue(!f.isFull());
 		assertEquals(f.getNumSeats(), 2);
@@ -229,43 +271,94 @@ public class FlightTest {
 	}
 
 	@Test
-	public void bookSeatBooksASingleSeatWhenFlightNotFull() throws InvalidFlightException {
-		Flight f = new Flight("Emirates", 303l, "S", "T", new Date(2016, 8, 19, 01, 00), 
-				new Date(2016, 8, 19, 03, 00), 100.0, 70);
+	public void bookSeatBooksASingleSeatWhenFlightNotFull() 
+			throws InvalidFlightException {
+		Flight f = new Flight("Emirates", 303l, "S", "T", 
+				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
+				100.0, 50);
+		f.setNumEmptySeats(43);
+
 		assertTrue(!f.isFull());
-		assertEquals(f.getNumSeats(), 70);
-		assertEquals(f.getNumEmptySeats(), 70);
+		assertEquals(f.getNumSeats(), 50);
+		assertEquals(f.getNumEmptySeats(), 43);
 		f.bookSeat();
 		assertTrue(!f.isFull());
-		assertEquals(f.getNumSeats(), 70);
-		assertEquals(f.getNumEmptySeats(), 69);
+		assertEquals(f.getNumSeats(), 50);
+		assertEquals(f.getNumEmptySeats(), 42);
 	}
 
-	public void comparingFlightsShouldReturnCorrectValue() throws InvalidFlightException {
+	@Test
+	public void comparingFlightsShouldReturnCorrectValue() 
+			throws InvalidFlightException {
 		Date early = new Date(2014, 12, 8, 0, 0);
 		Date late = new Date(2016, 1, 19, 0, 50);
 		Date same = testFlight.getDepartureDateTime();
 
-		Flight earlyFlight = new Flight("Emirates", 69l, "B", "C", early, early, 10000.0, 100);
-		Flight lateFlight = new Flight("China Eastern", 34l, "M", "O", late, late, 0.0, 200);
-		Flight sameFlight = new Flight("Delta", 2000l, "Q", "Z", same, late, 0.0, 300);
+		Flight earlyFlight = new Flight(
+				"Emirates", 69l, "B", "C", early, early, 10000.0, 100);
+		Flight lateFlight = new Flight(
+				"China Eastern", 34l, "M", "O", late, late, 0.0, 200);
+		Flight sameFlight = new Flight(
+				"Delta", 2000l, "Q", "Z", same, late, 0.0, 300);
 
-		assertEquals(testFlight.compareTo(earlyFlight), testFlight.getDepartureDateTime().compareTo(early));
-		assertEquals(testFlight.compareTo(lateFlight), testFlight.getDepartureDateTime().compareTo(late));
-		assertEquals(testFlight.compareTo(sameFlight), testFlight.getDepartureDateTime().compareTo(same));
+		assertEquals(
+				testFlight.compareTo(earlyFlight), 
+				testFlight.getDepartureDateTime().compareTo(early)
+				);
+		assertEquals(
+				testFlight.compareTo(lateFlight),
+				testFlight.getDepartureDateTime().compareTo(late)
+				);
+		assertEquals(
+				testFlight.compareTo(sameFlight),
+				testFlight.getDepartureDateTime().compareTo(same)
+				);
+	}
+	
+	@Test
+	public void equalsShouldReturnCorrectValue() 
+			throws InvalidFlightException {
+		Date early = new Date(2014, 12, 8, 0, 0);
+		Date late = new Date(2016, 1, 19, 0, 50);
+		Date same = testFlight.getDepartureDateTime();
+
+		Flight f1 = new Flight("A", 123l, "A", "T", 
+				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
+				100.0, 50);
+		Flight f2 = new Flight("American Airlines", 123l, "E", "F", 
+				new Date(2016, 8, 19, 10, 00), new Date(2017, 8, 19, 03, 00),
+				300.0, 75);
+		Flight f3 = new Flight("American Airlines", 606l, "A", "B", 
+				new Date(2015, 11, 10, 7, 30), new Date(2015, 11, 11, 12, 30),
+				1500.0, 300);
+		Flight f4 = new Flight(
+				"China Eastern", 712l, "E", "B", late, late, 0.0, 200);
+		Flight f5 = new Flight(
+				"Delta", 2000l, "Q", "Z", same, late, 0.0, 300);
+		
+		assertNotEquals(testFlight, f1);
+		assertEquals(testFlight, f2);
+		assertNotEquals(testFlight, f3);
+		assertNotEquals(testFlight, f4);
+		assertNotEquals(testFlight, f5);
 	}
 
-	public void getDurationShouldReturnCorrectValue() throws InvalidFlightException {
+	@Test
+	public void getDurationShouldReturnCorrectValue() 
+			throws InvalidFlightException {
 		Date early = new Date(2014, 12, 8, 0, 0);
 		Date late = new Date(2015, 11, 20, 7, 30);
 		Date same = testFlight.getDepartureDateTime();
 
-		Flight earlyFlight = new Flight("Emirates", 69l, "B", "C", early, early, 10000.0, 100);
-		Flight lateFlight = new Flight("China Eastern", 34l, "M", "O", late, late, 0.0, 200);
-		Flight sameFlight = new Flight("Delta", 2000l, "Q", "Z", same, late, 0.0, 300);
+		Flight earlyFlight = new Flight(
+				"Emirates", 69l, "B", "C", early, early, 10000.0, 100);
+		Flight lateFlight = new Flight(
+				"China Eastern", 34l, "M", "O", late, late, 0.0, 200);
+		Flight sameFlight = new Flight(
+				"Delta", 2000l, "Q", "Z", same, late, 0.0, 300);
 
 		assertTrue(earlyFlight.getDuration() == 0l);
 		assertTrue(lateFlight.getDuration() == 0l);
-		assertTrue(sameFlight.getDuration() == 14400l);
+		assertTrue(sameFlight.getDuration() == 14400l); // 10 day time diff
 	}
 }

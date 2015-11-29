@@ -174,6 +174,7 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
 					"Invalid Flight created by setting DepartureDateTime."
 				);
 		}
+
 		this.departureDateTime = departureDateTime;
 	}
 
