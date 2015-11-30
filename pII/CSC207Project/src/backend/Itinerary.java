@@ -91,7 +91,7 @@ Serializable, Transport {
 	 */
 	public double getPrice() {
 		double totalPrice = 0.0;
-		for (Flight f: flights) {
+		for (Flight f: this) {
 			totalPrice += f.getPrice();
 		}
 		return totalPrice;
@@ -103,7 +103,7 @@ Serializable, Transport {
 	 * @return the number of minutes between departure and arrival time.
 	 */
 	public long getDuration() {
-		final int TO_MINUTE= 60000; // milliseconds
+		final long TO_MINUTE= 60000l; // milliseconds
 		return (
 				getArrivalDateTime().getTime() 
 				- getDepartureDateTime().getTime()
@@ -111,12 +111,12 @@ Serializable, Transport {
 	}
 
 	/**
-	 * Returns the TreeSet of Flights in this Itinerary.
+	 * Returns the Flights in this Itinerary as a List.
 	 * 
 	 * @return the flights field of this Itinerary
 	 */
-	public TreeSet<Flight> getFlights() {
-		return flights;
+	public List<Flight> getFlights() {
+		return new ArrayList<Flight>(flights);
 	}
 	
 	/**
@@ -181,6 +181,7 @@ Serializable, Transport {
 	 * 
 	 * @param newFlight  the flight to add to this Itinerary. 
 	 * @throws InvalidItineraryException if the Itinerary formed is invalid. 
+	 * TODO: This method should not take in equal Flights
 	 */
 	public Itinerary addFlight(Flight newFlight) throws 
 	InvalidItineraryException {
@@ -192,27 +193,52 @@ Serializable, Transport {
 	}
 	
 	/**
-	 * Returns the String representation of this Itinerary.
-	 * @return the String representation of this Itinerary
+	 * Books a single seat in this Itinerary. If this Itinerary cannot be
+	 * booked then does nothing.
+	 * TODO: Write Junit test
 	 */
-	@Override
-	public String toString() {
-		return "Itinerary " + " from " + getOrigin() + " to "
-				+ getDestination() + " (" + getDepartureDateTime() + " --- "
-				+ getArrivalDateTime() + ")";
+	public void bookSeat() {
+		if (!this.isFull()) {
+			for (Flight f: this) {
+				f.bookSeat();
+			}
+		}
+	}
+
+	/**
+	 * Returns true iff this Itinerary cannot be booked. An Itinerary is full
+	 * iff there exists a Flight in the Itinerary that is full.
+	 * 
+	 * @return true iff this Itinerary cannot be booked.
+	 */
+	public boolean isFull() {
+		for (Flight f: this) {
+			if (f.isFull()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
 	 * Compares this Itinerary and another Object. Returns true iff other object
-	 * is a Itinerary and has identical fields.
+	 * is a Itinerary and has identical Flights.
 	 * 
 	 * @param object  an Object to compare.
-	 * @return true iff object is a Itinerary and has identical fields.
+	 * @return true iff object is a Itinerary and has identical Flights.
 	 */
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof Itinerary) {
-			return flights.equals(((Itinerary) object).getFlights());
+			if (this.flights.size() == 
+					((Itinerary) object).getFlights().size()) {
+				for (Flight f: this) {
+					if (!((Itinerary) object).getFlights().contains(f)) {
+						return false;
+					}
+				}
+				return true;
+			}
 		}
 		return false;
 	}
@@ -235,5 +261,16 @@ Serializable, Transport {
 	@Override
 	public int compareTo(Itinerary other) {
 		return getDepartureDateTime().compareTo(other.getDepartureDateTime());
+	}
+
+	/**
+	 * Returns the String representation of this Itinerary.
+	 * @return the String representation of this Itinerary
+	 */
+	@Override
+	public String toString() {
+		return "Itinerary " + " from " + getOrigin() + " to "
+				+ getDestination() + " (" + getDepartureDateTime() + " --- "
+				+ getArrivalDateTime() + ")";
 	}
 }
