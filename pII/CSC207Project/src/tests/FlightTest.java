@@ -215,7 +215,7 @@ public class FlightTest {
 	}
 
 	@Test
-	public void setNumSeats() throws InvalidFlightException {
+	public void setNumSeatsShouldWork() throws InvalidFlightException {
 		Flight f = new Flight("Emirates", 303l, "S", "T", 
 				new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
 				100.0, 50);
