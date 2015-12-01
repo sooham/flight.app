@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.IOException;
 
 import backend.FileDatabase;
 import backend.UserManager;
@@ -20,9 +21,12 @@ public class UserLogin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FileDatabase.createInstance("/data/");
-                //this.getApplicationContext().getFilesDir().getAbsolutePath());
-        System.out.println(this.getApplicationContext().getFilesDir().getAbsoluteFile());
+        try {
+            FileDatabase.createInstance(this.getApplicationContext().getFilesDir().getCanonicalPath()+"/");
+            System.out.println(this.getApplicationContext().getFilesDir().getCanonicalPath());
+        }catch(IOException e){
+
+        }
         user = FileDatabase.getInstance().getUserManager();
         setContentView(R.layout.activity_user_login2);
     }
