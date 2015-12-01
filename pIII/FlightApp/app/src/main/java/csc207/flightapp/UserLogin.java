@@ -7,12 +7,23 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.File;
+
+import backend.FileDatabase;
+import backend.UserManager;
+
 public class UserLogin extends AppCompatActivity {
     EditText email;
+    EditText password;
+    UserManager user = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FileDatabase.createInstance("/data/");
+                //this.getApplicationContext().getFilesDir().getAbsolutePath());
+        System.out.println(this.getApplicationContext().getFilesDir().getAbsoluteFile());
+        user = FileDatabase.getInstance().getUserManager();
         setContentView(R.layout.activity_user_login2);
     }
 
@@ -23,9 +34,16 @@ public class UserLogin extends AppCompatActivity {
      */
     public void searchFlightIntent(View view) {
         email = (EditText)findViewById(R.id.get_email);
-        Intent intent = new Intent(this, SearchForFlights.class);
-        intent.putExtra("EMAIL", email.getText().toString());
-        startActivity(intent);
+        password = (EditText)findViewById(R.id.get_password);
+
+        if (user.loginCredentialsCorrect(email.getText().toString(),password.getText().toString())){
+            Intent intent = new Intent(this, SearchForFlights.class);
+            intent.putExtra("EMAIL", email.getText().toString());
+            startActivity(intent);
+        }else {
+            TextView textView = (TextView) findViewById(R.id.login_failure);
+            textView.setText("Password or Username is incorrect.");
+        }
     }
 
 }
