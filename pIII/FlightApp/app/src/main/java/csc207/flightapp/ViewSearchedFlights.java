@@ -13,7 +13,7 @@ import java.util.Objects;
 import backend.*;
 
 public class ViewSearchedFlights extends AppCompatActivity {
-    private final static FlightManager FLIGHTS = FileDatabase.getInstance().getFlightManger();
+    private FlightManager FLIGHTS = null;
     private TableLayout table;
 
     /**
@@ -25,11 +25,14 @@ public class ViewSearchedFlights extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_searched_flights);
+        FileDatabase.getInstance().addFlightFromFile("/data/flights1.txt");
+        FLIGHTS = FileDatabase.getInstance().getFlightManger();
         table = (TableLayout)findViewById(R.id.flight_table);
-        //Intent intent = getIntent();
-        //List<Flight> itineraries = FLIGHTS.getItineraries(intent.getStringExtra("ORIGIN"),
-                //intent.getStringExtra("DESTINATION"),
-               // intent.getStringExtra("DEPARTURE_DATE"));
+        Intent intent = getIntent();
+        List<Flight> flights = FLIGHTS.getFlights(intent.getStringExtra("ORIGIN"),
+                intent.getStringExtra("DESTINATION"),
+               intent.getStringExtra("DEPARTURE_DATE"));
+        createTable(flights);
     }
 
     /**
@@ -41,49 +44,46 @@ public class ViewSearchedFlights extends AppCompatActivity {
         for (Flight flight:flights) {
             TableRow tableRow = new TableRow(this);
             tableRow.setLayoutParams(new TableLayout.LayoutParams(
-                    TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                    TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT));
 
             // Creation textView that displays the all the flight airline.
             TextView flightText = new TextView(this);
             flightText.setText(flight.getAirline());
             flightText.setLayoutParams(new TableRow.LayoutParams(
-                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+                    TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
             tableRow.addView(flightText);
 
             // Creation of the textview that displays the number
             TextView flightText2 = new TextView(this);
             flightText2.setText(Objects.toString(flight.getNumber()));;
             flightText2.setLayoutParams(new TableRow.LayoutParams(
-                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+                    TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
             tableRow.addView(flightText2);
 
             // Creation of the textView that displays the duration of the trip.
             TextView flightText3 = new TextView(this);
             flightText3.setText(Objects.toString(flight.getDuration()));
             flightText3.setLayoutParams(new TableRow.LayoutParams(
-                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+                    TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
             tableRow.addView(flightText3);
 
             // Creation of the textView that displays the price of the trip.
             TextView flightText4 = new TextView(this);
-            flightText3.setText(Objects.toString(flight.getPrice()));
-            flightText3.setLayoutParams(new TableRow.LayoutParams(
-                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+            flightText4.setText(Objects.toString(flight.getPrice()));
+            flightText4.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
             tableRow.addView(flightText4);
 
             // Creation of the textView that displays the num available seats.
             TextView flightText5 = new TextView(this);
-            flightText3.setText(Objects.toString(flight.getNumEmptySeats()));
-            flightText3.setLayoutParams(new TableRow.LayoutParams(
-                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
-            tableRow.addView(flightText3);
+            flightText5.setText(Objects.toString(flight.getNumEmptySeats()));
+            flightText5.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
+            tableRow.addView(flightText5);
 
             //adds the row to the table
             table.addView(tableRow, new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
-
-            //adds the row to the table
-            table.addView(tableRow);
         }
     }
 
