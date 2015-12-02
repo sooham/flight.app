@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
@@ -23,9 +24,10 @@ import backend.Itinerary;
 
 public class FlightManagerTest {
 	private FlightManager flightManager;
-	private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-	private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
+	private SimpleDateFormat dateFormatter = new SimpleDateFormat(
+																"yyyy-MM-dd");
+	private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat(
+														"yyyy-MM-dd HH:mm");
 
 	@Before
 	public void setUp() throws Exception {
@@ -33,353 +35,352 @@ public class FlightManagerTest {
 		assertTrue(flightManager.itineraries.isEmpty());
 		assertTrue(flightManager.flights.isEmpty());
 	}
-
-	/*
 	
 	@Test
-	public void addFLightShouldNotAddPrexistingFlight() {
-		// First add a Flight to the FM
-		Flight f = null;
-		try {
-		f = new Flight("Quanta", 315l, "A", "B", dateTimeFormatter.parse("2015-08-19 0:00"),
-				dateTimeFormatter.parse("2015-08-19 6:00"), 300.0);
-		flightManager.addFlight(f);
-		} catch (Exception e) {}
-		
-		// Now verify it has been added from flights field
-		ArrayList<Flight> a = new ArrayList<>();
-		a.add(f);
-		assertTrue(flightManager.flights.containsValue(a));
-
-		HashMap<String[], ArrayList<Flight>> oldFlights = (HashMap<String[], ArrayList<Flight>>) flightManager.flights.clone();
-		HashMap<String[], ArrayList<Itinerary>> oldItineraries = (HashMap<String[], ArrayList<Itinerary>>) flightManager.itineraries.clone();
-		// Now add the same old thing again
-		flightManager.addFlight(f);
-		assertEquals(flightManager.flights, oldFlights);
-		assertEquals(flightManager.itineraries, oldItineraries);
+	public void updateFlightShouldWorkCorrectlyWithASingleNewFlight() {
+		// add a single new Flight to this FM (disjoint from all other flights)
+		// check if the flight manager flights hash map is correct
+		// check if the itineraries hashmap is correct
+		// give that flight in again with a different origin
+		// check hashmaps
+		// give that flight in again with a different destination
+		// check hashmaps
+		// give that flight in again with a different departuredatetime
+		// check hashmaps
 	}
 	
 	@Test
-	public void addFlightShouldAddNewFlight() {
-		// Make the Flight, save the old flights and itineraries
-		Flight f = null;
-		try {
-		f = new Flight("Emirates", 707l, "M", "N", dateTimeFormatter.parse("2015-08-19 18:00"),
-				dateTimeFormatter.parse("2015-08-19 23:00"), 700.0);
-		} catch (Exception e) {}
-		
-		ArrayList<Flight> a = new ArrayList<>();
-		a.add(f);
-		assertTrue(!flightManager.flights.containsValue(a));
-		HashMap<String[], ArrayList<Flight>> oldFlights = (HashMap<String[], ArrayList<Flight>>) flightManager.flights.clone();
-		HashMap<String[], ArrayList<Itinerary>> oldItineraries = (HashMap<String[], ArrayList<Itinerary>>) flightManager.itineraries.clone();
-		// Now add the unseen value
-		flightManager.addFlight(f);
-		assertNotEquals(flightManager.flights, oldFlights);
-		assertNotEquals(flightManager.itineraries, oldItineraries);
-		assertTrue(flightManager.flights.size() == oldFlights.size() + 1);
-	}
-	
-	*/
-	
-	/*
-	@Test
-	public void addFlightShouldCreateValidItineraryList() throws InvalidFlightException, InvalidItineraryException {
-		// This method should be run by itself first without any other tests running
-
+	public void updateFlightWorksCorrectlyWithMultipleFlights() throws
+	InvalidFlightException, InvalidItineraryException, ParseException {
 		// time conflict, city discontinuity, layover too long, cyclical
 
-		// first add an starting flight
-		Flight startFlight = null;
-		// a flight in direct time conflict with another flight but city continuous
-		Flight startFlightFollowingButTimeDiscont = null;
-		// a flight linking correctly with another itinerary but layover too long
-		Flight startFlightFollowingButLayoverTooLong = null;
-		// a flight time linking correctly with another itinerary but city cont
-		Flight startFlightDiscontButTimeCont = null;
-		// a flight can be added to the front of the itinerary
-		Flight startFlightFollowingButTimeDiscontFront = null;
-		// a flight can be added to the back of the itinerary
-		Flight startFlightFollowingButLayoverTooLongBack = null;
-		// a flight creating a link between two discontiuous itineraries that is valid
-		Flight itineraryConnector = null;
-		// a flight between two discont itinerarries that is cyclic
-		Flight itineraryConnectorInvalid = null;
-		// a flight linking correctly (no space time conflict) with another itinerary but cyclical
-		Flight startFlightFollowingButLayoverTooLongCyclic = null;
-		// a flight city discont with every itinerary but time layover cont
-		Flight lonerFlight = null;
-
-
-		try {
-		startFlight = new Flight("--", 616l, "R", "S", dateTimeFormatter.parse("2015-08-19 18:00"),
-				dateTimeFormatter.parse("2015-08-19 23:00"), 700.0);
-		startFlightFollowingButTimeDiscont = new Flight("XX", 616l, "S", "T", dateTimeFormatter.parse("2015-08-19 21:00"),
-				dateTimeFormatter.parse("2015-08-20 5:00"), 300.0);
-		startFlightFollowingButLayoverTooLong = new Flight("<<", 1056l, "S", "W", dateTimeFormatter.parse("2015-08-20 8:00"),
-				dateTimeFormatter.parse("2015-08-20 15:00"), 1400.0);
-		startFlightDiscontButTimeCont = new Flight("&<", 1088l, "E", "F", dateTimeFormatter.parse("2015-08-19 23:30"),
-				dateTimeFormatter.parse("2015-08-20 2:00"), 150.0);
-		startFlightFollowingButTimeDiscontFront = new Flight("*(", 1988l, "I", "S", dateTimeFormatter.parse("2015-08-19 12:00"),
-				dateTimeFormatter.parse("2015-08-19 20:00"), 450.0);
-		startFlightFollowingButLayoverTooLongBack = new Flight("^(", 1988l, "W", "X", dateTimeFormatter.parse("2015-08-20 16:00"),
-				dateTimeFormatter.parse("2015-08-20 20:00"), 1800.0);
-		itineraryConnector = new Flight(":)", 1337l, "S", "E", dateTimeFormatter.parse("2015-08-19 22:00"),
-				dateTimeFormatter.parse("2015-08-19 23:30"), 1800.0);
-		itineraryConnectorInvalid = new Flight(":(", 167l, "T", "S", dateTimeFormatter.parse("2015-08-20 7:00"),
-				dateTimeFormatter.parse("2015-08-20 7:30"), 1870.0);
-		startFlightFollowingButLayoverTooLongCyclic = new Flight(":)", 167l, "X", "S", dateTimeFormatter.parse("2015-08-20 21:00"),
-				dateTimeFormatter.parse("2015-08-21 1:00"), 180.0);
-		lonerFlight = new Flight("*_*", 1789l, "Y", "Z", dateTimeFormatter.parse("2015-08-22 23:00"),
-				dateTimeFormatter.parse("2015-08-23 3:00"), 133.0);
-		} catch (Exception e) {}
+		// initial flight
+		Flight f1 = new Flight("", 1l, "C", "D", 
+				dateTimeFormatter.parse("2015-08-19 1:00"),
+				dateTimeFormatter.parse("2015-08-19 2:00"),
+				0.0,
+				100
+				);
+		// a flight in direct time conflict with f1
+		Flight f2 = new Flight("", 2l, "D", "E", 
+				dateTimeFormatter.parse("2015-08-19 1:30"),
+				dateTimeFormatter.parse("2015-08-19 3:00"),
+				0.0,
+				100
+				);
+		// a flight linking correctly with f1, but layover too long
+		Flight f3 = new Flight("", 3l, "D", "E", 
+				dateTimeFormatter.parse("2015-08-19 8:01"),
+				dateTimeFormatter.parse("2015-08-19 9:00"),
+				0.0,
+				100
+				);
+		// a flight in correct timing of f1 but city discontinuous with f1
+		Flight f4 = new Flight("", 4l, "O", "F", 
+				dateTimeFormatter.parse("2015-08-19 3:00"),
+				dateTimeFormatter.parse("2015-08-19 4:00"),
+				0.0,
+				100
+				);
+		// a flight can be added to the front of f1
+		Flight f5 = new Flight("", 5l, "B", "C", 
+				dateTimeFormatter.parse("2015-08-18 23:00"),
+				dateTimeFormatter.parse("2015-08-19 1:00"),
+				0.0,
+				100
+				);
+		// a flight that can be added to the end of f4
+		Flight f6 = new Flight("", 6l, "F", "G", 
+				dateTimeFormatter.parse("2015-08-19 5:00"),
+				dateTimeFormatter.parse("2015-08-19 6:00"),
+				0.0,
+				100
+				);
+		// a flight that joins f1 and f4 correctly
+		Flight f7 = new Flight("", 7l, "D", "O", 
+				dateTimeFormatter.parse("2015-08-19 2:00"),
+				dateTimeFormatter.parse("2015-08-19 3:00"),
+				0.0,
+				100
+				);
+		// a flight city discontinuous and layover too long to f2 and
+		// contains a city in f2
+		Flight f8 = new Flight("", 8l, "X", "D", 
+				dateTimeFormatter.parse("2015-08-19 10:00"),
+				dateTimeFormatter.parse("2015-08-19 11:00"),
+				0.0,
+				100
+				);
+		// a flight connecting f2 and f8 correctly, making a cyclical itinerary
+		Flight f9 = new Flight("", 9l, "E", "X", 
+				dateTimeFormatter.parse("2015-08-19 4:00"),
+				dateTimeFormatter.parse("2015-08-19 9:00"),
+				0.0,
+				100
+				);
+		// a flight to put at the end of f1 but contains a city in f5
+		Flight f10 = new Flight("", 10l, "D", "B", 
+				dateTimeFormatter.parse("2015-08-19 3:00"),
+				dateTimeFormatter.parse("2015-08-19 4:00"),
+				0.0,
+				100
+				);
+		// a flight city discont and time discont to all itineraries above
+		Flight f11 = new Flight("", 11l, "M", "N", 
+				dateTimeFormatter.parse("2015-08-20 1:00"),
+				dateTimeFormatter.parse("2015-08-20 2:00"),
+				0.0,
+				100
+				);
 		
-		ArrayList<Flight> toAddFlights = new ArrayList<>();
-		toAddFlights.add(startFlight);
-		toAddFlights.add(startFlightFollowingButLayoverTooLong);
-		toAddFlights.add(lonerFlight);
-		toAddFlights.add(startFlightDiscontButTimeCont);
-		toAddFlights.add(itineraryConnector);
-		toAddFlights.add(startFlightFollowingButLayoverTooLongBack);
-		toAddFlights.add(startFlightFollowingButTimeDiscontFront);
-		toAddFlights.add(itineraryConnectorInvalid);
-		toAddFlights.add(startFlightFollowingButTimeDiscont);
-		toAddFlights.add(startFlightFollowingButLayoverTooLongCyclic);
+		// add these flight to the FM
+		List<Flight> toAddFlight = new ArrayList<Flight>();
+		toAddFlight.add(f1);
+		toAddFlight.add(f2);
+		toAddFlight.add(f3);
+		toAddFlight.add(f4);
+		toAddFlight.add(f5);
+		toAddFlight.add(f6);
+		toAddFlight.add(f7);
+		toAddFlight.add(f8);
+		toAddFlight.add(f9);
+		toAddFlight.add(f10);
+		toAddFlight.add(f11);
 		
-		//add the flights to the FM
-		for (Flight f : toAddFlights) {
-			flightManager.addFlight(f);
+		for (Flight f: toAddFlight) {
+			flightManager.update(f);
+		}
+		// then check the hashmaps are correct
+		// first check if the size of the flights HashMap is correct
+		assertEquals(flightManager.flights.size(), 10);
+		
+		// make a copy of the expected flights HashMap
+		Map<List<String>, List<Flight>> expectedFlightsMap = new HashMap<>();
+		// fill the expected map
+		List<String> f1Key = new ArrayList<>();
+		f1Key.add(f1.getOrigin());
+		f1Key.add(f1.getDestination());
+		f1Key.add(dateFormatter.format(f1.getDepartureDateTime()));
+		List<Flight> f1Value = new ArrayList<>();
+		f1Value.add(f1);
+		expectedFlightsMap.put(f1Key, f1Value);
+
+		List<String> f2Key = new ArrayList<>();
+		f2Key.add(f2.getOrigin());
+		f2Key.add(f2.getDestination());
+		f2Key.add(dateFormatter.format(f2.getDepartureDateTime()));
+		List<Flight> f2Value = new ArrayList<>();
+		f2Value.add(f2);
+		f2Value.add(f3);
+		expectedFlightsMap.put(f2Key, f2Value);
+
+		for (Flight f: toAddFlight.subList(3, toAddFlight.size())) {
+			List<String> fKey = new ArrayList<>();
+			fKey.add(f.getOrigin());
+			fKey.add(f.getDestination());
+			fKey.add(dateFormatter.format(f.getDepartureDateTime()));
+			List<Flight> fValue = new ArrayList<>();
+			fValue.add(f);
+			expectedFlightsMap.put(fKey, fValue);
+
+		}
+		// now check if the maps are the same
+		assertEquals(flightManager.flights, expectedFlightsMap);
+		
+		// now check if itineraries HashMap is the expected value
+		
+		// first create the Itineraries
+		// deal with the single flight Itineraries
+		List<Itinerary> singleFlightItineraries = new ArrayList<Itinerary>();
+		
+		for (Flight f: toAddFlight) {
+			TreeSet<Flight> singleTS = new TreeSet<>();
+			singleTS.add(f);
+			Itinerary it = new Itinerary(singleTS);
+			singleFlightItineraries.add(it);
 		}
 		
-		// now check if the correct Flights have been added to flights variable
-		HashMap<String[], ArrayList<Flight>> correctFlights = new HashMap<>();
+		Map<List<String>, List<Itinerary>> expectedItinerariesMap = new 
+																	HashMap<>();
+		
+		List<String> it1Key = new ArrayList<>();
+		it1Key.add(singleFlightItineraries.get(0).getOrigin());
+		it1Key.add(singleFlightItineraries.get(0).getDestination());
+		it1Key.add(dateFormatter.format(
+					singleFlightItineraries.get(0).getDepartureDateTime()));
+		List<Itinerary> it1Value = new ArrayList<Itinerary>();
+		it1Value.add(singleFlightItineraries.get(0));
+		expectedItinerariesMap.put(it1Key, it1Value);
 
-		for (Flight f: toAddFlights) {
-			String[] key = {f.getOrigin(), f.getDestination(), dateFormatter.format(f.getDepartureDateTime())};
-			correctFlights.putIfAbsent(key, new ArrayList<Flight>());
-			correctFlights.get(key).add(f);
+		List<String> it2Key = new ArrayList<>();
+		it2Key.add(singleFlightItineraries.get(1).getOrigin());
+		it2Key.add(singleFlightItineraries.get(1).getDestination());
+		it2Key.add(dateFormatter.format(
+					singleFlightItineraries.get(1).getDepartureDateTime()));
+		List<Itinerary> it2Value = new ArrayList<Itinerary>();
+		it2Value.add(singleFlightItineraries.get(1));
+		it2Value.add(singleFlightItineraries.get(2));
+		expectedItinerariesMap.put(it2Key, it2Value);
+		
+		for (Itinerary it: singleFlightItineraries.subList(
+				3, singleFlightItineraries.size())) {
+			List<String> itKey = new ArrayList<>();
+			itKey.add(it.getOrigin());
+			itKey.add(it.getDestination());
+			itKey.add(dateFormatter.format(it.getDepartureDateTime()));
+			List<Itinerary> itValue = new ArrayList<Itinerary>();
+			itValue.add(it);
+			expectedItinerariesMap.put(itKey, itValue);
 		}
 		
-		// check if the keys and values of flight contain the correctFlights keys and values
-		assertEquals(flightManager.flights.size(), correctFlights.size());
-		for (String[] k: flightManager.flights.keySet()) {
-			System.out.println(k);
+		// now add the multiple flight itineraries into this map
+		List<Itinerary> multipleFlightItinerary = new ArrayList<>();
+		
+		// f5 f1 f7 f4 f6 
+		TreeSet<Flight> TS1 = new TreeSet<>();
+		TS1.add(f5);
+		TS1.add(f1);
+		TS1.add(f7);
+		TS1.add(f4);
+		TS1.add(f6);
+		Itinerary IT1 = new Itinerary(TS1);
+		multipleFlightItinerary.add(IT1);
+
+		// f5 f1 f7 f4
+		TreeSet<Flight> TS2 = new TreeSet<>();
+		TS2.add(f5);
+		TS2.add(f1);
+		TS2.add(f7);
+		TS2.add(f4);
+		Itinerary IT2 = new Itinerary(TS2);
+		multipleFlightItinerary.add(IT2);
+
+		// f1 f7 f4 f6
+		TreeSet<Flight> TS3 = new TreeSet<>();
+		TS3.add(f1);
+		TS3.add(f7);
+		TS3.add(f4);
+		TS3.add(f6);
+		Itinerary IT3 = new Itinerary(TS3);
+		multipleFlightItinerary.add(IT3);
+
+		// f5 f1 f7
+		TreeSet<Flight> TS4 = new TreeSet<>();
+		TS4.add(f5);
+		TS4.add(f1);
+		TS4.add(f7);
+		Itinerary IT4 = new Itinerary(TS4);
+		multipleFlightItinerary.add(IT4);
+
+		// f1 f7 f4
+		TreeSet<Flight> TS5 = new TreeSet<>();
+		TS5.add(f1);
+		TS5.add(f7);
+		TS5.add(f4);
+		Itinerary IT5 = new Itinerary(TS5);
+		multipleFlightItinerary.add(IT5);
+
+		// f7 f4 f6
+		TreeSet<Flight> TS6 = new TreeSet<>();
+		TS6.add(f7);
+		TS6.add(f4);
+		TS6.add(f6);
+		Itinerary IT6 = new Itinerary(TS6);
+		multipleFlightItinerary.add(IT6);
+		
+		// f5 f1
+		TreeSet<Flight> TS7 = new TreeSet<>();
+		TS7.add(f5);
+		TS7.add(f1);
+		Itinerary IT7 = new Itinerary(TS7);
+		multipleFlightItinerary.add(IT7);
+
+		// f1 f7
+		TreeSet<Flight> TS8 = new TreeSet<>();
+		TS8.add(f1);
+		TS8.add(f7);
+		Itinerary IT8 = new Itinerary(TS8);
+		multipleFlightItinerary.add(IT8);
+
+		// f7 f4
+		TreeSet<Flight> TS9 = new TreeSet<>();
+		TS9.add(f7);
+		TS9.add(f4);
+		Itinerary IT9 = new Itinerary(TS9);
+		multipleFlightItinerary.add(IT9);
+
+		// f4 f6
+		TreeSet<Flight> TS10 = new TreeSet<>();
+		TS10.add(f4);
+		TS10.add(f6);
+		Itinerary IT10 = new Itinerary(TS10);
+		multipleFlightItinerary.add(IT10);
+		
+		// f2 f9
+		TreeSet<Flight> TS11 = new TreeSet<>();
+		TS11.add(f2);
+		TS11.add(f9);
+		Itinerary IT11 = new Itinerary(TS11);
+		multipleFlightItinerary.add(IT11);
+
+		// f9 f8
+		TreeSet<Flight> TS12 = new TreeSet<>();
+		TS12.add(f9);
+		TS12.add(f8);
+		Itinerary IT12 = new Itinerary(TS12);
+		multipleFlightItinerary.add(IT12);
+
+		// f1 f10
+		TreeSet<Flight> TS13 = new TreeSet<>();
+		TS13.add(f1);
+		TS13.add(f10);
+		Itinerary IT13 = new Itinerary(TS13);
+		multipleFlightItinerary.add(IT13);
+		
+		// now add all the multiple flight to the expected Itinerary Map
+		for (Itinerary it: multipleFlightItinerary) {
+			List<String> key = new ArrayList<>();
+			key.add(it.getOrigin());
+			key.add(it.getDestination());
+			key.add(dateFormatter.format(it.getDepartureDateTime()));
+			List<Itinerary> value = new ArrayList<Itinerary>();
+			value.add(it);
+			expectedItinerariesMap.put(key, value);
 		}
-		for (String[] k: correctFlights.keySet()) {
-			assertTrue(flightManager.flights.containsKey(k));
-			assertEquals(flightManager.flights.get(k), correctFlights.get(k));
-		}
-
-
-		// now check if the correct Itinerary have been added to itineraries variable
-		// first add every single flight itinerary to the list of itineraries we know exist
-		ArrayList<Itinerary> toCheckItineraries = new ArrayList<>();
-		for (Flight f : toAddFlights) {
-			TreeSet<Flight> t = new TreeSet<>();
-			t.add(f);
-			try {
-			Itinerary it = new Itinerary(t);
-			toCheckItineraries.add(it);
-			} catch (Exception e) {}
-		}
+		// TODO: Flight Manager debugger shows that expectedItinerariesMap
+		// gets an empty map in there. Find out how [] = [] is in there.
+		// Update, check if it is now fixed
 		
-		// make the Itineraries with more than one Flight and Add them
-		TreeSet<Flight> t1 = new TreeSet<>();
-		TreeSet<Flight> t2 = new TreeSet<>();
-		TreeSet<Flight> t3 = new TreeSet<>();
-		TreeSet<Flight> t4 = new TreeSet<>();
-		TreeSet<Flight> t5 = new TreeSet<>();
-		TreeSet<Flight> t6 = new TreeSet<>();
-		TreeSet<Flight> t7 = new TreeSet<>();
-		TreeSet<Flight> t8 = new TreeSet<>();
-		
-		t1.add(itineraryConnectorInvalid);
-		t1.add(startFlightFollowingButLayoverTooLong);
-		t1.add(startFlightFollowingButLayoverTooLongBack);
-		
-		t2.add(startFlightFollowingButTimeDiscontFront); // Done
-		t2.add(startFlightFollowingButTimeDiscont);
-		
-		t3.add(itineraryConnectorInvalid);		// Done
-		t3.add(startFlightFollowingButLayoverTooLong);
+		assertEquals(flightManager.itineraries.size(), 
+				expectedItinerariesMap.size());
+		assertEquals(flightManager.itineraries, expectedItinerariesMap);
 
-		t4.add(startFlightFollowingButLayoverTooLong); // Done
-		t4.add(startFlightFollowingButLayoverTooLongBack);
-		
-		t5.add(startFlightFollowingButTimeDiscontFront); // Done
-		t5.add(itineraryConnector);
-		t5.add(startFlightDiscontButTimeCont);
-		
-		t6.add(startFlightFollowingButTimeDiscontFront); // Done
-		t6.add(itineraryConnector);
-
-		t7.add(itineraryConnector); // Done
-		t7.add(startFlightDiscontButTimeCont);
-
-		t8.add(startFlightFollowingButLayoverTooLongBack);
-		t8.add(startFlightFollowingButLayoverTooLongCyclic);	// Done
-
-		Itinerary it1 = new Itinerary(t1);
-		Itinerary it2 = new Itinerary(t2);
-		Itinerary it3 = new Itinerary(t3);
-		Itinerary it4 = new Itinerary(t4);
-		Itinerary it5 = new Itinerary(t5);
-		Itinerary it6 = new Itinerary(t6);
-		Itinerary it7 = new Itinerary(t7);
-		Itinerary it8 = new Itinerary(t8);
-
-		toCheckItineraries.add(it1);
-		toCheckItineraries.add(it2);
-		toCheckItineraries.add(it3);
-		toCheckItineraries.add(it4);
-		toCheckItineraries.add(it5);
-		toCheckItineraries.add(it6);
-		toCheckItineraries.add(it7);
-		toCheckItineraries.add(it8);
-		HashMap<String[], ArrayList<Itinerary>> correctItineraries = new HashMap<>();
-
-		for (Itinerary i: toCheckItineraries) {
-			String[] key = {i.getOrigin(), i.getDestination(), dateFormatter.format(i.getDepartureDateTime())};
-			correctItineraries.putIfAbsent(key, new ArrayList<Itinerary>());
-			correctItineraries.get(key).add(i);
-		}
-
-		assertEquals(flightManager.itineraries, correctItineraries);
-	} */
-
-	@Test
-	public void doesThisCrapWork() {
-		Flight f = null;
-		Map<ArrayList<String>, ArrayList<Flight>> m = new HashMap<>();
-		try {
-		f = new Flight("--", 616l, "R", "S", dateTimeFormatter.parse("2015-08-19 18:00"),
-				dateTimeFormatter.parse("2015-08-19 23:00"), 700.0, 100);
-		} catch (InvalidFlightException e) {} catch (ParseException e) {}
-
-		ArrayList<String> k = new ArrayList<>();
-		k.add(f.getOrigin());
-		k.add(f.getDestination());
-		k.add(dateFormatter.format(f.getDepartureDateTime()));
-
-		m.putIfAbsent(k, new ArrayList<Flight>());
-		m.get(k).add(f);
-
-		ArrayList<String> key = new ArrayList<>();
-		key.add(f.getOrigin());
-		key.add(f.getDestination());
-		key.add(dateFormatter.format(f.getDepartureDateTime()));
-		assertTrue(m.containsKey(k));
-		assertTrue(m.containsKey(key));
-		assertNotEquals(m.getOrDefault(key, null), null);
-		assertEquals(m.get(k).get(0), f);
+		// TODO: Complete the below
+		// edit a couple of flights
+		// edit a single flight to form a new itinerary (f11)
+		// edit a flight to invalidate itinerary (f1, f3, f8)
+		// add them to the FM
+		// check the HashMaps
 	}
-
-	@Test
-	public void addFlightShouldCreateValidItineraryListSimple() throws InvalidFlightException, InvalidItineraryException {
-		// This method should be run by itself first without any other tests running
-
-		// time conflict, city discontinuity, layover too long, cyclical
-
-		// first add an starting flight
-		Flight startFlight = null;
-		// a flight linking correctly with another itinerary but layover too long
-		Flight startFlightFollowingButLayoverTooLong = null;
-		// a flight can be added to the back of the itinerary
-		Flight startFlightFollowingButLayoverTooLongBack = null;
-
-		try {
-		startFlight = new Flight("--", 616l, "R", "S", dateTimeFormatter.parse("2015-08-19 18:00"),
-				dateTimeFormatter.parse("2015-08-19 23:00"), 700.0, 100);
-		startFlightFollowingButLayoverTooLong = new Flight("<<", 1056l, "S", "W", dateTimeFormatter.parse("2015-08-20 8:00"),
-				dateTimeFormatter.parse("2015-08-20 15:00"), 1400.0, 100);
-		startFlightFollowingButLayoverTooLongBack = new Flight(":^(", 1988l, "W", "X", dateTimeFormatter.parse("2015-08-20 16:00"),
-				dateTimeFormatter.parse("2015-08-20 20:00"), 1800.0, 100);
-		} catch (Exception e) {}
-		
-		ArrayList<Flight> toAddFlights = new ArrayList<>();
-		toAddFlights.add(startFlight);
-		toAddFlights.add(startFlightFollowingButLayoverTooLong);
-		toAddFlights.add(startFlightFollowingButLayoverTooLongBack);
-		
-		//add the flights to the FM
-		for (Flight f : toAddFlights) {
-			flightManager.addFlight(f);
-		}
-		
-		// now check if the correct Flights have been added to flights variable
-		Map<String[], ArrayList<Flight>> correctFlights = new HashMap<>();
-
-		for (Flight f: toAddFlights) {
-			String[] key = {f.getOrigin(), f.getDestination(), dateFormatter.format(f.getDepartureDateTime())};
-			correctFlights.putIfAbsent(key, new ArrayList<Flight>());
-			correctFlights.get(key).add(f);
-		}
-		
-		// check if the keys and values of flight contain the correctFlights keys and values
-		assertEquals(flightManager.flights.size(), correctFlights.size());
-		for (String[] k: flightManager.flights.keySet()) {
-			System.out.println(Arrays.toString(k));
-		}
-		
-		for (String[] k: correctFlights.keySet()) {
-			System.out.println(Arrays.toString(k));
-			assertNotEquals(flightManager.flights.getOrDefault(k, null), null);
-			assertEquals(flightManager.flights.get(k), correctFlights.get(k));
-		}
-
-
-		// now check if the correct Itinerary have been added to itineraries variable
-		// first add every single flight itinerary to the list of itineraries we know exist
-		ArrayList<Itinerary> toCheckItineraries = new ArrayList<>();
-		for (Flight f : toAddFlights) {
-			TreeSet<Flight> t = new TreeSet<>();
-			t.add(f);
-			try {
-			Itinerary it = new Itinerary(t);
-			toCheckItineraries.add(it);
-			} catch (Exception e) {}
-		}
-		
-		// make the Itineraries with more than one Flight and Add them
-		TreeSet<Flight> t1 = new TreeSet<>();
-		
-		t1.add(startFlightFollowingButLayoverTooLong);
-		t1.add(startFlightFollowingButLayoverTooLongBack);
-		
-		Itinerary it1 = new Itinerary(t1);
-		toCheckItineraries.add(it1);
-
-		Map<String[], ArrayList<Itinerary>> correctItineraries = new HashMap<>();
-
-		for (Itinerary i: toCheckItineraries) {
-			String[] key = {i.getOrigin(), i.getDestination(), dateFormatter.format(i.getDepartureDateTime())};
-			correctItineraries.putIfAbsent(key, new ArrayList<Itinerary>());
-			correctItineraries.get(key).add(i);
-		}
-
-		assertEquals(flightManager.itineraries.size(), correctItineraries.size());
-		for (String[] k :correctItineraries.keySet()) {
-			assertTrue(flightManager.itineraries.containsKey(k));
-			assertEquals(flightManager.itineraries.get(k), correctItineraries.get(k));
-		}
-	}
-	/*
+	
 	@Test
 	public void getItinerariesShouldReturnCorrectItineraries() {
 		// should all have the same departure date
+		// origin, destination, and all of them are empty
 	}
 
 	@Test
-	public void getItinerariesShouldReturnEmptyItinerariesIfNoItineraryExists() {
+	public void getItinerariesShouldReturnEmptyIfNoItineraryExists() {
 	}
 
 	@Test
 	public void getFlightsShouldReturnCorrectFlights() {
 		// should all have the same departure date
+		// origin, destination and all flight are empty
 	}
 
 	@Test
-	public void getFlightsShouldReturnEmptyFlightsIfNoFlightsExists() {
+	public void getFlightsShouldReturnEmptyIfNoFlightsExists() {
 	}
 	
 	@Test
@@ -391,5 +392,4 @@ public class FlightManagerTest {
 	public void sortByDurationShouldSortCorrectly() {
 		// sortByDuration Aliases
 	}
-	*/
 }
