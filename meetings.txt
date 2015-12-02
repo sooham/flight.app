@@ -160,7 +160,7 @@ Friday Nov 27, second Planning meeting:
     Tasks for this week:
         Sooham:
             Write updated CRC cards to reflect backend changes.
-            Keep updating bakend
+            Keep updating backend
 
         Angad:
             Get Login Activity to log in user, if that is completed, work
@@ -175,3 +175,29 @@ Friday Nov 27, second Planning meeting:
             Try to work on Driver.java after reading through updated backend code from
              Sooham.
 
+Wednesday December 2, first Status meeting:
+    Notes:
+        Angad not present due to midterm.
+
+    Problems encountered:
+        FlightManager had issue that appears 1% of the time input. Needs
+        recursive solution to solve, team chose to resolve this issue later.
+
+    Tasks completed:
+        Sooham:
+
+            All tasks completed
+
+        Angad:
+            All tasks completed
+
+        Badis:
+            All tasks completed. Icon made.
+
+        Chris:
+            Installed AS and read the backend and frontend code.
+            All tasks completed.
+
+    Accomplished in meeting:
+        All people are familiar with backend and frontend code, ready
+        for PIIIa interview tomorrow.
