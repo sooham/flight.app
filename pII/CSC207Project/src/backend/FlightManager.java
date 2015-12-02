@@ -1,5 +1,6 @@
 package backend;
 
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -248,6 +249,7 @@ public class FlightManager implements Serializable {
         key.add(origin);
         key.add(destination);
         key.add(departureDate);
+
         if (flights.containsKey(key)){
         	// filter all non-full Itinerary from the List mapped
         	// to by key
@@ -293,4 +295,17 @@ public class FlightManager implements Serializable {
 
         return key;
     }
+
+	/**
+	 * Called by ObjectInputStream when reading FlightManager class object
+	 * from stream. The readResolve method needs to be defined to prevent
+	 * Deserialization of FlightManager class resulting in multiple instances
+	 * of FlightManager being created.
+	 * 
+	 * @return the singleton instance for FlightManager class
+	 * @throws ObjectStreamException
+	 */
+	private Object readResolve() throws ObjectStreamException {
+		return singletonInstance;
+	}
 }

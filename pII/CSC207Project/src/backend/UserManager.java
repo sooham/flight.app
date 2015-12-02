@@ -3,6 +3,7 @@ package backend;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
@@ -134,6 +135,19 @@ public class UserManager implements Serializable {
 	 */
 	public List<User> getUsers() {
 		return users;
+	}
+	
+	/**
+	 * Called by ObjectInputStream when reading UserManager class object
+	 * from stream. The readResolve method needs to be defined to prevent
+	 * Deserialization of UserManager class resulting in multiple instances
+	 * of UserManager being created.
+	 * 
+	 * @return the singleton instance for UserManager class
+	 * @throws ObjectStreamException
+	 */
+	private Object readResolve() throws ObjectStreamException {
+		return singletonInstance;
 	}
 	
 }
