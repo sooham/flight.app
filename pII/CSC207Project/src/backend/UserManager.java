@@ -48,6 +48,7 @@ public class UserManager implements Serializable {
 	 * UserManager, edits that User's information. 
 	 * 
 	 * @param u  User that is to be added or edited
+	 * TODO: Rename this method to update
 	 */
 	public void addUser(User u) {
 		User existing;
