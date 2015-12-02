@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -325,5 +326,18 @@ public class FileDatabase implements Serializable {
 			);
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Called by ObjectInputStream when reading FileDatabase class object
+	 * from stream. The readResolve method needs to be defined to prevent
+	 * Deserialization of FileDatabase class resulting in multiple instances
+	 * of FileDatabase being created.
+	 * 
+	 * @return the singleton instance for FileDatabase class
+	 * @throws ObjectStreamException
+	 */
+	private Object readResolve() throws ObjectStreamException {
+		return singletonInstance;
 	}
 }
