@@ -269,8 +269,8 @@ Serializable, Transport {
 	 */
 	@Override
 	public String toString() {
-		return "Itinerary " + " from " + getOrigin() + " to "
-				+ getDestination() + " (" + getDepartureDateTime() + " --- "
-				+ getArrivalDateTime() + ")";
+		return "Itinerary " + getOrigin() + " -> " + getDestination()
+				+ " " + getDepartureDateTime().getDate() + " " + getDepartureDateTime().getHours() + ":" + getDepartureDateTime().getMinutes() + " -> " + 
+				getArrivalDateTime().getDate() + " " + getArrivalDateTime().getHours() + ":" + getArrivalDateTime().getMinutes();
 	}
 }

@@ -341,7 +341,8 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
 	 */
 	@Override
 	public String toString() {
-		return "Flight " + number + " from " + origin + " to " + destination
-				+ " (" + departureDateTime + " ___ " + arrivalDateTime + ")";
+		return "Flight " + origin + " -> " + destination
+				+ " " + departureDateTime.getDate() + " " + departureDateTime.getHours() + ":" + departureDateTime.getMinutes() + " -> " + 
+				arrivalDateTime.getDate() + " " + arrivalDateTime.getHours() + ":" + arrivalDateTime.getMinutes();
 	}
 }
