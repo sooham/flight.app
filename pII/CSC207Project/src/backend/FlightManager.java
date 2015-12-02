@@ -132,6 +132,10 @@ public class FlightManager implements Serializable {
                 }
             }
         }
+        // TODO: Fix the case where we add a new flight
+        // TODO: that joins two previously existing itineraries
+        // TODO: and also generates that itineraries sub itiniraries.
+
         // now that we have removed all the previous occurrences of the
         // flight, we can create new itineraries
         addToItineraries(flight);
@@ -146,6 +150,7 @@ public class FlightManager implements Serializable {
     private void addToItineraries(Flight flight) {
         // We first add the Flight by itself as an Itinerary in the HashMap
         TreeSet<Flight> singleFlight = new TreeSet<>();
+        singleFlight.add(flight);
         try {
             Itinerary trivialItinerary = new Itinerary(singleFlight);
             List<String> key = getKey(flight);
