@@ -201,3 +201,13 @@ Wednesday December 2, first Status meeting:
     Accomplished in meeting:
         All people are familiar with backend and frontend code, ready
         for PIIIa interview tomorrow.
+		
+	Tasks left to complete for Phase III:
+		Driver needs to be implemented and work properly
+		UserLogin must recognize the distinction between User and Admin
+		Create an EditFlightInfo activity for an Admin
+		Create an BookedItineraries activity for a Client
+		Create an ClientsBookedItineraries activity for an Admin
+		Create an EditOwnInfo activity for a Client
+		Create an BookItinerary activity for a Client
+		Create an BookItineraryForClient activity for an Admin
