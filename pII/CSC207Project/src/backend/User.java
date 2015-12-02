@@ -234,13 +234,14 @@ public class User implements Serializable{
 	 * @param selectedItinerary  an Itinerary this User wants to book.
 	 */
 	public void bookItinerary(Itinerary selectedItinerary) {
-		if (!bookedItineraries.contains(selectedItinerary)) {
+		if (!bookedItineraries.contains(selectedItinerary) && 
+				!selectedItinerary.isFull()) {
+			selectedItinerary.bookSeat();
 			bookedItineraries.add(selectedItinerary);
-			// TODO: Decrease the empty seats in Itinerary and its Flights by 1
-			// decrease the number of empty seats in Itinerary by the total
-			// number of Flight in the itinerary
 		}
 	}
+	
+	// TODO: Do we need these functions here?
 	
 	/**
 	 * Returns a List of Flight's given their origin, destination and departure
@@ -302,20 +303,6 @@ public class User implements Serializable{
 		List<? extends Flight> copyList = new ArrayList<>(list);
 		FileDatabase.getInstance().getFlightManger().sortByDuration(list);
 		return copyList;
-	}
-
-	/** 
-	 * Returns a HashCode value for this for this User. Necessary for using
-	 * with HashMap.
-	 * 
-	 * @return the hashcode for this User.
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		return result;
 	}
 
 
