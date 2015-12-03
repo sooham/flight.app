@@ -51,6 +51,7 @@ public class ViewSearchedFlights extends AppCompatActivity {
             flightText.setText(flight.getAirline());
             flightText.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
+            flightText.setPadding(5,5,5,5);
             tableRow.addView(flightText);
 
             // Creation of the textview that displays the number
@@ -58,6 +59,7 @@ public class ViewSearchedFlights extends AppCompatActivity {
             flightText2.setText(Objects.toString(flight.getNumber()));;
             flightText2.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
+            flightText2.setPadding(5,5,5,5);
             tableRow.addView(flightText2);
 
             // Creation of the textView that displays the duration of the trip.
@@ -72,6 +74,7 @@ public class ViewSearchedFlights extends AppCompatActivity {
             flightText4.setText(Objects.toString(flight.getPrice()));
             flightText4.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
+            flightText4.setPadding(5,5,5,5);
             tableRow.addView(flightText4);
 
             // Creation of the textView that displays the num available seats.
@@ -79,6 +82,7 @@ public class ViewSearchedFlights extends AppCompatActivity {
             flightText5.setText(Objects.toString(flight.getNumEmptySeats()));
             flightText5.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
+            flightText5.setPadding(5,5,5,5);
             tableRow.addView(flightText5);
 
             //adds the row to the table
