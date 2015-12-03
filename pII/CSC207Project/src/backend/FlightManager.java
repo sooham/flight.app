@@ -9,7 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
-
+// TODO: Make code in this class simpler, suggestions getKey() method for
+// Flight and Itineraries
 /**
  * A FlightManager object. FlightManager is a singleton responsible for handling
  * both Itineraries and Flight objects. All instantiated Flight and Itinerary
@@ -133,22 +134,7 @@ public class FlightManager implements Serializable {
                 }
             }
         }
-        // TODO: Fix the case where we add a new flight
-        // TODO: that joins two previously existing itineraries
-        // TODO: and also generates that itineraries sub itiniraries.
 
-        // now that we have removed all the previous occurrences of the
-        // flight, we can create new itineraries
-        addToItineraries(flight);
-    }
-
-    /**
-     * Adds a new flight not in the itineraries HashMap to the itineraries
-     * HashMap.
-     *
-     * @param flight  the new flight to add.
-     */
-    private void addToItineraries(Flight flight) {
         // We first add the Flight by itself as an Itinerary in the HashMap
         TreeSet<Flight> singleFlight = new TreeSet<>();
         singleFlight.add(flight);
@@ -159,46 +145,68 @@ public class FlightManager implements Serializable {
                 itineraries.put(key, new ArrayList<Itinerary>());
             }
             itineraries.get(key).add(trivialItinerary);
+			// TODO: Fix the case where we add a new flight
+			// TODO: that joins two previously existing itineraries
+			// TODO: and also generates that itineraries sub itineraries.
+
+			// now that we have removed all the previous occurrences of the
+			// flight, we can create new itineraries
+			addToItineraries(trivialItinerary);
         } catch (InvalidItineraryException e) {/*cannot happen */}
 
+    }
+
+    /**
+     * Adds a new itinerary to the itineraries HashMap. The condition that
+     * the hashmap does not contain itinieraries equals() to the new
+     * itinerary must be true.
+     * 
+     * TODO: Update this method name to a better name
+     *
+     * @param itinerary  the new itinerary to add.
+     */
+    private void addToItineraries(Itinerary itinerary) {
+    	// base case
+    	// the itinerary is not continuous to any key in itineraries
+    	
+    	// recursion case
 		// check if flight is continuous to any key in itineraries and add
 
-		// holds new pairs of key values generated
-		Map<List<String>, List<Itinerary>> newKeyValuePairs = new HashMap<>();
-
-		for (List<String> itKey : itineraries.keySet()) {
-			boolean continuous = (itKey.get(0) == flight.getDestination() ||
-					itKey.get(1) == flight.getOrigin());
+		for (List<String> itKey : new 
+								ArrayList<List<String>>(itineraries.keySet())) {
+			boolean continuous = (itKey.get(0) == itinerary.getDestination() ||
+					itKey.get(1) == itinerary.getOrigin());
 
 			if (continuous) {
-				// we can just add this flight to all Itinerary mapped by
-				// itKey. All time and non cyclic logic is dealt with by
-				// Itinerary.addFlight() method
-				for (Itinerary it : itineraries.get(itKey)) {
-					// make a new itinerary with flight
+				// we can just concatenate this itinerary to all Itinerary 
+				// mapped by itKey. 
+				// All time and non cyclic logic is dealt with by
+				// Itinerary.addItinerary() method
+				for (Itinerary it : new 
+								ArrayList<Itinerary>(itineraries.get(itKey))) {
+					// make a new itinerary containing the new itinerary
 					try {
-						Itinerary newItinerary = it.addFlight(flight);
+						Itinerary newItinerary = it.addItinerary(itinerary);
 						// make the key for this itinerary
 						List<String> newKey = getKey(newItinerary);
-						// check if this key already exists in Map
+						// add this newKey to the itineraries Map
 						if (itineraries.containsKey(newKey)) {
-							itineraries.get(newKey).add(newItinerary);
-						} else {
-							// put in addPairs
-							if (!newKeyValuePairs.containsKey(newKey)) {
-								newKeyValuePairs.put(
-										newKey,
-										new ArrayList<Itinerary>()
-										);
+							if (!itineraries.get(newKey).contains(newItinerary)) {
+								itineraries.get(newKey).add(newItinerary);
 							}
-							newKeyValuePairs.get(newKey).add(newItinerary);
+						} else {
+							itineraries.put(
+									newKey,
+									new ArrayList<Itinerary>()
+									);
+							itineraries.get(newKey).add(newItinerary);
 						}
+						// recursively add the new itinerary
+						addToItineraries(newItinerary);
 					} catch (InvalidItineraryException c) {/*skip*/}
 				}
 			}
 		}
-		// finally take all the key value pairs and put them into HashMap
-		itineraries.putAll(newKeyValuePairs);
     }
 
     /**
