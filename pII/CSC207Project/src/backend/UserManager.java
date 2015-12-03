@@ -149,5 +149,5 @@ public class UserManager implements Serializable {
 	private Object readResolve() throws ObjectStreamException {
 		return singletonInstance;
 	}
-	
+	// TODO: Override hashCode for all methods that are Serializable
 }
