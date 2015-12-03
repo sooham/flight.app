@@ -171,24 +171,35 @@ Serializable, Transport {
 	}
 
 	/**
-	 * Returns a new Itinerary with a given Flight added. If the new 
-	 * Itinerary is valid. Otherwise an InvalidItineraryException is
-	 * thrown.
+	 * Returns a new Itinerary resulting from concatenating given Itinerary 
+	 * to this Itinerary, if the resulting Itinerary is valid, otherwise an 
+	 * InvalidItineraryException is thrown.
 	 * 
-	 * A Flight is invalid if it forms a cycle in the Itinerary,
-	 * conflicts with any other Flight in the itinerary in terms of scheduling
-	 * or creates a stopover time of greater than 6 hours.
+	 * The resulting Itinerary is invalid if it forms a cycle, 
+	 * conflicts with in terms of scheduling or creates a 
+	 * stopover time of greater than 6 hours.
 	 * 
-	 * @param newFlight  the flight to add to this Itinerary. 
+	 * @param itinerary  the Itinerary to concatenate to this Itinerary. 
 	 * @throws InvalidItineraryException if the Itinerary formed is invalid. 
-	 * TODO: This method should not take in equal Flights
+	 * TODO: This method should not take in equal Flight containing Itinerary
+	 * TODO: Update Junit tests
 	 */
-	public Itinerary addFlight(Flight newFlight) throws 
+	public Itinerary addItinerary(Itinerary itinerary) throws 
 	InvalidItineraryException {
 		// Create a new TreeSet, being careful not to alias
-		TreeSet<Flight> newFlights = (TreeSet<Flight>) flights.clone();
-		newFlights.add(newFlight);
-		Itinerary newItinerary = new Itinerary(newFlights);
+		TreeSet<Flight> newFlightsTreeSet = (TreeSet<Flight>) flights.clone();
+		newFlightsTreeSet.addAll(itinerary.getFlights());
+		Itinerary newItinerary = new Itinerary(newFlightsTreeSet);
+		return newItinerary;
+	}
+	
+	//TODO: Only needed for Unit Test, delete afterwards
+	public Itinerary addFlight(Flight flight) throws 
+	InvalidItineraryException {
+		// Create a new TreeSet, being careful not to alias
+		TreeSet<Flight> newFlightsTreeSet = (TreeSet<Flight>) flights.clone();
+		newFlightsTreeSet.add(flight);
+		Itinerary newItinerary = new Itinerary(newFlightsTreeSet);
 		return newItinerary;
 	}
 	
