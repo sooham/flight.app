@@ -32,7 +32,7 @@ public class Driver {
      */
     public static void uploadFlightInfo(String path) {
         // TODO: complete this method body
-       FileDatabase.getInstance().addFlightFromFile(path);
+        FileDatabase.getInstance().addFlightFromFile(path);
     }
 
     /**
