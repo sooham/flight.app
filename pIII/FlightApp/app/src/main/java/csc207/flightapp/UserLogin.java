@@ -25,7 +25,8 @@ public class UserLogin extends AppCompatActivity {
             FileDatabase.createInstance(this.getApplicationContext().getFilesDir().getCanonicalPath()+"/");
             System.out.println(this.getApplicationContext().getFilesDir().getCanonicalPath());
         }catch(IOException e){
-
+            TextView textView = (TextView) findViewById(R.id.login_failure);
+            textView.setText("Directory was not found.");
         }
         user = FileDatabase.getInstance().getUserManager();
         setContentView(R.layout.activity_user_login2);
@@ -46,7 +47,7 @@ public class UserLogin extends AppCompatActivity {
             startActivity(intent);
         }else {
             TextView textView = (TextView) findViewById(R.id.login_failure);
-            textView.setText("Password or Username is incorrect.");
+            textView.setText("Password or Username is incorrect. "+ email.getText().toString() + password.getText().toString() );
         }
     }
 

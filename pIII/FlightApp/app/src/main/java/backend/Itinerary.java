@@ -30,7 +30,7 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
      * Constructs an Itinerary from a TreeSet of Flight.
      *
      * @param flights  a TreeSet of Flight objects
-     * @throws InvalidItineraryExecption if Itinerary is invalid.
+     * @throws InvalidItineraryException if Itinerary is invalid.
      */
     public Itinerary(TreeSet<Flight> flights) throws InvalidItineraryException {
 		/* TreeSets are used because they automatically maintain natural
@@ -91,7 +91,7 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
      */
     public double getPrice() {
         double totalPrice = 0.0;
-        for (Flight f: flights) {
+        for (Flight f: this) {
             totalPrice += f.getPrice();
         }
         return totalPrice;
@@ -103,7 +103,7 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
      * @return the number of minutes between departure and arrival time.
      */
     public long getDuration() {
-        final int TO_MINUTE= 60000; // milliseconds
+        final long TO_MINUTE= 60000l; // milliseconds
         return (
                 getArrivalDateTime().getTime()
                         - getDepartureDateTime().getTime()
@@ -111,12 +111,12 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
     }
 
     /**
-     * Returns the TreeSet of Flights in this Itinerary.
+     * Returns the Flights in this Itinerary as a List.
      *
      * @return the flights field of this Itinerary
      */
-    public TreeSet<Flight> getFlights() {
-        return flights;
+    public List<Flight> getFlights() {
+        return new ArrayList<Flight>(flights);
     }
 
     /**
@@ -171,48 +171,85 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
     }
 
     /**
-     * Returns a new Itinerary with a given Flight added. If the new
-     * Itinerary is valid. Otherwise an InvalidItineraryException is
-     * thrown.
+     * Returns a new Itinerary resulting from concatenating given Itinerary
+     * to this Itinerary, if the resulting Itinerary is valid, otherwise an
+     * InvalidItineraryException is thrown.
      *
-     * A Flight is invalid if it forms a cycle in the Itinerary,
-     * conflicts with any other Flight in the itinerary in terms of scheduling
-     * or creates a stopover time of greater than 6 hours.
+     * The resulting Itinerary is invalid if it forms a cycle,
+     * conflicts with in terms of scheduling or creates a
+     * stopover time of greater than 6 hours.
      *
-     * @param newFlight  the flight to add to this Itinerary.
+     * @param itinerary  the Itinerary to concatenate to this Itinerary.
      * @throws InvalidItineraryException if the Itinerary formed is invalid.
+     * TODO: This method should not take in equal Flight containing Itinerary
+     * TODO: Update Junit tests
      */
-    public Itinerary addFlight(Flight newFlight) throws
+    public Itinerary addItinerary(Itinerary itinerary) throws
             InvalidItineraryException {
         // Create a new TreeSet, being careful not to alias
-        TreeSet<Flight> newFlights = (TreeSet<Flight>) flights.clone();
-        newFlights.add(newFlight);
-        Itinerary newItinerary = new Itinerary(newFlights);
+        TreeSet<Flight> newFlightsTreeSet = (TreeSet<Flight>) flights.clone();
+        newFlightsTreeSet.addAll(itinerary.getFlights());
+        Itinerary newItinerary = new Itinerary(newFlightsTreeSet);
+        return newItinerary;
+    }
+
+    //TODO: Only needed for Unit Test, delete afterwards
+    public Itinerary addFlight(Flight flight) throws
+            InvalidItineraryException {
+        // Create a new TreeSet, being careful not to alias
+        TreeSet<Flight> newFlightsTreeSet = (TreeSet<Flight>) flights.clone();
+        newFlightsTreeSet.add(flight);
+        Itinerary newItinerary = new Itinerary(newFlightsTreeSet);
         return newItinerary;
     }
 
     /**
-     * Returns the String representation of this Itinerary.
-     * @return the String representation of this Itinerary
+     * Books a single seat in this Itinerary. If this Itinerary cannot be
+     * booked then does nothing.
+     * TODO: Write Junit test
      */
-    @Override
-    public String toString() {
-        return "Itinerary " + " from " + getOrigin() + " to "
-                + getDestination() + " (" + getDepartureDateTime() + " --- "
-                + getArrivalDateTime() + ")";
+    public void bookSeat() {
+        if (!this.isFull()) {
+            for (Flight f: this) {
+                f.bookSeat();
+            }
+        }
+    }
+
+    /**
+     * Returns true iff this Itinerary cannot be booked. An Itinerary is full
+     * iff there exists a Flight in the Itinerary that is full.
+     *
+     * @return true iff this Itinerary cannot be booked.
+     */
+    public boolean isFull() {
+        for (Flight f: this) {
+            if (f.isFull()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
      * Compares this Itinerary and another Object. Returns true iff other object
-     * is a Itinerary and has identical fields.
+     * is a Itinerary and has identical Flights.
      *
      * @param object  an Object to compare.
-     * @return true iff object is a Itinerary and has identical fields.
+     * @return true iff object is a Itinerary and has identical Flights.
      */
     @Override
     public boolean equals(Object object) {
         if (object instanceof Itinerary) {
-            return flights.equals(((Itinerary) object).getFlights());
+            if (this.flights.size() ==
+                    ((Itinerary) object).getFlights().size()) {
+                for (Flight f: this) {
+                    if (!((Itinerary) object).getFlights().contains(f)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
         return false;
     }
@@ -235,5 +272,16 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
     @Override
     public int compareTo(Itinerary other) {
         return getDepartureDateTime().compareTo(other.getDepartureDateTime());
+    }
+
+    /**
+     * Returns the String representation of this Itinerary.
+     * @return the String representation of this Itinerary
+     */
+    @Override
+    public String toString() {
+        return "Itinerary " + getOrigin() + " -> " + getDestination()
+                + " " + getDepartureDateTime().getDate() + " " + getDepartureDateTime().getHours() + ":" + getDepartureDateTime().getMinutes() + " -> " +
+                getArrivalDateTime().getDate() + " " + getArrivalDateTime().getHours() + ":" + getArrivalDateTime().getMinutes();
     }
 }
