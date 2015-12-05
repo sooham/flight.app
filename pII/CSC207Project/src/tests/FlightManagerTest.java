@@ -347,9 +347,6 @@ public class FlightManagerTest {
 			value.add(it);
 			expectedItinerariesMap.put(key, value);
 		}
-		// TODO: Flight Manager debugger shows that expectedItinerariesMap
-		// gets an empty map in there. Find out how [] = [] is in there.
-		// Update, check if it is now fixed
 		
 		assertEquals(flightManager.itineraries.size(), 
 				expectedItinerariesMap.size());
