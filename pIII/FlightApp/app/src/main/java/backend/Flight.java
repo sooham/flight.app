@@ -44,7 +44,7 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
                   String destination, Date departureDateTime, Date arrivalDateTime,
                   double price, int numSeats) throws InvalidFlightException {
         if (((arrivalDateTime.getTime() - departureDateTime.getTime()) < 0) ||
-                origin.equals(destination)) {
+                origin.equals(destination) || price < 0.0 || numSeats < 0) {
             throw new InvalidFlightException(
                     "The Flight constructor inupts were invalid"
             );
@@ -174,6 +174,7 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
                     "Invalid Flight created by setting DepartureDateTime."
             );
         }
+
         this.departureDateTime = departureDateTime;
     }
 
@@ -215,12 +216,16 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
     }
 
     /**
-     * Sets the price of this Flight
+     * Sets the price of this Flight. If the price is invalid leaves
+     * this Flight unchanged.
      *
      * @param price  the new price of this Flight
+     * @throws InvalidFlightException if the Flight is invalid.
      */
     public void setPrice(double price) {
-        this.price = price;
+        if (price >= 0.0) {
+            this.price = price;
+        }
     }
 
     /**
@@ -263,17 +268,31 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
      * If setting to the number of empty seats removes booked users then do
      * nothing.
      *
-     * <p> This function is private because it does not make sense for
-     * an Admin to edit the number of seats that are empty in a Flight.
-     * An Admin rather edit the number of people who booked this Flight
-     * or this Flights total seats.
-     *
      * @param numEmptySeats  the new number of empty seats of this Flight
+     * TODO: Change this method to private BEFORE FINAL SUBMISSION!
      */
-    private void setNumEmptySeats(int numEmptySeats) {
-        if (0 <= numEmptySeats) {
+    public void setNumEmptySeats(int numEmptySeats) {
+        if (0 <= numEmptySeats && numEmptySeats <= numSeats) {
             this.numEmptySeats = numEmptySeats;
         }
+    }
+
+    /**
+     * Books one seat in this Flight. If the Flight is full does nothing.
+     */
+    public void bookSeat() {
+        if (!isFull()) {
+            setNumEmptySeats(getNumEmptySeats() - 1);
+        }
+    }
+
+    /**
+     * Returns true if this Flight has no empty seats.
+     *
+     * @return true if this Flight is booked full
+     */
+    public boolean isFull() {
+        return numEmptySeats == 0;
     }
 
     /**
@@ -322,8 +341,9 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
      */
     @Override
     public String toString() {
-        return "Flight " + number + " from " + origin + " to " + destination
-                + " (" + departureDateTime + " ___ " + arrivalDateTime + ")";
+        return "Flight " + origin + " -> " + destination
+                + " " + departureDateTime.getDate() + " " + departureDateTime.getHours() + ":" + departureDateTime.getMinutes() + " -> " +
+                arrivalDateTime.getDate() + " " + arrivalDateTime.getHours() + ":" + arrivalDateTime.getMinutes();
     }
 }
 

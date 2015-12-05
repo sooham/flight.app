@@ -66,4 +66,14 @@
         android:id="@+id/display_email"
         android:layout_below="@+id/title"
         android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:layout_width="@dimen/box_size"
+        android:layout_height="@dimen/box_size"
+        android:id="@+id/imageButton"
+        android:background="@drawable/options_icon"
+        android:scaleType = "centerInside"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="editClientInfo"/>/>
 </RelativeLayout>
