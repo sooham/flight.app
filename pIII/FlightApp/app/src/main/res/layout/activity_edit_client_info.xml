@@ -14,29 +14,33 @@
         android:layout_height="wrap_content"
         android:id="@+id/first_name"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="76dp" />
+        android:layout_marginTop="76dp"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/first_name_text" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/last_name"
         android:layout_below="@+id/first_name"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/last_name_text" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/credit_card_num"
         android:layout_below="@+id/last_name"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/credit_card_text" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/expiry_date"
         android:layout_below="@+id/credit_card_num"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignEnd="@+id/credit_card_num"
+        android:layout_toEndOf="@+id/expiry_date_text" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -53,7 +57,8 @@
         android:id="@+id/save_button"
         android:layout_marginTop="44dp"
         android:layout_below="@+id/expiry_date"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="saveChanges"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -62,4 +67,41 @@
         android:id="@+id/upload_button"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="First Name:"
+        android:id="@+id/first_name_text"
+        android:layout_alignTop="@+id/first_name"
+        android:layout_toEndOf="@+id/username" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Last Name:"
+        android:id="@+id/last_name_text"
+        android:layout_below="@+id/first_name"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Credit Card#: "
+        android:id="@+id/credit_card_text"
+        android:layout_below="@+id/last_name"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Excpiry Date: "
+        android:id="@+id/expiry_date_text"
+        android:layout_below="@+id/credit_card_num"
+        android:layout_toEndOf="@+id/username" />
+
 </RelativeLayout>
