@@ -53,7 +53,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save &amp; Return"
+        android:text="Save and Return"
         android:id="@+id/save_button"
         android:layout_marginTop="44dp"
         android:layout_below="@+id/expiry_date"
@@ -74,8 +74,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="First Name:"
         android:id="@+id/first_name_text"
-        android:layout_alignTop="@+id/first_name"
-        android:layout_toEndOf="@+id/username" />
+        android:layout_alignTop="@+id/first_name" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -99,9 +98,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Excpiry Date: "
+        android:text="Expiry Date: "
         android:id="@+id/expiry_date_text"
-        android:layout_below="@+id/credit_card_num"
-        android:layout_toEndOf="@+id/username" />
+        android:layout_below="@+id/credit_card_num" />
 
 </RelativeLayout>

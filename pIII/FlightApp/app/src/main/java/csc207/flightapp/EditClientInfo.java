@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 import backend.FileDatabase;
 import backend.User;
@@ -44,16 +45,19 @@ public class EditClientInfo extends AppCompatActivity {
         creditNum = (EditText)findViewById(R.id.credit_card_num);
         expiryDate = (EditText)findViewById(R.id.expiry_date);
         username = (TextView) findViewById(R.id.username);
-        try{
+        if(user.getFirstName()!=null) {
             firstName.setText(user.getFirstName());
-            lastName.setText(user.getLastName());
-            creditNum.setText(user.getCreditCardNumber());
-            expiryDate.setText(user.getCreditCardNumber());
-        }catch(NullPointerException e){
-
-        }catch (RuntimeException e){
-
         }
+        if(user.getLastName() !=null) {
+            lastName.setText(user.getLastName());
+        }
+        if(user.getCreditCardNumber() != 0) {
+            creditNum.setText(Objects.toString(user.getCreditCardNumber()));
+        }
+        if (user.getExpiryDate()!=null) {
+            expiryDate.setText(dateFormatter.format(user.getExpiryDate()));
+        }
+
         username.setText(email);
     }
 
