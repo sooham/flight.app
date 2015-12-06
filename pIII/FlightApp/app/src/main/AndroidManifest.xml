@@ -24,7 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ViewSearchedFlights" />
-        <activity android:name=".EditClientInfo"></activity>
+        <activity android:name=".EditClientInfo" />
+        <activity android:name=".ViewItineraries"></activity>
     </application>
 
 </manifest>

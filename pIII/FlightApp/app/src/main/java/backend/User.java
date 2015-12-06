@@ -34,7 +34,7 @@ public class User implements Serializable{
     private int creditCardNumber = 0;
     private Date expiryDate;
 
-    private List<Flight> bookedItineraries;
+    private List<Itinerary> bookedItineraries;
 
     /**
      * Creates a new User instance with the given fields. Takes a last name,
@@ -194,8 +194,8 @@ public class User implements Serializable{
      *
      * @return this User's booked itineraries.
      */
-    public List<Flight> getBookedItineraries() {
-        List<Flight> copy = new ArrayList<Flight>(bookedItineraries);
+    public List<Itinerary> getBookedItineraries() {
+        List<Itinerary> copy = new ArrayList<Itinerary>(bookedItineraries);
         return copy;
     }
 
@@ -204,7 +204,7 @@ public class User implements Serializable{
      *
      * @param bookedItineraries  the new List of booked Itinerary.
      */
-    public void setBookedItineraries(List<Flight> bookedItineraries) {
+    public void setBookedItineraries(List<Itinerary> bookedItineraries) {
         this.bookedItineraries = bookedItineraries;
     }
 
@@ -231,11 +231,11 @@ public class User implements Serializable{
      * Book an Itinerary for this User. If the itinerary has already been
      * booked, does nothing.
      *
-     * @param selectedItinerary  an Itinerary this User wants to book.
+     * @param selectedFlight  an Itinerary this User wants to book.
      */
-    public void bookItinerary(Flight selectedItinerary) {
-        if (!bookedItineraries.contains(selectedItinerary)) {
-            bookedItineraries.add(selectedItinerary);
+    public void bookItinerary(Itinerary selectedFlight) {
+        if (!bookedItineraries.contains(selectedFlight)) {
+            bookedItineraries.add(selectedFlight);
             // TODO: Decrease the empty seats in Itinerary and its Flights by 1
             // decrease the number of empty seats in Itinerary by the total
             // number of Flight in the itinerary
