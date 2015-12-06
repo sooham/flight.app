@@ -50,6 +50,7 @@ public class SearchForFlights extends AppCompatActivity {
         intent.putExtra("ORIGIN", origin.getText().toString());
         intent.putExtra("DESTINATION", destination.getText().toString());
         intent.putExtra("DEPARTURE_DATE", departureDate.getText().toString());
+        intent.putExtra("EMAIL", email);
         startActivity(intent);
     }
 

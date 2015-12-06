@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -79,8 +78,7 @@ public class EditClientInfo extends AppCompatActivity {
         }catch(IOException e){
 
         }
-        Intent intent = new Intent(this, SearchForFlights.class);
-        intent.putExtra("EMAIL", email);
-        startActivity(intent);
+        this.finish();
     }
+
 }
