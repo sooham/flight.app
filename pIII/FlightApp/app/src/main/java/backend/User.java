@@ -31,7 +31,7 @@ public class User implements Serializable{
     private String password;
 
     private String address;
-    private int creditCardNumber;
+    private int creditCardNumber = 0;
     private Date expiryDate;
 
     private List<Itinerary> bookedItineraries;
