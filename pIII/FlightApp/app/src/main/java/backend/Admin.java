@@ -121,9 +121,6 @@ public class Admin extends User implements Serializable {
      * @param itinerary  the Itinerary to book for the client
      */
     public void bookFor(Client client, Itinerary itinerary) {
-        for (Flight flight:itinerary.getFlights()){
-            client.bookItinerary(flight);
-        }
-
+        client.bookItinerary(itinerary);
     }
 }

@@ -54,6 +54,10 @@ public class SearchForFlights extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void viewItineraries(View view){
+
+    }
+
     public void editClientInfo(View view){
         Intent intent = new Intent(this, EditClientInfo.class);
         intent.putExtra("EMAIL", email);
