@@ -14,7 +14,7 @@ public class SampleTest {
 
     // NOTE: set the PATH variable to the location of the input csv files.
     public static final String PATH = "";
-    public static final String CLIENTS = PATH + "clients.csv";
+    public static final String CLIENTS = PATH + "clients.txt";
     public static final String FLIGHTS1 = PATH + "flights1.txt";
     public static final String FLIGHTS2 = PATH + "flights2.txt";
 
