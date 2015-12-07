@@ -70,9 +70,8 @@ public class UserManager implements Serializable {
      * information
      */
     public boolean loginCredentialsCorrect(String email, String password) {
-        User existing;
-        if ((existing = getUserWithEmail(email)) != null) {
-            return existing.getPassword().equals(password);
+        if (getUserWithEmail(email) != null) {
+            return getUserWithEmail(email).getPassword().equals(password);
         }
         return false;
     }
