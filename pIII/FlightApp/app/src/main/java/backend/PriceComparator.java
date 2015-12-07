@@ -7,7 +7,6 @@ import java.util.Comparator;
  * A comparator for comparing Flights and Itinerary by price.
  * This is possible as Itinerary is a subclass of Flight objects.
  *
- * @param T a subclass of Flight object to compare by price
  */
 public class PriceComparator<T extends Transport> implements Comparator<T>,
         Serializable {
@@ -20,16 +19,16 @@ public class PriceComparator<T extends Transport> implements Comparator<T>,
     public PriceComparator() {}
 
     /**
-     * Returns a number corresponding to the relative ordering of o1 and o2.
-     * If o1 is less expensive than o2, returns a positive int, else if o2
-     * is less expensive than o1 returns a negative int, otherwise returns 0.
+     * Compares its two arguments for order.
+     * Returns a negative integer, zero, or a positive integer as
+     * o1 is less expensive than, equal to, or more expensive than o2.
      *
-     * @param o1  a subclass of Flight
-     * @param o2  a subclass of Flight
+     * @param o1  a Transport.
+     * @param o2  a Transport.
      * @return an int corresponding to relative price of o1 and o2.
      */
     public int compare(T o1, T o2) {
-        double diff = o2.getPrice() - o1.getPrice();
+        double diff = o1.getPrice() - o2.getPrice();
 
         if (diff > 0) {
             return 1;

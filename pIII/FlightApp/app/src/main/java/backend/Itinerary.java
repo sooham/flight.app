@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
+import java.text.SimpleDateFormat;
 
 /**
  * A Flight Itinerary. An Itinerary is a sorted set of Flights for which
@@ -16,12 +17,17 @@ import java.util.TreeSet;
  * Additional restriction such as no repetition of origin and destinations
  * is imposed to prevent inefficient routes.
  */
+
+// TODO: TreeSet require API level 9
 public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
         Serializable, Transport {
 
     private static final long SIX_HOURS_TO_MILLISECONDS = (long) 2.16e+7;
 
     private static final long serialVersionUID = 7985656353564622420L;
+
+    private final SimpleDateFormat dateTimeFormatter = new
+                                        SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     private TreeSet<Flight> flights;	// the Set of flights in sequence for
     // this Itinerary
@@ -111,6 +117,7 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
     }
 
     /**
+     * TODO: Do we need this (check)
      * Returns the Flights in this Itinerary as a List.
      *
      * @return the flights field of this Itinerary
@@ -184,13 +191,12 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
      * TODO: This method should not take in equal Flight containing Itinerary
      * TODO: Update Junit tests
      */
-    public Itinerary addItinerary(Itinerary itinerary) throws
-            InvalidItineraryException {
+    public Itinerary addItinerary(Itinerary itinerary)
+            throws InvalidItineraryException {
         // Create a new TreeSet, being careful not to alias
         TreeSet<Flight> newFlightsTreeSet = (TreeSet<Flight>) flights.clone();
         newFlightsTreeSet.addAll(itinerary.getFlights());
-        Itinerary newItinerary = new Itinerary(newFlightsTreeSet);
-        return newItinerary;
+        return new Itinerary(newFlightsTreeSet);
     }
 
     //TODO: Only needed for Unit Test, delete afterwards
@@ -199,28 +205,14 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
         // Create a new TreeSet, being careful not to alias
         TreeSet<Flight> newFlightsTreeSet = (TreeSet<Flight>) flights.clone();
         newFlightsTreeSet.add(flight);
-        Itinerary newItinerary = new Itinerary(newFlightsTreeSet);
-        return newItinerary;
+        return new Itinerary(newFlightsTreeSet);
     }
 
     /**
-     * Books a single seat in this Itinerary. If this Itinerary cannot be
-     * booked then does nothing.
-     * TODO: Write Junit test
-     */
-    public void bookSeat() {
-        if (!this.isFull()) {
-            for (Flight f: this) {
-                f.bookSeat();
-            }
-        }
-    }
-
-    /**
-     * Returns true iff this Itinerary cannot be booked. An Itinerary is full
+     * Returns true iff this Itinerary is full. An Itinerary is full
      * iff there exists a Flight in the Itinerary that is full.
      *
-     * @return true iff this Itinerary cannot be booked.
+     * @return true iff this Itinerary is full.
      */
     public boolean isFull() {
         for (Flight f: this) {
@@ -230,6 +222,19 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
         }
         return false;
     }
+
+    /**
+     * Books a single seat in this Itinerary. If this Itinerary cannot be
+     * booked then does nothing.
+     */
+    public void bookSeat() {
+        if (!this.isFull()) {
+            for (Flight f: this) {
+                f.bookSeat();
+            }
+        }
+    }
+
 
     /**
      * Compares this Itinerary and another Object. Returns true iff other object
@@ -267,7 +272,7 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
      * or more than) another Itinerary object.
      *
      * @param other  a Itinerary object
-     * @returns an integer representing the relative departure times.
+     * @return an integer representing the relative departure times.
      */
     @Override
     public int compareTo(Itinerary other) {
@@ -276,12 +281,37 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
 
     /**
      * Returns the String representation of this Itinerary.
+     *
+     * The output should contain one line per flight,
+     * in the format:
+     *
+     * Number,DepartureDateTime,ArrivalDateTime,Airline,Origin,Destination
+     * followed by total price (on its own line, exactly two decimal places)
+     * followed by total duration (on its own line, in format HH:MM).
      * @return the String representation of this Itinerary
      */
     @Override
     public String toString() {
-        return "Itinerary " + getOrigin() + " -> " + getDestination()
-                + " " + getDepartureDateTime().getDate() + " " + getDepartureDateTime().getHours() + ":" + getDepartureDateTime().getMinutes() + " -> " +
-                getArrivalDateTime().getDate() + " " + getArrivalDateTime().getHours() + ":" + getArrivalDateTime().getMinutes();
+        String formatString = "";
+        for (Flight f: this) {
+            formatString += String.format("%d,%s,%s,%s,%s,%s",
+                                            f.getNumber(),
+                                            dateTimeFormatter.format(
+                                                f.getDepartureDateTime()
+                                            ),
+                                            dateTimeFormatter.format(
+                                                f.getArrivalDateTime()
+                                            ),
+                                            f.getAirline(),
+                                            f.getOrigin(),
+                                            f.getDestination()
+                                        );
+            formatString += "\n"; // TODO: verify newline char to use
+        }
+        formatString += String.format("%.2f\n%d:%d",
+                                    getPrice(),
+                                    getDuration() / 60,
+                                    getDuration() % 60);
+        return formatString;
     }
 }

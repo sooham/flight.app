@@ -7,7 +7,6 @@ import java.io.Serializable;
  * A comparator for comparing Flights and Itinerary by duration.
  * This is possible as Itinerary is a subclass of Flight objects.
  *
- * @param T a subclass of Flight object to compare by duration
  */
 public class DurationComparator<T extends Transport> implements Comparator<T>,
         Serializable {
@@ -20,16 +19,16 @@ public class DurationComparator<T extends Transport> implements Comparator<T>,
     public DurationComparator() {}
 
     /**
-     * Returns a number corresponding to the relative ordering of o1 and o2.
-     * If o1 is shorter than o2, returns a positive int, else if o2
-     * is shorter than o1 returns a negative int, otherwise returns 0.
+     * Compares its two arguments for order.
+     * Returns a negative integer, zero, or a positive integer as
+     * o1 is shorter than, equal to, or longer than o2.
      *
-     * @param o1  a subclass of Flight
-     * @param o2  a subclass of Flight
-     * @return an int corresponding to relative duration of o1 and o2.
+     * @param o1  a Transport.
+     * @param o2  a Transport.
+     * @return an int corresponding to relative travel time of o1 and o2.
      */
     public int compare(T o1, T o2) {
-        double diff = o2.getDuration() - o1.getDuration();
+        double diff = o1.getDuration() - o2.getDuration();
 
         if (diff > 0) {
             return 1;

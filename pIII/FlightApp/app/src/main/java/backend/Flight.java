@@ -2,10 +2,11 @@ package backend;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
- * A Flight. Every Flight has a number, airline name, departure arrival
- * date and time, origin, destination, ticket price and travel time.
+ * A Flight. Every Flight has a number, airline name, departure and arrival
+ * date and time, origin, destination, ticket price, total number of seats and travel time.
  *
  * <p>Flight objects will be persistent, hence they implement Serializable.
  * The natural ordering for Flights will be by Date, hence implements
@@ -14,6 +15,9 @@ import java.util.Date;
 public class Flight implements Comparable<Flight>, Serializable, Transport {
 
     private static final long serialVersionUID = 4362700743234104218L;
+
+    private final SimpleDateFormat dateTimeFormatter = new
+                                        SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     private String airline;
     private long number;
@@ -29,7 +33,7 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
      * Generates a new Flight object.
      *
      * @param airline  the airline.
-     * @param number  a unique number representing this Flight.
+     * @param number  a number representing this Flight.
      * @param origin  the location where this Flight begins.
      * @param destination  the location where this Flight ends.
      * @param departureDateTime  the Date this Flight departs.
@@ -37,17 +41,16 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
      * @param price  the ticket price for this Flight.
      * @param numSeats  the number of seats for this Flight.
      *
-     * @throws InvalidFlightException if the timing of the Flight is incorrect
-     * or the Flight has the same origin and destination.
+     * @throws InvalidFlightException if the Flight is incorrect.
      */
-    public Flight(String airline, long number, String origin,
-                  String destination, Date departureDateTime, Date arrivalDateTime,
-                  double price, int numSeats) throws InvalidFlightException {
-        if (((arrivalDateTime.getTime() - departureDateTime.getTime()) < 0) ||
-                origin.equals(destination) || price < 0.0 || numSeats < 0) {
-            throw new InvalidFlightException(
-                    "The Flight constructor inupts were invalid"
-            );
+    public Flight(String airline, long number, String origin, String destination,
+                  Date departureDateTime, Date arrivalDateTime, double price,
+                  int numSeats) throws InvalidFlightException {
+
+        if (((arrivalDateTime.getTime() - departureDateTime.getTime()) < 0)
+                || origin.equals(destination) || price < 0.0 || numSeats < 0) {
+            throw new InvalidFlightException("The Flight constructor inputs " +
+                    "were  invalid");
         }
         this.airline = airline;
         this.number = number;
@@ -70,16 +73,19 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
     }
 
     /**
+     *
      * Sets this flight's airline.
      *
      * @param airline  the new airline
      */
+    /*
     public void setAirline(String airline) {
         this.airline = airline;
     }
+    */
 
     /**
-     * Returns this flight's unique number.
+     * Returns this flight's number.
      *
      * @return the flightNumber
      */
@@ -92,9 +98,11 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
      *
      * @param number  the new number
      */
+    /*
     public void setNumber(long number) {
         this.number = number;
     }
+    */
 
     /**
      * Returns this flight's origin city.
@@ -139,8 +147,9 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
      * @param destination  the destination to set
      * @throws InvalidFlightException if this Flight becomes Invalid
      */
-    public void setDestination(String destination) throws
-            InvalidFlightException {
+    public void setDestination(String destination)
+            throws InvalidFlightException {
+
         if (origin.equals(destination)) {
             throw new InvalidFlightException(
                     "Invalid Flight created by setting Destination."
@@ -151,7 +160,7 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
     }
 
     /**
-     * Returns this flight's departing date and time with respect to UTC.
+     * Returns this flight's departing date and time.
      *
      * @return the departureDateTime
      */
@@ -167,8 +176,9 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
      * @param departureDateTime  the departureDateTime to set
      * @throws InvalidFlightException if this Flight becomes invalid.
      */
-    public void setDepartureDateTime(Date departureDateTime) throws
-            InvalidFlightException {
+    public void setDepartureDateTime(Date departureDateTime)
+            throws InvalidFlightException {
+
         if (arrivalDateTime.getTime() < departureDateTime.getTime()) {
             throw new InvalidFlightException(
                     "Invalid Flight created by setting DepartureDateTime."
@@ -179,7 +189,7 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
     }
 
     /**
-     * Returns this flight's arrival date and time with respect to UTC.
+     * Returns this flight's arrival date and time.
      *
      * @return the arrivalDateTime
      */
@@ -195,8 +205,8 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
      * @param arrivalDateTime  the arrivalDateTime to set
      * @throws InvalidFlightException if this Flight becomes Invalid
      */
-    public void setArrivalDateTime(Date arrivalDateTime) throws
-            InvalidFlightException {
+    public void setArrivalDateTime(Date arrivalDateTime)
+            throws InvalidFlightException {
         if (arrivalDateTime.getTime() < departureDateTime.getTime()) {
             throw new InvalidFlightException(
                     "Invalid Flight created by setting ArrivalDateTime."
@@ -220,7 +230,6 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
      * this Flight unchanged.
      *
      * @param price  the new price of this Flight
-     * @throws InvalidFlightException if the Flight is invalid.
      */
     public void setPrice(double price) {
         if (price >= 0.0) {
@@ -241,8 +250,7 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
      * Sets the number of seats for this Flight. The new number of Seats
      * must be greater than or equal the number of booked seats in this Flight.
      *
-     * The number of occupied seats in the Flight remain unchanged.
-     * TODO: Should this be the way
+     * The number of booked seats in the Flight remains unchanged.
      *
      * @param numSeats  the new number of seats of this Flight
      */
@@ -278,21 +286,22 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
     }
 
     /**
+     * Returns true iff this Flight has no empty seats.
+     *
+     * @return true iff this Flight has no empty seats.
+     * TODO: Change to private maybe (see where it is used)
+     */
+    public boolean isFull() {
+        return numEmptySeats == 0;
+    }
+
+    /**
      * Books one seat in this Flight. If the Flight is full does nothing.
      */
     public void bookSeat() {
         if (!isFull()) {
-            setNumEmptySeats(getNumEmptySeats() - 1);
+            setNumEmptySeats(numEmptySeats - 1);
         }
-    }
-
-    /**
-     * Returns true if this Flight has no empty seats.
-     *
-     * @return true if this Flight is booked full
-     */
-    public boolean isFull() {
-        return numEmptySeats == 0;
     }
 
     /**
@@ -300,7 +309,7 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
      * or more than) another Flight object.
      *
      * @param other  a Flight object
-     * @returns an integer representing the relative departure times.
+     * @return an integer representing the relative departure times.
      */
     @Override
     public int compareTo(Flight other) {
@@ -309,7 +318,7 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
 
     /**
      * Compares this flight and another Object. Returns true iff other object
-     * is a Flight with idential airline and flight number.
+     * is a Flight with identical airline and flight number.
      *
      * @param object  an Object to compare.
      * @return true iff object is a Flight and has identical airline and
@@ -336,14 +345,25 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
     }
 
     /**
-     * Returns a String representation of this Flight.
+     * Returns a String representation of this Flight. The returning format is:
+     *
+     * Number,DepartureDateTime,ArrivalDateTime,Airline,Origin,Destination,Price
+     * (the departure and arrival date and time are in the format
+     * YYYY-MM-DD HH:MM; the price has exactly two decimal places)
+     *
      * @return a String representation of this Flight.
      */
     @Override
     public String toString() {
-        return "Flight " + origin + " -> " + destination
-                + " " + departureDateTime.getDate() + " " + departureDateTime.getHours() + ":" + departureDateTime.getMinutes() + " -> " +
-                arrivalDateTime.getDate() + " " + arrivalDateTime.getHours() + ":" + arrivalDateTime.getMinutes();
+        return  String.format(
+                "%d,%s,%s,%s,%s,%s,%.2f",
+                number,
+                dateTimeFormatter.format(departureDateTime),
+                dateTimeFormatter.format(arrivalDateTime),
+                airline,
+                origin,
+                destination,
+                price
+                );
     }
 }
-

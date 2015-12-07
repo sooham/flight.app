@@ -1,7 +1,6 @@
 package backend;
 
 import java.io.Serializable;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,11 +16,12 @@ import java.util.List;
  * we subclass User into Client and Administrator objects. User serves
  * as the object to bridge the similarities between Client and Administrator.
  */
-public class User implements Serializable{
+// TODO: To abstract or not abstract?
+public class User implements Serializable {
 
     private static final long serialVersionUID = -3786727358644943990L;
 
-    private static SimpleDateFormat formatter = new SimpleDateFormat(
+    private final SimpleDateFormat formatter = new SimpleDateFormat(
             "yyyy-MM-dd");
 
     private String lastName;
@@ -31,7 +31,7 @@ public class User implements Serializable{
     private String password;
 
     private String address;
-    private int creditCardNumber = 0;
+    private int creditCardNumber;
     private Date expiryDate;
 
     private List<Itinerary> bookedItineraries;
@@ -66,6 +66,8 @@ public class User implements Serializable{
      * first name, email, address, credit card number, its expiry date and
      * creates the corresponding User.
      *
+     * <p>password is set to null.
+     *
      * @param lastName  this user's last name.
      * @param firstName  this user's first name.
      * @param email  this user's email.
@@ -81,6 +83,8 @@ public class User implements Serializable{
 
     /**
      * Creates a new User instance with given login information.
+     *
+     * <p>All other fields can be set later by the User or Admin in app.
      *
      * @param email  this user's email.
      * @param password  this user's password.
@@ -118,8 +122,6 @@ public class User implements Serializable{
 
     /**
      * Setter for this User's first name.
-     *
-     * @return firstName  this user's new first name.
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -195,8 +197,7 @@ public class User implements Serializable{
      * @return this User's booked itineraries.
      */
     public List<Itinerary> getBookedItineraries() {
-        List<Itinerary> copy = new ArrayList<Itinerary>(bookedItineraries);
-        return copy;
+        return new ArrayList<Itinerary>(bookedItineraries);
     }
 
     /**
@@ -231,93 +232,15 @@ public class User implements Serializable{
      * Book an Itinerary for this User. If the itinerary has already been
      * booked, does nothing.
      *
-     * @param selectedFlight  an Itinerary this User wants to book.
+     * @param selectedItinerary  an Itinerary this User wants to book.
      */
-    public void bookItinerary(Itinerary selectedFlight) {
-        if (!bookedItineraries.contains(selectedFlight)) {
-            bookedItineraries.add(selectedFlight);
-            // TODO: Decrease the empty seats in Itinerary and its Flights by 1
-            // decrease the number of empty seats in Itinerary by the total
-            // number of Flight in the itinerary
+    public void bookItinerary(Itinerary selectedItinerary) {
+        if (!bookedItineraries.contains(selectedItinerary) &&
+                !selectedItinerary.isFull()) {
+            selectedItinerary.bookSeat();
+            bookedItineraries.add(selectedItinerary);
         }
     }
-
-    /**
-     * Returns a List of Flight's given their origin, destination and departure
-     * date for this User to explore.
-     *
-     * @param origin  the origin of the Flight to search.
-     * @param destination  the destination of the Flight to search.
-     * @param departureDate  a String of format YYYY-MM-DD indicating the
-     * departing dates for Flight to search.
-     *
-     * @return a List of Flights fulfilling criterion, empty List if no
-     * such Flight exist.
-     */
-    public List<Flight> searchFlights(String origin, String destination,
-                                      String departureDate) {
-        return FileDatabase.getInstance().getFlightManger().getFlights(
-                origin, destination, departureDate);
-    }
-
-    /**
-     * Returns a List of Itineraries given their origin, destination and
-     * departure date for this User to explore.
-     *
-     * @param origin  the origin of the Itinerary to search.
-     * @param destination  the destination of the Itinerary to search.
-     * @param departureDate  a String of format YYYY-MM-DD indicating the
-     * departing dates for Itinerary to search.
-     *
-     * @return a List of Itinerary fulfilling criterion, empty List if no
-     * such Itinerary exist.
-     */
-    public List<Itinerary> seachItineraries(String origin, String destination,
-                                            String departureDate) {
-        return FileDatabase.getInstance().getFlightManger().getItineraries(
-                origin, destination, departureDate);
-    }
-
-    /**
-     * Takes in a List of Flight or Itinerary and returns a new List
-     * sorted by price.
-     *
-     * @param list  the List to sort by price.
-     * @return a copy of the List list sorted by price.
-     */
-    public List<? extends Flight> sortByPrice(List<? extends Flight> list) {
-        List<? extends Flight> copyList = new ArrayList<>(list);
-        FileDatabase.getInstance().getFlightManger().sortByPrice(copyList);
-        return copyList;
-    }
-
-    /**
-     * Takes in a List of Flight or Itinerary and returns a new List
-     * sorted by duration.
-     *
-     * @param list  the List to sort by duration.
-     * @return a copy of the List list sorted by duration.
-     */
-    public List<? extends Flight> sortByDuration(List<? extends Flight> list) {
-        List<? extends Flight> copyList = new ArrayList<>(list);
-        FileDatabase.getInstance().getFlightManger().sortByDuration(list);
-        return copyList;
-    }
-
-    /**
-     * Returns a HashCode value for this for this User. Necessary for using
-     * with HashMap.
-     *
-     * @return the hashcode for this User.
-     */
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((email == null) ? 0 : email.hashCode());
-        return result;
-    }
-
 
     /**
      * Indicates if this User is equal to another Object.
@@ -329,7 +252,6 @@ public class User implements Serializable{
         return (obj instanceof User && email.equals(((User) obj).getEmail()));
     }
 
-
     /**
      * Returns the information of this User in String.
      *
@@ -338,7 +260,7 @@ public class User implements Serializable{
     @Override
     public String toString(){
         return String.format(
-                "%s,%s,%s,%s,%d,%s,%s",
+                "%s,%s,%s,%s,%d,%s",
                 lastName,
                 firstName,
                 email,
