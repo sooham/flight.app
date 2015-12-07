@@ -1,8 +1,10 @@
 package backend;
 
+
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.Serializable;
 
 /**
  * A UserManager object. A UserManager is a singleton object used to
@@ -15,7 +17,8 @@ public class UserManager implements Serializable {
 
     private final long serialVersionUID = 1772117296747939656L;
 
-    public List<User> users; // The List of Users in the manager
+    public ArrayList<User> users; // The List of Users in the manager TODO: make
+    // private
 
     // Singleton Instance
     private static UserManager singletonInstance;
@@ -47,6 +50,8 @@ public class UserManager implements Serializable {
      * UserManager, edits that User's information.
      *
      * @param u  User that is to be added or edited
+     * TODO: Rename this method to update
+     * TODO: Unit test
      */
     public void addUser(User u) {
         User existing;
@@ -55,12 +60,19 @@ public class UserManager implements Serializable {
             users.remove(existing);
         }
         users.add(u);
+        /*
+        if (users.contains(u)) {
+            // could have different contact information but is still equals()
+            users.remove(u);
+        }
+        users.add(u);
+        */
     }
 
     /**
      * Returns true if and only if a User with given login credentials
      * exists in this UserManager. To get the User with given credentials
-     * use UserManager.getUserWithEmail.
+     * use UserManager.getUserWithEmail().
      *
      * @return true if a User exists in this UserManager with given login
      * information
@@ -74,6 +86,12 @@ public class UserManager implements Serializable {
         }
 
         return false;
+        /*
+        if (getUserWithEmail(email) != null) {
+            return getUserWithEmail(email).getPassword().equals(password);
+        }
+        return false;
+        */
     }
 
     /**
@@ -94,6 +112,7 @@ public class UserManager implements Serializable {
     }
 
     /**
+     * // TODO: Do I need this (haven't used it yet)
      * Returns a List of User matching the given field from this
      * UserManager.
      *
@@ -108,8 +127,8 @@ public class UserManager implements Serializable {
      * 	be a first or last name, email or address.
      * @return an List of User that meets search criterion.
      */
-    public List<User> getUser(String value) {
-        List<User> matchingUsers = new ArrayList<User>();
+    public ArrayList<User> getUser(String value) {
+        ArrayList<User> matchingUsers = new ArrayList<User>();
 
         for (User u: users) {
             // go through every field of user and see if any field
@@ -126,12 +145,25 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Returns the List of User from this UserManager.
+     * Returns the ArrayList of users from this UserManager.
      *
      * @return the users
      */
-    public List<User> getUsers() {
+    public ArrayList<User> getUsers() {
         return users;
     }
 
+    /**
+     * Called by ObjectInputStream when reading UserManager class object
+     * from stream. The readResolve method needs to be defined to prevent
+     * Deserialization of UserManager class resulting in multiple instances
+     * of UserManager being created.
+     *
+     * @return the singleton instance for UserManager class
+     * @throws ObjectStreamException
+     */
+    private Object readResolve() throws ObjectStreamException {
+        return singletonInstance;
+    }
+    // TODO: Override hashCode for all methods that are Serializable
 }

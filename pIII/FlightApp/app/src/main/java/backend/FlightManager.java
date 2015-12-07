@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeSet;
 // TODO: Make code in this class simpler, suggestions getKey() method for
 // Flight and Itineraries
@@ -29,8 +28,8 @@ public class FlightManager implements Serializable {
      */
     private static final long serialVersionUID = -7587676537029568714L;
 
-    public Map<ArrayList<String>, ArrayList<Itinerary>> itineraries;
-    public Map<ArrayList<String>, ArrayList<Flight>> flights;
+    public HashMap<ArrayList<String>, ArrayList<Itinerary>> itineraries;
+    public HashMap<ArrayList<String>, ArrayList<Flight>> flights;
 
     // The SimpleDateFormat is used to turn strings into Date objects
     private final SimpleDateFormat dateFormatter =
@@ -251,7 +250,7 @@ public class FlightManager implements Serializable {
      */
     public ArrayList<Flight> getFlights(String origin, String destination,
                                    String departureDate) {
-        List<String> key = new ArrayList<>();
+        ArrayList<String> key = new ArrayList<>();
         key.add(origin);
         key.add(destination);
         key.add(departureDate);
