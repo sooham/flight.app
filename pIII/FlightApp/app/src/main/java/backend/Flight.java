@@ -258,7 +258,7 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
      */
     public void setNumSeats(int numSeats) {
         int occupiedSeats = this.numSeats - numEmptySeats;
-        if (numSeats >= occupiedSeats) {
+        if (numSeats >= occupiedSeats && numSeats >= 0) {
             this.numSeats = numSeats;
         }
         setNumEmptySeats(numSeats - occupiedSeats);

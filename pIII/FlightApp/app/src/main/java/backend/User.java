@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
+// TODO: Change creditCardNumber to take in string everywhere
 /**
  * A User object. A User is a backend representation for both Client and
  * Administrator objects. Every User has a first name, last name, email,
@@ -16,7 +16,6 @@ import java.util.List;
  * we subclass User into Client and Administrator objects. User serves
  * as the object to bridge the similarities between Client and Administrator.
  */
-// TODO: To abstract or not abstract?
 public class User implements Serializable {
 
     private static final long serialVersionUID = -3786727358644943990L;
@@ -34,7 +33,7 @@ public class User implements Serializable {
     private int creditCardNumber;
     private Date expiryDate;
 
-    private List<Itinerary> bookedItineraries;
+    private ArrayList<Itinerary> bookedItineraries;
 
     /**
      * Creates a new User instance with the given fields. Takes a last name,
@@ -196,7 +195,7 @@ public class User implements Serializable {
      *
      * @return this User's booked itineraries.
      */
-    public List<Itinerary> getBookedItineraries() {
+    public ArrayList<Itinerary> getBookedItineraries() {
         return new ArrayList<Itinerary>(bookedItineraries);
     }
 
@@ -205,7 +204,7 @@ public class User implements Serializable {
      *
      * @param bookedItineraries  the new List of booked Itinerary.
      */
-    public void setBookedItineraries(List<Itinerary> bookedItineraries) {
+    public void setBookedItineraries(ArrayList<Itinerary> bookedItineraries) {
         this.bookedItineraries = bookedItineraries;
     }
 

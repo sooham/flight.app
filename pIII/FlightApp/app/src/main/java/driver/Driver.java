@@ -1,6 +1,6 @@
 package driver;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import backend.FileDatabase;
 import backend.Flight;
@@ -70,7 +70,8 @@ public class Driver {
      */
     public static String getFlights(String date, String origin, String destination) {
         // TODO: complete this method body
-        List<Flight> flights = FlightManager.getInstance().getFlights(origin, destination, date);
+        ArrayList<Flight> flights = FlightManager.getInstance().getFlights
+                (origin, destination, date);
 
         String result = "";
         for (Flight f: flights) {
@@ -106,7 +107,8 @@ public class Driver {
      */
     public static String getItineraries(String date, String origin, String destination) {
         // TODO: complete this method body
-        List<Itinerary> itineraries = FlightManager.getInstance().getItineraries(
+        ArrayList<Itinerary> itineraries = FlightManager.getInstance()
+                .getItineraries(
                                                                         origin, destination, date);
         // TODO: See newline formatting issues in method above
         String result = "";
@@ -135,7 +137,8 @@ public class Driver {
      */
     public static String getItinerariesSortedByCost(String date, String origin, String destination) {
         // TODO: complete this method body
-        List<Itinerary> itineraries = FlightManager.getInstance().getItineraries(
+        ArrayList<Itinerary> itineraries = FlightManager.getInstance()
+                .getItineraries(
                                                                         origin, destination, date);
         FlightManager.getInstance().sortByPrice(itineraries);
         // TODO: See newline formatting issues in method above
@@ -165,7 +168,8 @@ public class Driver {
      */
     public static String getItinerariesSortedByTime(String date, String origin, String destination) {
         // TODO: complete this method body
-        List<Itinerary> itineraries = FlightManager.getInstance().getItineraries(
+        ArrayList<Itinerary> itineraries = FlightManager.getInstance()
+                .getItineraries(
                                                                         origin, destination, date);
         FlightManager.getInstance().sortByDuration(itineraries);
         // TODO: See newline formatting issues in method above
