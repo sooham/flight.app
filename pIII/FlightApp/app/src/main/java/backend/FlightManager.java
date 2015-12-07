@@ -217,7 +217,7 @@ public class FlightManager implements Serializable {
      * @return an List of all Itinerary meeting criterion, if criterion
      * is not met return empty List of Itinerary
      */
-    public List<Itinerary> getItineraries(String origin, String destination,
+    public ArrayList<Itinerary> getItineraries(String origin, String destination,
                                           String departureDate) {
         List<String> key = new ArrayList<>();
         key.add(origin);
@@ -227,7 +227,7 @@ public class FlightManager implements Serializable {
         if (itineraries.containsKey(key)) {
             // filter all non-full Itinerary from the List mapped
             // to by key
-            List<Itinerary> result = new ArrayList<Itinerary>();
+            ArrayList<Itinerary> result = new ArrayList<Itinerary>();
             for (Itinerary it: itineraries.get(key)) {
                 if (!it.isFull()) {
                     result.add(it);
@@ -249,7 +249,7 @@ public class FlightManager implements Serializable {
      * @return an List of all Flight meeting criterion, if criterion
      * is not met return empty List of Flight
      */
-    public List<Flight> getFlights(String origin, String destination,
+    public ArrayList<Flight> getFlights(String origin, String destination,
                                    String departureDate) {
         List<String> key = new ArrayList<>();
         key.add(origin);
@@ -259,7 +259,7 @@ public class FlightManager implements Serializable {
         if (flights.containsKey(key)){
             // filter all non-full Itinerary from the List mapped
             // to by key
-            List<Flight> result = new ArrayList<Flight>();
+            ArrayList<Flight> result = new ArrayList<Flight>();
             for (Flight f: flights.get(key)) {
                 if (!f.isFull()) {
                     result.add(f);

@@ -41,10 +41,8 @@ public class ViewSearchedFlights extends AppCompatActivity{
         Intent intent = getIntent();
         user = FileDatabase.getInstance().getUserManager().getUserWithEmail(
                 intent.getStringExtra("EMAIL"));
-        List<Flight> flights = FLIGHTS.getFlights(intent.getStringExtra("ORIGIN"),
-                intent.getStringExtra("DESTINATION"),
-               intent.getStringExtra("DEPARTURE_DATE"));
-        createTable(flights);
+
+        createTable((List<Flight>)intent.getSerializableExtra("FLIGHTS"));
     }
 
     /**

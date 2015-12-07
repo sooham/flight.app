@@ -36,6 +36,7 @@ public class ViewItineraries extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_searched_flights);
+        //Remove this once adding flights method is complete
         try {
             FileDatabase.getInstance().addFlightFromFile(this.getApplicationContext().getFilesDir().getCanonicalPath() + "/flights1.txt");
         }catch(IOException c){
@@ -71,9 +72,9 @@ public class ViewItineraries extends AppCompatActivity implements View.OnClickLi
             flightText.setPadding(5,5,5,5);
             tableRow.addView(flightText);
 
-            // Creation of the textview that displays the number
+            // Creation of the textview that displays the number of transfers
             TextView flightText2 = new TextView(this);
-            flightText2.setText(Objects.toString(flight.getDestination()));;
+            flightText2.setText(Objects.toString(flight.getFlights().size()));;
             flightText2.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
             flightText2.setPadding(5,5,5,5);
@@ -121,12 +122,12 @@ public class ViewItineraries extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    //constructor for a custom button.
-    public class MyButton extends Button {
-        public Itinerary flight;
-        public MyButton(Context c){
+        //constructor for a custom button.
+        public class MyButton extends Button {
+            public Itinerary flight;
+            public MyButton(Context c){
             super(c);
         }
 
-    }
+        }
 }

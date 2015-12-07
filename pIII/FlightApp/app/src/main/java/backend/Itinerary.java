@@ -122,7 +122,7 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
      *
      * @return the flights field of this Itinerary
      */
-    public List<Flight> getFlights() {
+    public ArrayList<Flight> getFlights() {
         return new ArrayList<Flight>(flights);
     }
 
