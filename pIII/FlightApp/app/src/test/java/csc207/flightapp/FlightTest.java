@@ -2,7 +2,7 @@ package csc207.flightapp;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Date;
@@ -13,12 +13,15 @@ import backend.InvalidFlightException;
 
 public class FlightTest {
 
-    private Flight testFlight;
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static Flight testFlight;
+    private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd" +
+            " HH:mm");
 
 
-    @Before
-    public void setUp() throws InvalidFlightException, ParseException {
+    // Flight constructor
+    @BeforeClass
+    public static void setUpBeforeClass() throws InvalidFlightException,
+            ParseException {
         testFlight = new Flight("American Airlines", 123l, "A", "B",
                 format.parse("2015-11-10 7:30"), format.parse("2015-11-11" +
                 " 12:30"), 1500.0, 300);
@@ -54,6 +57,7 @@ public class FlightTest {
                 format.parse("2015-11-10 8:30"), 30.0, -200);
     }
 
+    // getAirline
     @Test
     public void getAirlineShouldReturnCorrectValue() {
         assertEquals(testFlight.getAirline(), "American Airlines");
@@ -72,6 +76,7 @@ public class FlightTest {
     }
     */
 
+    // getNumber
     @Test
     public void getNumberShouldReturnCorrectValue() {
         assertEquals(testFlight.getNumber(), 123l);
@@ -89,11 +94,13 @@ public class FlightTest {
     }
     */
 
+    // getOrigin
     @Test
     public void getOriginShouldReturnCorrectValue() {
         assertEquals(testFlight.getOrigin(), "A");
     }
 
+    // setOrigin
     @Test
     public void setOriginShouldChangeValue() throws InvalidFlightException,
             ParseException {
@@ -114,11 +121,13 @@ public class FlightTest {
         f.setOrigin("T");
     }
 
+    // getDestination
     @Test
     public void getDestinationShouldReturnCorrectValue() {
         assertEquals(testFlight.getDestination(), "B");
     }
 
+    // setDestination
     @Test
     public void setDestinationShouldChangeValue()
             throws InvalidFlightException, ParseException{
@@ -140,6 +149,7 @@ public class FlightTest {
         f.setDestination("S");
     }
 
+    // getDepartureDateTime
     @Test
     public void getDepartureDateTimeShouldReturnCorrectValue()
             throws ParseException{
@@ -149,6 +159,7 @@ public class FlightTest {
         );
     }
 
+    // setDepartureDateTime
     @Test
     public void setDepartureDateTimeShouldChangeValue()
             throws InvalidFlightException, ParseException{
@@ -170,6 +181,7 @@ public class FlightTest {
         f.setDepartureDateTime(format.parse("2016-9-1 10:30"));
     }
 
+    // getArrivalDateTime
     @Test
     public void getArrivalDateTimeShouldReturnCorrectValue()
             throws ParseException{
@@ -178,6 +190,7 @@ public class FlightTest {
                         "12:30"));
     }
 
+    // setArrivalDateTime
     @Test
     public void setArrivalDateTimeShouldChangeValue()
             throws InvalidFlightException, ParseException{
@@ -199,11 +212,13 @@ public class FlightTest {
         f.setArrivalDateTime(format.parse("2015-12-10 00:30"));
     }
 
+    // getPrice
     @Test
     public void getPriceShouldReturnCorrectValue() {
         assertTrue(testFlight.getPrice() == 1500.00);
     }
 
+    // setPrice
     @Test
     public void setPriceShouldChangePriceIfCorrect()
             throws InvalidFlightException, ParseException{
@@ -217,11 +232,13 @@ public class FlightTest {
         assertTrue(f.getPrice() == 250.12);
     }
 
+    // getNumSeats
     @Test
     public void getNumSeatsShouldReturnCorrectValue() {
         assertEquals(testFlight.getNumSeats(), 300);
     }
 
+    // setNumSeats
     @Test
     public void setNumSeatsShouldWork()
             throws InvalidFlightException, ParseException {
@@ -251,6 +268,7 @@ public class FlightTest {
         assertEquals(f.getNumEmptySeats(), 26);
     }
 
+    // getNumEmptySeats, setNumEmptySeats
     @Test
     public void getNumEmptySeatsReturnsCorrectValue()
             throws InvalidFlightException, ParseException{
@@ -279,6 +297,7 @@ public class FlightTest {
         assertEquals(f.getNumEmptySeats(), 0);
     }
 
+    // bookSeats
     @Test
     public void bookSeatBooksASingleSeatWhenFlightNotFull()
             throws InvalidFlightException, ParseException {
@@ -298,6 +317,7 @@ public class FlightTest {
         assertEquals(f.getNumEmptySeats(), 42);
     }
 
+    // compareTo
     @Test
     public void comparingFlightsShouldReturnCorrectValue()
             throws InvalidFlightException, ParseException{
@@ -326,6 +346,7 @@ public class FlightTest {
         );
     }
 
+    // equals
     @Test
     public void equalsShouldReturnCorrectValue()
             throws InvalidFlightException, ParseException{
@@ -343,7 +364,7 @@ public class FlightTest {
                 format.parse("2015-11-10 7:30"), format.parse("2015-11-11 " +
                 "12:30"), 1500.0, 300);
         Flight f4 = new Flight(
-                "China Eastern", 712l, "E", "B", late, late, 0.0, 200);
+                "China Eastern", 712l, "E", "B", early, late, 0.0, 200);
         Flight f5 = new Flight(
                 "Delta", 2000l, "Q", "Z", same, late, 0.0, 300);
 
@@ -354,6 +375,7 @@ public class FlightTest {
         assertNotEquals(testFlight, f5);
     }
 
+    // getDuration
     @Test
     public void getDurationShouldReturnCorrectValue()
             throws InvalidFlightException, ParseException{
@@ -373,6 +395,7 @@ public class FlightTest {
         assertTrue(sameFlight.getDuration() == 14400l); // 10 day time diff
     }
 
+    // toString
     @Test
     public void toStringShouldReturnCorrectString()
             throws InvalidFlightException, ParseException{
