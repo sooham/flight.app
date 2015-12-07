@@ -2,11 +2,10 @@ package csc207.flightapp;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeSet;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -17,12 +16,12 @@ import backend.InvalidFlightException;
 import backend.InvalidItineraryException;
 
 public class ItineraryTest {
-    private Itinerary testItinerary;
-    private SimpleDateFormat formatter = new SimpleDateFormat(
+    private static Itinerary testItinerary;
+    private static SimpleDateFormat formatter = new SimpleDateFormat(
             "yyyy-MM-dd HH:mm");
 
-    @Before
-    public void setUp() throws InvalidItineraryException,
+    @BeforeClass
+    public static void setUpBeforeClass() throws InvalidItineraryException,
             InvalidFlightException {
         TreeSet<Flight> f = new TreeSet<>();
         try {
@@ -45,6 +44,7 @@ public class ItineraryTest {
         testItinerary = new Itinerary(f);
     }
 
+    // constructor
     @Test(expected=InvalidItineraryException.class)
     public void ItineraryConstructorShouldThrowErrorWhenEmpty() throws
             InvalidItineraryException, InvalidFlightException {
@@ -215,16 +215,19 @@ public class ItineraryTest {
         new Itinerary(discontTS);
     }
 
+    // getOrigin
     @Test
     public void getOriginShouldReturnCorrectValue() {
         assertEquals(testItinerary.getOrigin(), "A");
     }
 
+    // getDestination
     @Test
     public void getDestinationShouldReturnCorrectValue() {
         assertEquals(testItinerary.getDestination(), "D");
     }
 
+    // getDepartureDatetime
     @Test
     public void getDepartureDateTimeShouldReturnCorrectValue() {
         try {
@@ -235,6 +238,7 @@ public class ItineraryTest {
         } catch (ParseException e) {}
     }
 
+    // getArrivalDateTime
     @Test
     public void getArrivalDateTimeShouldReturnCorrectValue() {
         try {
@@ -245,15 +249,17 @@ public class ItineraryTest {
         } catch (ParseException e) {}
     }
 
+    // getPrice
     @Test
     public void getPriceShouldReturnCorrectValue() {
         assertTrue(testItinerary.getPrice() == 3700.00);
     }
 
+    // getFlights
     @Test
     public void getFlightShouldReturnTreeSetOfCorrectOrdering()
             throws InvalidFlightException {
-        List<Flight> f = new ArrayList<>();
+        ArrayList<Flight> f = new ArrayList<>();
         try {
             f.add(new Flight("CE", 42l, "X", "B",
                             formatter.parse("2015-08-18 7:00"),
@@ -274,16 +280,17 @@ public class ItineraryTest {
         assertEquals(testItinerary.getFlights(), f);
     }
 
+    // getDuration
     @Test
     public void getDurationShouldReturnCorrectTime() {
         assertEquals(testItinerary.getDuration(), 2040l);
     }
 
+    // isValid
     @Test
     public void isValidShouldReturnTrueWithCorrectItinerary() {
         assertTrue(testItinerary.isValid());
     }
-
 
     @Test
     public void isValidShouldReturnTrueWithLayOverOfSixHours()
@@ -315,6 +322,7 @@ public class ItineraryTest {
         assertTrue(correctLayover.isValid());
     }
 
+    // addFlight
     @Test
     public void addFlightShouldReturnNewUnaliasedItinerary()
             throws InvalidFlightException, InvalidItineraryException {
@@ -333,6 +341,7 @@ public class ItineraryTest {
 
     // TODO: Add Itineraries
 
+    // equals
     @Test
     public void equalsShouldReturnCorrectValue() throws
             InvalidItineraryException, InvalidFlightException {
@@ -376,6 +385,7 @@ public class ItineraryTest {
         assertTrue(!another2.equals(testItinerary));
     }
 
+    // isFull
     @Test
     public void isFullReturnsCorrectValue() throws
             InvalidFlightException, InvalidItineraryException {
@@ -419,6 +429,7 @@ public class ItineraryTest {
         assertTrue(it2.isFull());
     }
 
+    // bookSeats
     @Test
     public void bookSeatsShouldBookASeatInEveryFlight() throws
             InvalidFlightException, InvalidItineraryException {
@@ -476,6 +487,7 @@ public class ItineraryTest {
         assertEquals(it3.getFlights().get(1).getNumEmptySeats(), 0);
     }
 
+    // toString
     @Test
     public void toStringShouldReturnCorrectString() {
         String expectedString = "42,2015-08-18 07:00,2015-08-18 18:00,CE,A," +

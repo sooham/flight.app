@@ -9,11 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import backend.Flight;
@@ -23,14 +22,14 @@ import backend.InvalidItineraryException;
 import backend.Itinerary;
 
 public class FlightManagerTest {
-    private FlightManager flightManager;
+    private static FlightManager flightManager;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat(
             "yyyy-MM-dd");
     private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat(
             "yyyy-MM-dd HH:mm");
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
         flightManager = FlightManager.getInstance();
         assertTrue(flightManager.itineraries.isEmpty());
         assertTrue(flightManager.flights.isEmpty());
@@ -134,7 +133,7 @@ public class FlightManagerTest {
         );
 
         // add these flight to the FM
-        List<Flight> toAddFlight = new ArrayList<Flight>();
+        ArrayList<Flight> toAddFlight = new ArrayList<Flight>();
         toAddFlight.add(f1);
         toAddFlight.add(f2);
         toAddFlight.add(f3);
@@ -155,31 +154,32 @@ public class FlightManagerTest {
         assertEquals(flightManager.flights.size(), 10);
 
         // make a copy of the expected flights HashMap
-        Map<List<String>, List<Flight>> expectedFlightsMap = new HashMap<>();
+        Map<ArrayList<String>, ArrayList<Flight>> expectedFlightsMap = new
+                HashMap<>();
         // fill the expected map
-        List<String> f1Key = new ArrayList<>();
+        ArrayList<String> f1Key = new ArrayList<>();
         f1Key.add(f1.getOrigin());
         f1Key.add(f1.getDestination());
         f1Key.add(dateFormatter.format(f1.getDepartureDateTime()));
-        List<Flight> f1Value = new ArrayList<>();
+        ArrayList<Flight> f1Value = new ArrayList<>();
         f1Value.add(f1);
         expectedFlightsMap.put(f1Key, f1Value);
 
-        List<String> f2Key = new ArrayList<>();
+        ArrayList<String> f2Key = new ArrayList<>();
         f2Key.add(f2.getOrigin());
         f2Key.add(f2.getDestination());
         f2Key.add(dateFormatter.format(f2.getDepartureDateTime()));
-        List<Flight> f2Value = new ArrayList<>();
+        ArrayList<Flight> f2Value = new ArrayList<>();
         f2Value.add(f2);
         f2Value.add(f3);
         expectedFlightsMap.put(f2Key, f2Value);
 
         for (Flight f: toAddFlight.subList(3, toAddFlight.size())) {
-            List<String> fKey = new ArrayList<>();
+            ArrayList<String> fKey = new ArrayList<>();
             fKey.add(f.getOrigin());
             fKey.add(f.getDestination());
             fKey.add(dateFormatter.format(f.getDepartureDateTime()));
-            List<Flight> fValue = new ArrayList<>();
+            ArrayList<Flight> fValue = new ArrayList<>();
             fValue.add(f);
             expectedFlightsMap.put(fKey, fValue);
 
@@ -191,7 +191,7 @@ public class FlightManagerTest {
 
         // first create the Itineraries
         // deal with the single flight Itineraries
-        List<Itinerary> singleFlightItineraries = new ArrayList<Itinerary>();
+        ArrayList<Itinerary> singleFlightItineraries = new ArrayList<Itinerary>();
 
         for (Flight f: toAddFlight) {
             TreeSet<Flight> singleTS = new TreeSet<>();
@@ -200,41 +200,42 @@ public class FlightManagerTest {
             singleFlightItineraries.add(it);
         }
 
-        Map<List<String>, List<Itinerary>> expectedItinerariesMap = new
+        Map<ArrayList<String>, ArrayList<Itinerary>> expectedItinerariesMap =
+                new
                 HashMap<>();
 
-        List<String> it1Key = new ArrayList<>();
+        ArrayList<String> it1Key = new ArrayList<>();
         it1Key.add(singleFlightItineraries.get(0).getOrigin());
         it1Key.add(singleFlightItineraries.get(0).getDestination());
         it1Key.add(dateFormatter.format(
                 singleFlightItineraries.get(0).getDepartureDateTime()));
-        List<Itinerary> it1Value = new ArrayList<Itinerary>();
+        ArrayList<Itinerary> it1Value = new ArrayList<Itinerary>();
         it1Value.add(singleFlightItineraries.get(0));
         expectedItinerariesMap.put(it1Key, it1Value);
 
-        List<String> it2Key = new ArrayList<>();
+        ArrayList<String> it2Key = new ArrayList<>();
         it2Key.add(singleFlightItineraries.get(1).getOrigin());
         it2Key.add(singleFlightItineraries.get(1).getDestination());
         it2Key.add(dateFormatter.format(
                 singleFlightItineraries.get(1).getDepartureDateTime()));
-        List<Itinerary> it2Value = new ArrayList<Itinerary>();
+        ArrayList<Itinerary> it2Value = new ArrayList<Itinerary>();
         it2Value.add(singleFlightItineraries.get(1));
         it2Value.add(singleFlightItineraries.get(2));
         expectedItinerariesMap.put(it2Key, it2Value);
 
         for (Itinerary it: singleFlightItineraries.subList(
                 3, singleFlightItineraries.size())) {
-            List<String> itKey = new ArrayList<>();
+            ArrayList<String> itKey = new ArrayList<>();
             itKey.add(it.getOrigin());
             itKey.add(it.getDestination());
             itKey.add(dateFormatter.format(it.getDepartureDateTime()));
-            List<Itinerary> itValue = new ArrayList<Itinerary>();
+            ArrayList<Itinerary> itValue = new ArrayList<Itinerary>();
             itValue.add(it);
             expectedItinerariesMap.put(itKey, itValue);
         }
 
         // now add the multiple flight itineraries into this map
-        List<Itinerary> multipleFlightItinerary = new ArrayList<>();
+        ArrayList<Itinerary> multipleFlightItinerary = new ArrayList<>();
 
         // f5 f1 f7 f4 f6
         TreeSet<Flight> TS1 = new TreeSet<>();
@@ -339,11 +340,11 @@ public class FlightManagerTest {
 
         // now add all the multiple flight to the expected Itinerary Map
         for (Itinerary it: multipleFlightItinerary) {
-            List<String> key = new ArrayList<>();
+            ArrayList<String> key = new ArrayList<>();
             key.add(it.getOrigin());
             key.add(it.getDestination());
             key.add(dateFormatter.format(it.getDepartureDateTime()));
-            List<Itinerary> value = new ArrayList<Itinerary>();
+            ArrayList<Itinerary> value = new ArrayList<Itinerary>();
             value.add(it);
             expectedItinerariesMap.put(key, value);
         }

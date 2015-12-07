@@ -13,7 +13,7 @@ import org.junit.Test;
 public class SampleTest {
 
     // NOTE: set the PATH variable to the location of the input csv files.
-    public static final String PATH = "";
+    public static final String PATH = "/Users/soohamrafiz/Dropbox/U of T/CSC207/group_0765/pIII/FlightApp/app/src/main/java/driver/";
     public static final String CLIENTS = PATH + "clients.txt";
     public static final String FLIGHTS1 = PATH + "flights1.txt";
     public static final String FLIGHTS2 = PATH + "flights2.txt";

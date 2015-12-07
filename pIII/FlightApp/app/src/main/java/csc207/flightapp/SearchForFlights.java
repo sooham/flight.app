@@ -57,6 +57,7 @@ public class SearchForFlights extends AppCompatActivity {
         departureDate = (EditText)findViewById(R.id.departure_date);
         Intent intent = new Intent(this, BookItineraries.class);
 
+
         //passes the input information to the view_view_searched_flights.
         try {
             FileDatabase.getInstance().serializeManagers(this.getApplicationContext().getFilesDir().getCanonicalPath() + "/");
