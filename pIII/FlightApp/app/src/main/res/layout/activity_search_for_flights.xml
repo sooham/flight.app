@@ -83,7 +83,8 @@
         android:text="Search For Itineraries"
         android:id="@+id/Itineraries_search"
         android:layout_below="@+id/search_button"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="viewItineraries"/>
 
     <Button
         android:layout_width="wrap_content"
