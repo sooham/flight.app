@@ -300,17 +300,4 @@ public class FlightManager implements Serializable {
 
         return key;
     }
-
-    /**
-     * Called by ObjectInputStream when reading FlightManager class object
-     * from stream. The readResolve method needs to be defined to prevent
-     * Deserialization of FlightManager class resulting in multiple instances
-     * of FlightManager being created.
-     *
-     * @return the singleton instance for FlightManager class
-     * @throws ObjectStreamException
-     */
-    private Object readResolve() throws ObjectStreamException {
-        return singletonInstance;
-    }
 }
