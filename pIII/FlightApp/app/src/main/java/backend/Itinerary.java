@@ -308,10 +308,9 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
                                         );
             formatString += "\n"; // TODO: verify newline char to use
         }
-        formatString += String.format("%.2f\n%d:%d",
-                                    getPrice(),
-                                    getDuration() / 60,
-                                    getDuration() % 60);
+
+        formatString += String.format("%.2f\n%02d:%02d",
+                getPrice(), getDuration() / 60, getDuration() % 60);
         return formatString;
     }
 }

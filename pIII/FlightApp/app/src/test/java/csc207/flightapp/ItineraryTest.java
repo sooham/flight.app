@@ -478,8 +478,9 @@ public class ItineraryTest {
 
     @Test
     public void toStringShouldReturnCorrectString() {
-        String expectedString = "42,2015-08-18 7:00,2015-08-18 18:00,CE,A,B\n" +
-                "706,2015-08-18 23:00,2015-08-19 6:00,EM,B,C\n" +
+        String expectedString = "42,2015-08-18 07:00,2015-08-18 18:00,CE,A," +
+                "B\n" +
+                "706,2015-08-18 23:00,2015-08-19 06:00,EM,B,C\n" +
                 "401,2015-08-19 12:00,2015-08-19 17:00,AA,C,D\n" +
                 "3700.00\n34:00";
         assertEquals(testItinerary.toString(), expectedString);

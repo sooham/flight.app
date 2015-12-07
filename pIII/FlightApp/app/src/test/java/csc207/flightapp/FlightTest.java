@@ -6,48 +6,52 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import backend.Flight;
 import backend.InvalidFlightException;
 
 public class FlightTest {
 
     private Flight testFlight;
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 
     @Before
-    public void setUp() throws InvalidFlightException {
+    public void setUp() throws InvalidFlightException, ParseException {
         testFlight = new Flight("American Airlines", 123l, "A", "B",
-                new Date(2015, 11, 10, 7, 30), new Date(2015, 11, 11, 12, 30),
-                1500.0, 300);
+                format.parse("2015-11-10 7:30"), format.parse("2015-11-11" +
+                " 12:30"), 1500.0, 300);
     }
 
     @Test(expected=InvalidFlightException.class)
     public void flightClassShouldThrowErrorWithCycle()
-            throws InvalidFlightException{
-        new Flight("Emirates", 516l, "W", "W", new Date(2015, 11, 10, 7, 30),
-                new Date(2015, 11, 11, 12, 30), 0.0, 500);
+            throws InvalidFlightException, ParseException {
+        new Flight("Emirates", 516l, "W", "W", format.parse("2015-11-10 7:30"),
+                format.parse("2015-11-11 12:30"), 0.0, 500);
     }
 
     @Test(expected=InvalidFlightException.class)
     public void flightClassShouldThrowErrorWithWrongTiming()
-            throws InvalidFlightException{
+            throws InvalidFlightException, ParseException{
         new Flight("Emirates", 516l, "W", "X",
-                new Date(2015, 11, 10, 7, 30), new Date(2015, 11, 10, 6, 30),
+                format.parse("2015-11-10 7:30"),
+                format.parse("2015-11-10 6:30"),
                 0.0, 500);
     }
 
     @Test(expected=InvalidFlightException.class)
     public void flightClassShouldThrowErrorWithNegativePrice()
-            throws InvalidFlightException{
-        new Flight("Emirates", 516l, "W", "X", new Date(2015, 11, 10, 7, 30),
-                new Date(2015, 11, 10, 8, 30), -10.0, 500);
+            throws InvalidFlightException, ParseException{
+        new Flight("Emirates", 516l, "W", "X", format.parse("2015-11-10 7:30"),
+                format.parse("2015-11-10 8:30"), -10.0, 500);
     }
 
     @Test(expected=InvalidFlightException.class)
     public void flightClassShouldThrowErrorWithNegativeSeats()
-            throws InvalidFlightException{
-        new Flight("Emirates", 516l, "W", "X", new Date(2015, 11, 10, 7, 30),
-                new Date(2015, 11, 10, 8, 30), 30.0, -200);
+            throws InvalidFlightException, ParseException{
+        new Flight("Emirates", 516l, "W", "X", format.parse("2015-11-10 7:30"),
+                format.parse("2015-11-10 8:30"), 30.0, -200);
     }
 
     @Test
@@ -91,21 +95,21 @@ public class FlightTest {
     }
 
     @Test
-    public void setOriginShouldChangeValue() throws InvalidFlightException {
-        Flight f = new Flight("Emirates", 303l, "S", "T",
-                new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
-                100.0, 50);
-
+    public void setOriginShouldChangeValue() throws InvalidFlightException,
+            ParseException {
+        Flight f = new Flight("Emirates", 303l, "S", "T", format.parse
+                ("2016-08-19 01:00"),
+                format.parse("2016-08-19 03:00"), 100.0, 50);
         f.setOrigin("R");
         assertEquals(f.getOrigin(), "R");
     }
 
     @Test(expected=InvalidFlightException.class)
     public void setOriginShouldThrowErrorIfCycle()
-            throws InvalidFlightException {
-        Flight f = new Flight("Emirates", 303l, "S", "T",
-                new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
-                100.0, 50);
+            throws InvalidFlightException, ParseException{
+        Flight f = new Flight("Emirates", 303l, "S", "T", format.parse
+                ("2016-08-19 01:00"),
+                format.parse("2016-08-19 03:00"), 100.0, 50);
 
         f.setOrigin("T");
     }
@@ -117,10 +121,10 @@ public class FlightTest {
 
     @Test
     public void setDestinationShouldChangeValue()
-            throws InvalidFlightException {
-        Flight f = new Flight("Emirates", 303l, "S", "T",
-                new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
-                100.0, 50);
+            throws InvalidFlightException, ParseException{
+        Flight f = new Flight("Emirates", 303l, "S", "T", format.parse
+                ("2016-08-19 01:00"),
+                format.parse("2016-08-19 03:00"), 100.0, 50);
 
         f.setDestination("U");
         assertEquals(f.getDestination(), "U");
@@ -128,57 +132,58 @@ public class FlightTest {
 
     @Test(expected=InvalidFlightException.class)
     public void setDestinationShouldThrowErrorIfCycle()
-            throws InvalidFlightException {
-        Flight f = new Flight("Emirates", 303l, "S", "T",
-                new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
-                100.0, 50);
+            throws InvalidFlightException, ParseException {
+        Flight f = new Flight("Emirates", 303l, "S", "T", format.parse
+                ("2016-08-19 01:00"),
+                format.parse("2016-08-19 03:00"), 100.0, 50);
 
         f.setDestination("S");
     }
 
     @Test
-    public void getDepartureDateTimeShouldReturnCorrectValue() {
+    public void getDepartureDateTimeShouldReturnCorrectValue()
+            throws ParseException{
         assertEquals(
                 testFlight.getDepartureDateTime(),
-                new Date(2015, 11, 10, 7, 30)
+                format.parse("2015-11-10 7:30")
         );
     }
 
     @Test
     public void setDepartureDateTimeShouldChangeValue()
-            throws InvalidFlightException {
-        Flight f = new Flight("Emirates", 303l, "S", "T",
-                new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
-                100.0, 50);
+            throws InvalidFlightException, ParseException{
+        Flight f = new Flight("Emirates", 303l, "S", "T", format.parse
+                ("2016-08-19 01:00"),
+                format.parse("2016-08-19 03:00"), 100.0, 50);
 
-        f.setDepartureDateTime(new Date(2016, 8, 19, 02, 15));
-        assertEquals(f.getDepartureDateTime(), new Date(2016, 8, 19, 02, 15));
+        f.setDepartureDateTime(format.parse("2016-8-19 02:15"));
+        assertEquals(f.getDepartureDateTime(), format.parse("2016-8-19 02:15"));
     }
 
     @Test(expected=InvalidFlightException.class)
     public void setDepartureDateTimeShouldThrowErrorIfNegativeTime()
-            throws InvalidFlightException {
-        Flight f = new Flight("Emirates", 303l, "S", "T",
-                new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
-                100.0, 50);
+            throws InvalidFlightException, ParseException{
+        Flight f = new Flight("Emirates", 303l, "S", "T", format.parse
+                ("2016-08-19 01:00"),
+                format.parse("2016-08-19 03:00"), 100.0, 50);
 
-        f.setDepartureDateTime(new Date(2016, 9, 1, 10, 30));
+        f.setDepartureDateTime(format.parse("2016-9-1 10:30"));
     }
 
     @Test
-    public void getArrivalDateTimeShouldReturnCorrectValue() {
+    public void getArrivalDateTimeShouldReturnCorrectValue()
+            throws ParseException{
         assertEquals(
-                testFlight.getArrivalDateTime(),
-                new Date(2015, 11, 11, 12, 30)
-        );
+                testFlight.getArrivalDateTime(), format.parse("2015-11-11 " +
+                        "12:30"));
     }
 
     @Test
     public void setArrivalDateTimeShouldChangeValue()
-            throws InvalidFlightException {
-        Flight f = new Flight("Emirates", 303l, "S", "T",
-                new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
-                100.0, 50);
+            throws InvalidFlightException, ParseException{
+        Flight f = new Flight("Emirates", 303l, "S", "T", format.parse
+                ("2016-08-19 01:00"),
+                format.parse("2016-08-19 03:00"), 100.0, 50);
 
         f.setArrivalDateTime(new Date(2016, 8, 19, 02, 15));
         assertEquals(f.getArrivalDateTime(), new Date(2016, 8, 19, 02, 15));
@@ -186,12 +191,12 @@ public class FlightTest {
 
     @Test(expected=InvalidFlightException.class)
     public void setArrivalDateTimeShouldThrowErrorIfNegativeTime()
-            throws InvalidFlightException {
-        Flight f = new Flight("Emirates", 303l, "S", "T",
-                new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
-                100.0, 50);
+            throws InvalidFlightException, ParseException{
+        Flight f = new Flight("Emirates", 303l, "S", "T", format.parse
+                ("2016-08-19 01:00"),
+                format.parse("2016-08-19 03:00"), 100.0, 50);
 
-        f.setArrivalDateTime(new Date(2015, 12, 10, 00, 30));
+        f.setArrivalDateTime(format.parse("2015-12-10 00:30"));
     }
 
     @Test
@@ -201,10 +206,10 @@ public class FlightTest {
 
     @Test
     public void setPriceShouldChangePriceIfCorrect()
-            throws InvalidFlightException {
-        Flight f = new Flight("Emirates", 303l, "S", "T",
-                new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
-                100.0, 50);
+            throws InvalidFlightException, ParseException{
+        Flight f = new Flight("Emirates", 303l, "S", "T", format.parse
+                ("2016-08-19 01:00"),
+                format.parse("2016-08-19 03:00"), 100.0, 50);
 
         f.setPrice(250.12);
         assertTrue(f.getPrice() == 250.12);
@@ -218,10 +223,11 @@ public class FlightTest {
     }
 
     @Test
-    public void setNumSeatsShouldWork() throws InvalidFlightException {
-        Flight f = new Flight("Emirates", 303l, "S", "T",
-                new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
-                100.0, 50);
+    public void setNumSeatsShouldWork()
+            throws InvalidFlightException, ParseException {
+        Flight f = new Flight("Emirates", 303l, "S", "T", format.parse
+                ("2016-08-19 01:00"),
+                format.parse("2016-08-19 03:00"), 100.0, 50);
 
         f.setNumSeats(70);
         assertEquals(f.getNumSeats(), 70);
@@ -247,10 +253,10 @@ public class FlightTest {
 
     @Test
     public void getNumEmptySeatsReturnsCorrectValue()
-            throws InvalidFlightException {
-        Flight f = new Flight("Emirates", 303l, "S", "T",
-                new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
-                100.0, 50);
+            throws InvalidFlightException, ParseException{
+        Flight f = new Flight("Emirates", 303l, "S", "T", format.parse
+                ("2016-08-19 01:00"),
+                format.parse("2016-08-19 03:00"), 100.0, 50);
 
         assertTrue(!f.isFull());
         assertEquals(f.getNumSeats(), 50);
@@ -275,11 +281,12 @@ public class FlightTest {
 
     @Test
     public void bookSeatBooksASingleSeatWhenFlightNotFull()
-            throws InvalidFlightException {
+            throws InvalidFlightException, ParseException {
         // TODO: Write a better Test?
-        Flight f = new Flight("Emirates", 303l, "S", "T",
-                new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
-                100.0, 50);
+        Flight f = new Flight("Emirates", 303l, "S", "T", format.parse
+                ("2016-08-19 01:00"),
+                format.parse("2016-08-19 03:00"), 100.0, 50);
+
         f.setNumEmptySeats(43);
 
         assertTrue(!f.isFull());
@@ -293,9 +300,9 @@ public class FlightTest {
 
     @Test
     public void comparingFlightsShouldReturnCorrectValue()
-            throws InvalidFlightException {
-        Date early = new Date(2014, 12, 8, 0, 0);
-        Date late = new Date(2016, 1, 19, 0, 50);
+            throws InvalidFlightException, ParseException{
+        Date early = format.parse("2014-12-8 00:00");
+        Date late = format.parse("2016-1-19 00:50");
         Date same = testFlight.getDepartureDateTime();
 
         Flight earlyFlight = new Flight(
@@ -321,20 +328,20 @@ public class FlightTest {
 
     @Test
     public void equalsShouldReturnCorrectValue()
-            throws InvalidFlightException {
-        Date early = new Date(2014, 12, 8, 0, 0);
-        Date late = new Date(2016, 1, 19, 0, 50);
+            throws InvalidFlightException, ParseException{
+        Date early = format.parse("2014-12-8 0:0");
+        Date late = format.parse("2016-1-19 0:50");
         Date same = testFlight.getDepartureDateTime();
 
         Flight f1 = new Flight("A", 123l, "A", "T",
-                new Date(2016, 8, 19, 01, 00), new Date(2016, 8, 19, 03, 00),
-                100.0, 50);
+                format.parse("2016-8-19 01:00"), format.parse("2016-8-19 " +
+                "03:00"), 100.0, 50);
         Flight f2 = new Flight("American Airlines", 123l, "E", "F",
-                new Date(2016, 8, 19, 10, 00), new Date(2017, 8, 19, 03, 00),
-                300.0, 75);
+                format.parse("2016-8-19 10:00"), format.parse("2016-8-19 " +
+                "13:00"), 300.0, 75);
         Flight f3 = new Flight("American Airlines", 606l, "A", "B",
-                new Date(2015, 11, 10, 7, 30), new Date(2015, 11, 11, 12, 30),
-                1500.0, 300);
+                format.parse("2015-11-10 7:30"), format.parse("2015-11-11 " +
+                "12:30"), 1500.0, 300);
         Flight f4 = new Flight(
                 "China Eastern", 712l, "E", "B", late, late, 0.0, 200);
         Flight f5 = new Flight(
@@ -349,9 +356,9 @@ public class FlightTest {
 
     @Test
     public void getDurationShouldReturnCorrectValue()
-            throws InvalidFlightException {
-        Date early = new Date(2014, 12, 8, 0, 0);
-        Date late = new Date(2015, 11, 20, 7, 30);
+            throws InvalidFlightException, ParseException{
+        Date early = format.parse("2014-12-8 0:0");
+        Date late = format.parse("2015-11-20 7:30");
         Date same = testFlight.getDepartureDateTime();
 
         Flight earlyFlight = new Flight(
@@ -367,10 +374,14 @@ public class FlightTest {
     }
 
     @Test
-    public void toStringShouldReturnCorrectString() {
-        String expectedString = "123,2015-11-10 7:30,2015-11-11 12:30," +
+    public void toStringShouldReturnCorrectString()
+            throws InvalidFlightException, ParseException{
+        Flight f = new Flight("American Airlines", 123l, "A", "B",
+                format.parse("2000-11-10 7:30"), format.parse("2000-11-11 " +
+                        "12:30"), 1500.0, 300);
+        String expectedString = "123,2000-11-10 07:30,2000-11-11 12:30," +
                 "American Airlines,A,B,1500.00";
-        assertEquals(testFlight.toString(), expectedString);
+        assertEquals(f.toString(), expectedString);
     }
 }
 
