@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
  * collections of Flight.
  */
 
+// TODO: Make a test mode and don't break logging in, rigth now driver wont work
 public class FileDatabase implements Serializable {
 
     private static final long serialVersionUID = -5414755056678568378L;
@@ -364,18 +365,5 @@ public class FileDatabase implements Serializable {
         /*
         serializeManagers(dir);
         */
-    }
-
-    /**
-     * Called by ObjectInputStream when reading FileDatabase class object
-     * from stream. The readResolve method needs to be defined to prevent
-     * Deserialization of FileDatabase class resulting in multiple instances
-     * of FileDatabase being created.
-     *
-     * @return the singleton instance for FileDatabase class
-     * @throws ObjectStreamException
-     */
-    private Object readResolve() throws ObjectStreamException {
-        return singletonInstance;
     }
 }
