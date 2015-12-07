@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
  * <p>Flight objects will be persistent, hence they implement Serializable.
  * The natural ordering for Flights will be by Date, hence implements
  * Comparable.
+ * TODO: For some reason, Dates do not work properly, make sure you use
+ * TODO: SimpleDateFormatter to input Dates for constructors
  */
 public class Flight implements Comparable<Flight>, Serializable, Transport {
 
