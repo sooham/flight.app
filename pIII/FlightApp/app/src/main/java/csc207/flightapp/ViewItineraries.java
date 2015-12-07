@@ -101,7 +101,7 @@ public class ViewItineraries extends AppCompatActivity implements View.OnClickLi
             button.setText("Book");
             button.setTextSize(8);
             button.flight = flight;
-            button.callOnClick();
+            //button.callOnClick();
             tableRow.addView(button, 250, 100);
 
             //adds the row to the table
