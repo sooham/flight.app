@@ -16,6 +16,7 @@ public class SearchForFlights extends AppCompatActivity {
     EditText origin;
     EditText destination;
     EditText departureDate;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class SearchForFlights extends AppCompatActivity {
         Intent intent = getIntent();
 
         //Displays the user's email on the top of the app.
-        String email = intent.getStringExtra("EMAIL");
+        email = intent.getStringExtra("EMAIL");
         TextView textView = (TextView)findViewById(R.id.display_email);
         textView.setText(email);
     }
@@ -38,12 +39,14 @@ public class SearchForFlights extends AppCompatActivity {
         destination = (EditText)findViewById(R.id.destination);
         departureDate = (EditText)findViewById(R.id.departure_date);
         Intent intent = new Intent(this, ViewSearchedFlights.class);
+        /*
         FileDatabase.getInstance().addFlightFromFile("/data/flights1.txt");
         try {
             FileDatabase.getInstance().serializeManagers(this.getApplicationContext().getFilesDir().getCanonicalPath() + "/");
         }catch(IOException e){
 
         }
+        */
 
         //passes the input information to the view_view_searched_flights.
         intent.putExtra("Flights",FileDatabase.getInstance().getFlightManger().getFlights(origin.getText().toString(),
@@ -57,7 +60,6 @@ public class SearchForFlights extends AppCompatActivity {
         departureDate = (EditText)findViewById(R.id.departure_date);
         Intent intent = new Intent(this, BookItineraries.class);
 
-
         //passes the input information to the view_view_searched_flights.
         try {
             FileDatabase.getInstance().serializeManagers(this.getApplicationContext().getFilesDir().getCanonicalPath() + "/");
@@ -67,6 +69,13 @@ public class SearchForFlights extends AppCompatActivity {
         intent.putExtra("Flights",FileDatabase.getInstance().getFlightManger().getFlights(origin.getText().toString(),
                destination.getText().toString(), departureDate.getText().toString()));
        startActivity(intent);
+
+    }
+
+    public void editClientInfo(View view ){
+        Intent intent = new Intent(this, EditClientInfo.class);
+        intent.putExtra("EMAIL", email);
+        startActivity(intent);
 
     }
 }

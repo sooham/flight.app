@@ -60,7 +60,6 @@ public class BookItineraries extends Activity implements View.OnClickListener{
             MyButton viewFlights = new MyButton(this);
             viewFlights.itinerary = itinerary;
             viewFlights.setOnClickListener(this);
-            viewFlights.setId(0);
             tableRow.addView(viewFlights, 250,100);
 
             // Button for booking the itinerary
@@ -74,12 +73,7 @@ public class BookItineraries extends Activity implements View.OnClickListener{
 
     @Override
     public void onClick(View view){
-        switch (view.getId()){
-            case 0:
-                break;
-            case 1:
-                break;
-        }
+
 
     }
 
