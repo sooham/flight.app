@@ -9,56 +9,44 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="csc207.flightapp.UserLogin">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/flightapplogo"
-        android:scaleType = "centerInside"
-        android:layout_alignEnd="@+id/get_email"
-        android:layout_above="@+id/get_email" />
-
     <EditText
         android:id="@+id/get_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/loginEditTextStyle"
         android:inputType="textEmailAddress"
-        android:ems="10"
+        android:hint="@string/prompt_email"
+        android:layout_centerHorizontal="true"
         android:layout_above="@+id/get_password"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:hint="@string/prompt_email"/>
+        android:layout_alignParentLeft="true" />
 
     <EditText
         android:id="@+id/get_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/loginEditTextStyle"
         android:inputType="textPassword"
-        android:ems="10"
-        android:layout_above="@+id/login_failure"
+        android:hint="@string/prompt_password"
+        android:layout_above="@+id/login_button"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:hint="@string/prompt_password"/>
+        android:layout_alignParentRight="true" />
 
     <Button
         android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/ButtonStyle"
         android:text="@string/action_sign_in"
         android:onClick="searchFlightIntent"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="149dp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="200dp" />
 
     <TextView
+        android:id="@+id/login_failure"
+        android:textStyle="italic"
+        android:textColor="@color/redAccent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/login_failure"
-        android:layout_above= "@+id/login_button"
-        android:layout_centerHorizontal="true"
-        android:textColor="#ed0404" />
+        android:layout_above="@+id/get_email"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp"/>
 
 </RelativeLayout>
