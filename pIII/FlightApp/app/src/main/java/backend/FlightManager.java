@@ -29,8 +29,8 @@ public class FlightManager implements Serializable {
      */
     private static final long serialVersionUID = -7587676537029568714L;
 
-    public Map<List<String>, List<Itinerary>> itineraries;
-    public Map<List<String>, List<Flight>> flights;
+    public Map<ArrayList<String>, ArrayList<Itinerary>> itineraries;
+    public Map<ArrayList<String>, ArrayList<Flight>> flights;
 
     // The SimpleDateFormat is used to turn strings into Date objects
     private final SimpleDateFormat dateFormatter =
@@ -99,12 +99,12 @@ public class FlightManager implements Serializable {
         // from the HashMap (because the flight could have changed origin
         // destination or departure date)
         // TODO: verify if the loop below remove() aliases the flights HashMap
-        for (List<Flight> value: flights.values()) {
+        for (ArrayList<Flight> value: flights.values()) {
             value.remove(flight);
         }
         // Regardless of adding or editing we will have to place
         // the flight to its corresponding key
-        List<String> key = getKey(flight);
+        ArrayList<String> key = getKey(flight);
         if (!flights.containsKey(key)){
             flights.put(key, new ArrayList<Flight>());
         }
@@ -127,7 +127,7 @@ public class FlightManager implements Serializable {
         // (because the flight could have changed origin
         // destination or date times) making the itinerary invalid
         // TODO: Make sure this code block aliases the HashMap of itinerary
-        for (List<Itinerary> value: itineraries.values()) {
+        for (ArrayList<Itinerary> value: itineraries.values()) {
             for (Itinerary it: new ArrayList<Itinerary>(value)) {
                 if (it.getFlights().contains(flight)) {
                     value.remove(it);
@@ -140,7 +140,7 @@ public class FlightManager implements Serializable {
         singleFlight.add(flight);
         try {
             Itinerary trivialItinerary = new Itinerary(singleFlight);
-            List<String> key = getKey(flight);
+            ArrayList<String> key = getKey(flight);
             if (!itineraries.containsKey(key)){
                 itineraries.put(key, new ArrayList<Itinerary>());
             }
@@ -169,8 +169,8 @@ public class FlightManager implements Serializable {
         // recursion case
         // check if flight is continuous to any key in itineraries and add
 
-        for (List<String> itKey : new
-                ArrayList<List<String>>(itineraries.keySet())) {
+        for (ArrayList<String> itKey : new
+                ArrayList<ArrayList<String>>(itineraries.keySet())) {
             boolean continuous = (itKey.get(0).equals(itinerary
                     .getDestination()) ||
                     itKey.get(1).equals(itinerary.getOrigin()));
@@ -186,7 +186,7 @@ public class FlightManager implements Serializable {
                     try {
                         Itinerary newItinerary = it.addItinerary(itinerary);
                         // make the key for this itinerary
-                        List<String> newKey = getKey(newItinerary);
+                        ArrayList<String> newKey = getKey(newItinerary);
                         // add this newKey to the itineraries Map
                         if (itineraries.containsKey(newKey)) {
                             if (!itineraries.get(newKey).contains(newItinerary)) {
@@ -219,7 +219,7 @@ public class FlightManager implements Serializable {
      */
     public ArrayList<Itinerary> getItineraries(String origin, String destination,
                                           String departureDate) {
-        List<String> key = new ArrayList<>();
+        ArrayList<String> key = new ArrayList<>();
         key.add(origin);
         key.add(destination);
         key.add(departureDate);
@@ -272,18 +272,18 @@ public class FlightManager implements Serializable {
 
     /**
      * Sorts a List of Flight or Itinerary by Price in non-decreasing order.
-     * @param list  a list of Flight or Itinerary
+     * @param Arraylist  a list of Flight or Itinerary
      */
-    public void sortByPrice(List<? extends Transport> list) {
-        Collections.sort(list, sortPrice);
+    public void sortByPrice(ArrayList<? extends Transport> Arraylist) {
+        Collections.sort(Arraylist, sortPrice);
     }
 
     /**
      * Sorts a List of Flight or Itinerary by Duration in non-decreasing order.
-     * @param list  a list of Flight or Itinerary
+     * @param Arraylist  a list of Flight or Itinerary
      */
-    public void sortByDuration(List<? extends Transport> list) {
-        Collections.sort(list, sortDuration);
+    public void sortByDuration(ArrayList<? extends Transport> Arraylist) {
+        Collections.sort(Arraylist, sortDuration);
     }
 
     /**
@@ -293,8 +293,8 @@ public class FlightManager implements Serializable {
      * @return the key List<String> stating origin, destination and departure
      * date.
      */
-    private List<String> getKey(Transport t) {
-        List<String> key = new ArrayList<>();
+    private ArrayList<String> getKey(Transport t) {
+        ArrayList<String> key = new ArrayList<>();
         key.add(t.getOrigin());
         key.add(t.getDestination());
         key.add(dateFormatter.format(t.getDepartureDateTime()));
