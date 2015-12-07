@@ -3,7 +3,10 @@ package driver;
 import java.util.List;
 
 import backend.FileDatabase;
+import backend.Flight;
+import backend.FlightManager;
 import backend.Itinerary;
+import backend.UserManager;
 
 /** A Driver used for autotesting the project backend. */
 public class Driver {
@@ -18,6 +21,9 @@ public class Driver {
      */
     public static void uploadClientInfo(String path) {
         // TODO: complete this method body
+        FileDatabase.createInstance(path);
+        // TODO: Do not clean every instantiation FDB
+        // TODO: Make sure all methods in all classes autosave when info edited
         FileDatabase.getInstance().addClientFromFile(path);
     }
 
@@ -32,6 +38,7 @@ public class Driver {
      */
     public static void uploadFlightInfo(String path) {
         // TODO: complete this method body
+        FileDatabase.createInstance(path);
         FileDatabase.getInstance().addFlightFromFile(path);
     }
 
@@ -45,7 +52,7 @@ public class Driver {
      */
     public static String getClient(String email) {
         // TODO: complete this method body
-        return FileDatabase.getInstance().getUserManager().getUserWithEmail(email).toString();
+        return UserManager.getInstance().getUserWithEmail(email).toString();
     }
 
     /**
@@ -63,8 +70,14 @@ public class Driver {
      */
     public static String getFlights(String date, String origin, String destination) {
         // TODO: complete this method body
-        return FileDatabase.getInstance().getFlightManger()
-                .getFlights(origin, destination, date).toString();
+        List<Flight> flights = FlightManager.getInstance().getFlights(origin, destination, date);
+
+        String result = "";
+        for (Flight f: flights) {
+            result += f.toString() + "\n"; // TODO: Verify newline type %n \r\n or \n
+        }
+        // TODO: End with \n, ordering?
+        return result;
     }
 
     /**
@@ -93,8 +106,16 @@ public class Driver {
      */
     public static String getItineraries(String date, String origin, String destination) {
         // TODO: complete this method body
-        return FileDatabase.getInstance().getFlightManger().
-                getItineraries(origin, destination, date).toString();
+        List<Itinerary> itineraries = FlightManager.getInstance().getItineraries(
+                                                                        origin, destination, date);
+        // TODO: See newline formatting issues in method above
+        String result = "";
+        for (Itinerary it: itineraries) {
+            result += it.toString();
+            result += "\n";
+        }
+        // TODO: newline at end?
+        return result;
     }
 
     /**
@@ -114,11 +135,17 @@ public class Driver {
      */
     public static String getItinerariesSortedByCost(String date, String origin, String destination) {
         // TODO: complete this method body
-        List<Itinerary> itineraries = FileDatabase.getInstance().getFlightManger().
-                getItineraries(origin, destination, date);
-        FileDatabase.getInstance().getFlightManger().sortByPrice(itineraries);
-        return itineraries.toString();
-
+        List<Itinerary> itineraries = FlightManager.getInstance().getItineraries(
+                                                                        origin, destination, date);
+        FlightManager.getInstance().sortByPrice(itineraries);
+        // TODO: See newline formatting issues in method above
+        String result = "";
+        for (Itinerary it: itineraries) {
+            result += it.toString();
+            result += "\n";
+        }
+        // TODO: newline at end?
+        return result;
     }
 
     /**
@@ -138,9 +165,16 @@ public class Driver {
      */
     public static String getItinerariesSortedByTime(String date, String origin, String destination) {
         // TODO: complete this method body
-        List<Itinerary> itineraries = FileDatabase.getInstance().getFlightManger().
-                getItineraries(origin, destination, date);
-        FileDatabase.getInstance().getFlightManger().sortByDuration(itineraries);
-        return itineraries.toString();
+        List<Itinerary> itineraries = FlightManager.getInstance().getItineraries(
+                                                                        origin, destination, date);
+        FlightManager.getInstance().sortByDuration(itineraries);
+        // TODO: See newline formatting issues in method above
+        String result = "";
+        for (Itinerary it: itineraries) {
+            result += it.toString();
+            result += "\n";
+        }
+        // TODO: newline at end?
+        return result;
     }
 }

@@ -8,10 +8,10 @@ import java.util.Date;
  * arrival date time, duration and price.
  */
 public interface Transport {
-    public String getOrigin();
-    public String getDestination();
-    public Date getDepartureDateTime();
-    public Date getArrivalDateTime();
-    public long getDuration();
-    public double getPrice();
+    String getOrigin();
+    String getDestination();
+    Date getDepartureDateTime();
+    Date getArrivalDateTime();
+    long getDuration();
+    double getPrice();
 }

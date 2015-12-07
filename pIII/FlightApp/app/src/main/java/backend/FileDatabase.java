@@ -11,37 +11,46 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.ObjectStreamException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 /**
- * The FileDataBase class. This class is a singleton which stores all 
- * User, Flight and Itinerary objects for the backend of the FlightApp 
+ * The FileDataBase class. This class is a singleton which stores all
+ * User, Flight and Itinerary objects for the backend of the FlightApp
  * and deals with autosaving the app upon detecting changes.
  *
  * <p>Client and Admin will be stored in a UserManager, while the
  * Flights and Itinerary will be stored in a FlightManager. This choice is
- * made because Client, Admin subclass User and Flight and Itinerary subclass
- * Flight.
+ * made because Client, Admin subclass User and Flight and Itinerary are
+ * collections of Flight.
  */
 
-public class FileDatabase implements Serializable {
+public class FileDatabase {
 
     private static final long serialVersionUID = -5414755056678568378L;
 
+    // TODO: Getting trouble with driver, need to decouple Managers and FDatabase,
+    // TODO: but then you would have to clear every instantiation of FDB
+    // TODO: What should I do?
+    // TODO: Making these fields static prevents them from being Serialized btw
+    // TODO: You cannot change the access methods to static either (see above line)
+    // TODO: Should you make a clearing function?
     // the managers
     private UserManager userManager = UserManager.getInstance();
     private FlightManager flightManager = FlightManager.getInstance();
 
     // date time formats
-    private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat(
+    private final SimpleDateFormat dateTimeFormatter = new SimpleDateFormat(
             "yyyy-MM-dd HH:mm");
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat(
+    private final SimpleDateFormat dateFormatter = new SimpleDateFormat(
             "yyyy-MM-dd");
 
     // the singleton instance
     private static FileDatabase singletonInstance;
+
+    // the persistent storage location
+    private static String dir;
 
     // name of serialized files
     private String flightManagerFile = "FlightManager.ser";
@@ -51,34 +60,41 @@ public class FileDatabase implements Serializable {
     private String passwordsFile = "passwords.txt";
 
     /**
-     * Constructs this FileDataBase. Deserializes the manager .ser files
+     * Constructs this FileDataBase. de-serializes the manager .ser files at
      * from the given path, if they exist and loads them to the FlightApp,
-     * otherwise this method will create new blank Manager serialized files
+     * if .ser files do not exist at path this method will try and populate
+     * the UserManager from passwords.txt and then serialize itself
      * in the given directory.
      *
      * @param dir  the path to the directory contain or to contain app
      * persistent storage.
      */
     private FileDatabase(String dir) {
+        FileDatabase.dir = dir;
+        // TODO: Should you clean the FDB when ever you
+        // Suggestion: No
+        // want to check for .ser files, try and read password
+        // and reserialize?
+        // what if you are instantiated in a new place?
         deserializeManagers(dir);
     }
 
     /**
      * Creates the singleton instance of this class. If the singleton has
-     * already been instantiated, this method does nothing.
+     * already been instantiated on a similar path, this method does nothing.
      *
-     * @param dir  the path to the directory contain or to contain app
+     * @param dir  the path to the directory containing or to contain app
      * persistent storage.
      */
     public static void createInstance(String dir) {
-        if (singletonInstance == null) {
+        if (singletonInstance == null || !dir.equals(FileDatabase.dir)) {
             singletonInstance = new FileDatabase(dir);
         }
     }
 
     /**
      * Returns the singleton instance of this class. If the singleton has
-     * not been created before  this method returns null.
+     * not been instantiated before  this method returns null.
      *
      * @return the singleton FlightManager
      */
@@ -113,6 +129,7 @@ public class FileDatabase implements Serializable {
      * @param dir  the path to directory where serialized files are stored.
      */
     public void deserializeManagers(String dir) {
+        // TODO: Remove try-with from all files
         try (
                 FileInputStream userFile = new
                         FileInputStream(dir + userManagerFile);
@@ -128,6 +145,8 @@ public class FileDatabase implements Serializable {
             flightManager = (FlightManager) flightStream.readObject();
         } catch (FileNotFoundException e) {
             // Serialized files do not exist
+            // TODO: Check if passwords file exists see before the line below
+            // TODO: http://stackoverflow.com/questions/1816673/how-do-i-check-if-a-file-exists-in-java
             populateUserManager(dir + passwordsFile);
             serializeManagers(dir);
         } catch (Exception e) {
@@ -143,6 +162,8 @@ public class FileDatabase implements Serializable {
      * @param dir  the path of a directory in the system.
      */
     public void serializeManagers(String dir) {
+        // TODO: Verify if this function clears the ser file before writing
+        // TODO: if they exist
         try (
                 FileOutputStream userFile = new FileOutputStream(
                         dir + userManagerFile);
@@ -166,7 +187,8 @@ public class FileDatabase implements Serializable {
 
     /**
      * Populates this FlightManager's UserManager with all initial Users
-     * given in passwords.txt file.
+     * given in passwords.txt file. If passwords.txt file does not exist
+     * then does nothing.
      *
      * <p>All Users created will only have email and password fields set,
      * other billing and personal information can be added later in the app
@@ -191,7 +213,7 @@ public class FileDatabase implements Serializable {
 
                 // create a new User
                 User newUser;
-                if (loginInfo[2] == "A") {
+                if (loginInfo[2].equals("A")) {
                     newUser = new Admin(loginInfo[0], loginInfo[1]);
                 } else {
                     newUser = new Client(loginInfo[0], loginInfo[1]);
@@ -201,9 +223,7 @@ public class FileDatabase implements Serializable {
                 userManager.addUser(newUser);
             }
         } catch(FileNotFoundException e) {
-            System.out.println("The file " + dir +
-                    " was not found, or cannot be read.");
-            e.printStackTrace();
+            // do nothing, leave userManager empty
         } catch(IOException e) {
             e.printStackTrace();
         } catch(IndexOutOfBoundsException e){
@@ -212,6 +232,8 @@ public class FileDatabase implements Serializable {
             );
             e.printStackTrace();
         }
+
+        // TODO: Autosave (Wait it happens after the only time it is called
     }
 
     /**
@@ -267,6 +289,9 @@ public class FileDatabase implements Serializable {
             );
             e.printStackTrace();
         }
+        // TODO: Autosave
+        serializeManagers(dir);
+
     }
 
     /**
@@ -325,5 +350,21 @@ public class FileDatabase implements Serializable {
             );
             e.printStackTrace();
         }
+
+        // TODO: Autosave after editing all info in app
+        serializeManagers(dir);
+    }
+
+    /**
+     * Called by ObjectInputStream when reading FileDatabase class object
+     * from stream. The readResolve method needs to be defined to prevent
+     * Deserialization of FileDatabase class resulting in multiple instances
+     * of FileDatabase being created.
+     *
+     * @return the singleton instance for FileDatabase class
+     * @throws ObjectStreamException
+     */
+    private Object readResolve() throws ObjectStreamException {
+        return singletonInstance;
     }
 }

@@ -33,15 +33,15 @@ public class FlightManager implements Serializable {
     public Map<List<String>, List<Flight>> flights;
 
     // The SimpleDateFormat is used to turn strings into Date objects
-    private SimpleDateFormat dateFormatter =
+    private final SimpleDateFormat dateFormatter =
             new SimpleDateFormat("yyyy-MM-dd");
 
     // The singleton instance
     private static FlightManager singletonInstance;
 
     // Comparator objects for comparing by Price and Duration
-    private PriceComparator<Transport> sortPrice;
-    private DurationComparator<Transport> sortDuration;
+    private final PriceComparator<Transport> sortPrice;
+    private final DurationComparator<Transport> sortDuration;
 
     /**
      * Constructs an empty FlightManager object.
@@ -145,9 +145,6 @@ public class FlightManager implements Serializable {
                 itineraries.put(key, new ArrayList<Itinerary>());
             }
             itineraries.get(key).add(trivialItinerary);
-            // TODO: Fix the case where we add a new flight
-            // TODO: that joins two previously existing itineraries
-            // TODO: and also generates that itineraries sub itineraries.
 
             // now that we have removed all the previous occurrences of the
             // flight, we can create new itineraries
@@ -158,7 +155,7 @@ public class FlightManager implements Serializable {
 
     /**
      * Adds a new itinerary to the itineraries HashMap. The condition that
-     * the hashmap does not contain itinieraries equals() to the new
+     * the hashmap does not contain itineraries equals() to the new
      * itinerary must be true.
      *
      * TODO: Update this method name to a better name
@@ -174,8 +171,9 @@ public class FlightManager implements Serializable {
 
         for (List<String> itKey : new
                 ArrayList<List<String>>(itineraries.keySet())) {
-            boolean continuous = (itKey.get(0) == itinerary.getDestination() ||
-                    itKey.get(1) == itinerary.getOrigin());
+            boolean continuous = (itKey.get(0).equals(itinerary
+                    .getDestination()) ||
+                    itKey.get(1).equals(itinerary.getOrigin()));
 
             if (continuous) {
                 // we can just concatenate this itinerary to all Itinerary
@@ -226,7 +224,7 @@ public class FlightManager implements Serializable {
         key.add(destination);
         key.add(departureDate);
 
-        if (itineraries.containsKey(key)){
+        if (itineraries.containsKey(key)) {
             // filter all non-full Itinerary from the List mapped
             // to by key
             List<Itinerary> result = new ArrayList<Itinerary>();
@@ -273,7 +271,7 @@ public class FlightManager implements Serializable {
     }
 
     /**
-     * Sorts a List of Flight or Itinerary by Price.
+     * Sorts a List of Flight or Itinerary by Price in non-decreasing order.
      * @param list  a list of Flight or Itinerary
      */
     public void sortByPrice(List<? extends Transport> list) {
@@ -281,7 +279,7 @@ public class FlightManager implements Serializable {
     }
 
     /**
-     * Sorts a List of Flight or Itinerary by Duration.
+     * Sorts a List of Flight or Itinerary by Duration in non-decreasing order.
      * @param list  a list of Flight or Itinerary
      */
     public void sortByDuration(List<? extends Transport> list) {
@@ -317,4 +315,3 @@ public class FlightManager implements Serializable {
         return singletonInstance;
     }
 }
-

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * A Client object. Every Client has a first name, last name, email,
+ * A Client object. Every Client has a first name, last name, email, password
  * address, credit card number and its related expiry date.
  * The expiry date is in the format 'YYYY-MM-DD'
  *
@@ -31,7 +31,9 @@ public class Client extends User implements Serializable {
      * @param password  the password for this client.
      */
     public Client(String lastName, String firstName, String email,
-                  String address, int creditCardNumber, Date expiryDate, String password) {
+                  String address, int creditCardNumber, Date expiryDate,
+                  String password) {
+
         super(lastName, firstName, email, address, creditCardNumber,
                 expiryDate, password);
     }
@@ -69,5 +71,3 @@ public class Client extends User implements Serializable {
         super(email, password);
     }
 }
-
-
