@@ -47,7 +47,7 @@ public class UserLogin extends AppCompatActivity {
             startActivity(intent);
         }else {
             TextView textView = (TextView) findViewById(R.id.login_failure);
-            textView.setText("Password or Username is incorrect. "+ email.getText().toString() + password.getText().toString() );
+            textView.setText("Password or Username is incorrect. ");
         }
     }
 
