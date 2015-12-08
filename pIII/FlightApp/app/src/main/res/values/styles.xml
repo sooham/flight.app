@@ -9,12 +9,26 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="loginEditTextStyle" parent="Theme.AppCompat">
+    <style name="EditTextStyle" parent="Theme.AppCompat">
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">2dp</item>
         <item name="android:textSize">9pt</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="WhiteEditTextStyle" parent="Theme.AppCompat">
+        <item name="android:textColorHint">@color/colorPrimaryDark</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:textSize">10pt</item>
         <item name="android:singleLine">true</item>
     </style>
 

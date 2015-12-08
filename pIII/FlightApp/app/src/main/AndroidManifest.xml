@@ -13,7 +13,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SearchForFlights" />
+        <activity android:name=".SearchForFlights"
+                    android:label="@string/search_flights_header"/>
         <activity
             android:name=".UserLogin"
             android:label="@string/app_name">
@@ -23,9 +24,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ViewSearchedFlights" />
-        <activity android:name=".EditClientInfo" />
-        <activity android:name=".BookItineraries"></activity>
+        <activity android:name=".ViewSearchedFlights"
+                    android:label="@string/flight_results_header"/>
+        <activity android:name=".EditClientInfo"
+                  android:label="@string/edit_info_header"/>
+        <activity android:name=".BookItineraries"
+                  android:label="@string/book_itineraries_header"></activity>
     </application>
 
 </manifest>
