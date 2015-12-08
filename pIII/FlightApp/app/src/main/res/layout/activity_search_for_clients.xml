@@ -10,4 +10,31 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="csc207.flightapp.SearchForClients">
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/get_client_email"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="160dp"
+        android:hint="Enter the email of the client."/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/client_failure"
+        android:textColor="@color/redAccent"
+        android:layout_below="@+id/get_client_email"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View|Edit Client Info"
+        android:id="@+id/search_button"
+        android:layout_below="@+id/client_failure"
+        android:layout_centerHorizontal="true"
+        android:onClick="editClientInfo"/>
 </RelativeLayout>
