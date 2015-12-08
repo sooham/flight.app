@@ -17,7 +17,7 @@
     <string name="app_name">FlightApp</string>
     <string name="flight_results_header">Flight Results</string>
     <string name="edit_info_header">Edit info</string>
-    <string name ="search_flights">Search</string>
+    <string name="search_flights">Search</string>
     <string name="search_flights_header">Search</string>
     <string name="book_itineraries_header">Book Itineraries</string>
     <string name="upload_data_header">Upload</string>

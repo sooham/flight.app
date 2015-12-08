@@ -10,44 +10,67 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.IOException;
 
+import backend.Admin;
+import backend.Client;
 import backend.FileDatabase;
 import backend.UserManager;
 
 public class UserLogin extends AppCompatActivity {
-    EditText email;
-    EditText password;
-    UserManager user = null;
+
+    private UserManager userManager;
+    public static final String EMAIL = "csc207.FlightApp.EMAIL";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // making the FileDatabase instance
         try {
-            FileDatabase.createInstance(this.getApplicationContext().getFilesDir().getCanonicalPath()+"/");
-        }catch(IOException e){
+            FileDatabase.createInstance(
+                    this.getApplicationContext().getFilesDir(
+                    ).getCanonicalPath()+"/"
+            );
+            //TODO: Remove the line below
+        }catch (IOException e){
+            // Unable to get the local app storage
             TextView textView = (TextView) findViewById(R.id.login_failure);
-            textView.setText("Directory was not found.");
+            textView.setText("App storage failure");
         }
-        user = FileDatabase.getInstance().getUserManager();
+
+        // get the UserManager
+        userManager = FileDatabase.getInstance().getUserManager();
         setContentView(R.layout.activity_user_login2);
     }
 
     /**
-     * Calls the SearchForFlights activity if the user entered a valid email and password.
-     * Passes the users email as a variable to use in the SearchForFlights activity.
+     * Called when the login button in UserLogin activity is pressed.
+     * This method determines if the user email passed belongs to a
+     * Client or Admin, starting the searchForFlights or AdminMenu activities
+     * respectively.
+     *
      * @param view the view where the button is pressed.
      */
     public void searchFlightIntent(View view) {
-        email = (EditText)findViewById(R.id.get_email);
-        password = (EditText)findViewById(R.id.get_password);
+        // get the email and password
+        String email = ((EditText)findViewById(R.id.get_email)).getText(
+                                                                ).toString();
+        String password = ((EditText)findViewById(R.id.get_password)).getText
+                                                        ().toString();
 
-        if (user.loginCredentialsCorrect(email.getText().toString(),password.getText().toString())){
-            Intent intent = new Intent(this, SearchForFlights.class);
-            intent.putExtra("EMAIL", email.getText().toString());
-            startActivity(intent);
-        }else {
+        // confirm UserCredentials are correct
+
+        if (userManager.loginCredentialsCorrect(email, password)) {
+            // check if the User is Admin or Client
+            Intent transitionIntent;
+            if (userManager.getUserWithEmail(email) instanceof Admin) {
+               transitionIntent = new Intent(this, AdminMenu.class);
+            } else {
+                transitionIntent = new Intent(this, SearchForFlights.class);
+            }
+            transitionIntent.putExtra(EMAIL, email);
+            startActivity(transitionIntent);
+        } else {
             TextView textView = (TextView) findViewById(R.id.login_failure);
             textView.setText("Password or Username is incorrect. ");
         }
     }
-
 }

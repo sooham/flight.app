@@ -31,7 +31,7 @@ public class ViewBooked extends Activity implements View.OnClickListener{;
         table = (TableLayout)findViewById(R.id.flight_table);
         Intent intent = getIntent();
         user = FileDatabase.getInstance().getUserManager().getUserWithEmail(
-                intent.getStringExtra("EMAIL"));
+                intent.getStringExtra(UserLogin.EMAIL));
         createTable(user.getBookedItineraries());
     }
 
@@ -96,7 +96,8 @@ public class ViewBooked extends Activity implements View.OnClickListener{;
     @Override
     public void onClick(View view){
         Intent intent = new Intent(this, ViewSearchedFlights.class);
-        intent.putExtra("Flights", ((viewButton)view).flight.getFlights());
+        intent.putExtra(SearchForFlights.DISPLAY_RESULTS, ((viewButton)view).flight
+                .getFlights());
         startActivity(intent);
     }
 

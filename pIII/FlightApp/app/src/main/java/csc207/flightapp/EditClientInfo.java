@@ -27,7 +27,6 @@ public class EditClientInfo extends AppCompatActivity {
     EditText lastName;
     EditText creditNum;
     EditText expiryDate;
-    TextView username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,7 @@ public class EditClientInfo extends AppCompatActivity {
         setContentView(R.layout.activity_edit_client_info);
         Intent intent = getIntent();
 
-        email = intent.getStringExtra("EMAIL");
+        email = intent.getStringExtra(UserLogin.EMAIL);
         user = FileDatabase.getInstance().getUserManager().getUserWithEmail(email);
 
         //Sets the default values for all views
@@ -43,7 +42,6 @@ public class EditClientInfo extends AppCompatActivity {
         lastName = (EditText)findViewById(R.id.last_name);
         creditNum = (EditText)findViewById(R.id.credit_card_num);
         expiryDate = (EditText)findViewById(R.id.expiry_date);
-        username = (TextView) findViewById(R.id.username);
         if(user.getFirstName()!=null) {
             firstName.setText(user.getFirstName());
         }
@@ -57,7 +55,6 @@ public class EditClientInfo extends AppCompatActivity {
             expiryDate.setText(dateFormatter.format(user.getExpiryDate()));
         }
 
-        username.setText(email);
     }
 
     public void saveChanges(View view){

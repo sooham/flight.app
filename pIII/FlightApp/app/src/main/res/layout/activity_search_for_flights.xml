@@ -9,89 +9,86 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="csc207.flightapp.SearchForFlights">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/origin"
-        android:hint="Enter Travel Origin"
-        android:layout_marginTop="104dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/destination"
-        android:layout_alignStart="@+id/destination"
-        android:layout_alignRight="@+id/destination"
-        android:layout_alignEnd="@+id/destination" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/search_flights"
-        android:textSize="25dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/search_button"
-        android:layout_alignEnd="@+id/search_button"
-        android:id="@+id/title" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/destination"
-        android:hint="Enter Travel Destination"
-        android:layout_below="@+id/origin"
-        android:layout_alignRight="@+id/departure_date"
-        android:layout_alignEnd="@+id/departure_date"
-        android:layout_alignLeft="@+id/departure_date"
-        android:layout_alignStart="@+id/departure_date" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/departure_date"
-        android:hint="Enter Departure Date (YYYY-MM-DD)"
-        android:layout_below="@+id/destination"
-        android:layout_centerHorizontal="true" />
-
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search For Flights"
-        android:id="@+id/search_button"
-        android:layout_below="@+id/departure_date"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp"
-        android:onClick="viewFlights"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/display_email"
-        android:layout_below="@+id/title"
-        android:layout_centerHorizontal="true" />
-
-    <ImageButton
-        android:layout_width="@dimen/box_size"
-        android:layout_height="@dimen/box_size"
         android:id="@+id/imageButton"
-        android:background="@drawable/options_icon"
-        android:scaleType = "centerInside"
+        style="@style/ButtonStyle"
+        android:text="View/Edit Info"
+        android:layout_width="fill_parent"
+        android:layout_marginBottom="20dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:onClick="editClientInfo"/>
 
-    <Button
-        android:layout_width="wrap_content"
+    <EditText
+        style="@style/EditTextStyle"
+        android:id="@+id/origin"
+        android:hint="Travel Origin"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/imageButton"/>
+
+
+    <EditText
+        android:id="@+id/destination"
+        style="@style/EditTextStyle"
+        android:hint="Travel Destination"
+        android:layout_below="@+id/origin"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"/>
+
+    <EditText
+        android:id="@+id/departure_date"
+        style="@style/EditTextStyle"
+        android:hint="Departure Date (YYYY-MM-DD)"
+        android:inputType="date"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/destination"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"/>
+
+    <RadioGroup
+        android:id="@+id/search_selection"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search For Itineraries"
-        android:id="@+id/Itineraries_search"
-        android:layout_below="@+id/search_button"
-        android:layout_centerHorizontal="true"
-        android:onClick="viewItineraries"/>
+        android:layout_marginBottom="50dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/departure_date"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true">
+        <RadioButton
+            android:id="@+id/flight_search"
+            style="@style/ButtonStyle"
+            android:background="@color/redAccent"
+            android:layout_marginRight="30dp"
+            android:minEms="4"
+            android:checked="true"
+            android:layout_weight="1"
+            android:text="Flight" />
+        <RadioButton
+            android:id="@+id/itinerary_search"
+            style="@style/ButtonStyle"
+            android:background="@color/redAccent"
+            android:minEms="4"
+            android:layout_weight="1"
+            android:text="Itinerary" />
+    </RadioGroup>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View Booked Itineraries"
-        android:id="@+id/view_booked"
-        android:layout_below="@+id/Itineraries_search"
+        android:id="@+id/search_button"
+        style="@style/ButtonStyle"
+        android:text="Search"
+        android:layout_below="@id/search_selection"
         android:layout_centerHorizontal="true"
-        android:onClick="viewBookedItineraries"/>/>
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:onClick="viewResults"/>
+
+    <Button
+        android:id="@+id/view_booked"
+        style="@style/ButtonStyle"
+        android:text="View Bookings"
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/search_button"
+        android:onClick="viewResults"/>
 </RelativeLayout>
