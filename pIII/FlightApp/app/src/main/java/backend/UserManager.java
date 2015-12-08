@@ -54,19 +54,11 @@ public class UserManager implements Serializable {
      * TODO: Unit test
      */
     public void addUser(User u) {
-        User existing;
-        if ((existing = getUserWithEmail(u.getEmail())) != null) {
-            // then the User is being updated
-            users.remove(existing);
-        }
-        users.add(u);
-        /*
         if (users.contains(u)) {
             // could have different contact information but is still equals()
             users.remove(u);
         }
         users.add(u);
-        */
     }
 
     /**
@@ -78,20 +70,10 @@ public class UserManager implements Serializable {
      * information
      */
     public boolean loginCredentialsCorrect(String email, String password) {
-        for (User u: users) {
-            if (u.getEmail().equals(email) &&
-                    u.getPassword().equals(password)) {
-                return true;
-            }
-        }
-
-        return false;
-        /*
         if (getUserWithEmail(email) != null) {
             return getUserWithEmail(email).getPassword().equals(password);
         }
         return false;
-        */
     }
 
     /**
@@ -109,39 +91,6 @@ public class UserManager implements Serializable {
         }
 
         return null;
-    }
-
-    /**
-     * // TODO: Do I need this (haven't used it yet)
-     * Returns a List of User matching the given field from this
-     * UserManager.
-     *
-     * <p> Given a string, this method searches every User for a matching
-     * field (starting with the given string) and returns all those users.
-     *
-     * This allows UserManager to easily search User by address, email or
-     * name while typing in, helpful for Android Client searching
-     * functionality.
-     *
-     * @param value  a partially complete (or complete) String that could
-     * 	be a first or last name, email or address.
-     * @return an List of User that meets search criterion.
-     */
-    public ArrayList<User> getUser(String value) {
-        ArrayList<User> matchingUsers = new ArrayList<User>();
-
-        for (User u: users) {
-            // go through every field of user and see if any field
-            // starts with the given value.
-            if (u.getFirstName().startsWith(value) ||
-                    u.getLastName().startsWith(value) ||
-                    u.getEmail().startsWith(value) ||
-                    u.getAddress().startsWith(value)) {
-                matchingUsers.add(u);
-            }
-        }
-
-        return matchingUsers;
     }
 
     /**
