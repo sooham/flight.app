@@ -20,22 +20,34 @@ public class SearchForClients extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_for_clients);
         userManager = FileDatabase.getInstance().getUserManager();
-
     }
 
     /**
-     * Checks if the email for the client exists if it does will create an intent and go
-     * to the editClientInfo activity. Otherwise will display a message.
+     * Checks if the email for the client exists if it does will create an
+     * intent and go to the corresponding activity given by previous
+     * activity's instructions.
+     * Otherwise will display a message.
      * @param view the view of the button clicked
      */
     public void editClientInfo(View view) {
+        // get the email from the edit text
         clientEmail = (EditText) findViewById(R.id.get_client_email);
         String email = clientEmail.getText().toString();
-        if(userManager.getUserWithEmail(email)!= null){
-            Intent intent = new Intent(this, EditClientInfo.class);
-            intent.putExtra(UserLogin.EMAIL, email);
-            startActivity(intent);
-        }else{
+
+        if (userManager.getUserWithEmail(email)!= null) {
+            // get the calling intent's instructions
+            Intent intent = getIntent();
+            Intent transitionIntent;
+
+            if (intent.getBooleanExtra(AdminMenu.EDIT_CLIENT, false)) {
+                transitionIntent = new Intent(this, EditClientInfo.class);
+            } else {
+                transitionIntent = new Intent(this, SearchForFlights.class);
+            }
+
+            transitionIntent.putExtra(UserLogin.EMAIL, email);
+            startActivity(transitionIntent);
+        } else{
             loginFailure = (TextView) findViewById(R.id.client_failure);
             loginFailure.setText("Client email is incorrect.");
         }
