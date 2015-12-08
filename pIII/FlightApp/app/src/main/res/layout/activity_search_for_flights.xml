@@ -92,5 +92,6 @@
         android:text="View Booked Itineraries"
         android:id="@+id/view_booked"
         android:layout_below="@+id/Itineraries_search"
-        android:layout_centerHorizontal="true" />/>
+        android:layout_centerHorizontal="true"
+        android:onClick="viewBookedItineraries"/>/>
 </RelativeLayout>

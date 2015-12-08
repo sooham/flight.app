@@ -1,5 +1,5 @@
 <resources>
-
+    ​
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -12,14 +12,15 @@
     <string name="permission_rationale">"Contacts permissions are needed for
         providing email completions."
     </string>
-
+    ​
     <!-- action bar headers -->
     <string name="app_name">FlightApp</string>
     <string name="flight_results_header">Flight Results</string>
     <string name="edit_info_header">Edit info</string>
+    <string name ="search_flights">Search</string>
     <string name="search_flights_header">Search</string>
     <string name="book_itineraries_header">Book Itineraries</string>
     <string name="upload_data_header">Upload</string>
     <string name="edit_flight_header">Edit Flight</string>
-
+    ​
 </resources>

@@ -23,7 +23,6 @@ public class UserLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         try {
             FileDatabase.createInstance(this.getApplicationContext().getFilesDir().getCanonicalPath()+"/");
-            System.out.println(this.getApplicationContext().getFilesDir().getCanonicalPath());
         }catch(IOException e){
             TextView textView = (TextView) findViewById(R.id.login_failure);
             textView.setText("Directory was not found.");

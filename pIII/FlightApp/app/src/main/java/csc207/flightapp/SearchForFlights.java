@@ -39,15 +39,6 @@ public class SearchForFlights extends AppCompatActivity {
         destination = (EditText)findViewById(R.id.destination);
         departureDate = (EditText)findViewById(R.id.departure_date);
         Intent intent = new Intent(this, ViewSearchedFlights.class);
-        /*
-        FileDatabase.getInstance().addFlightFromFile("/data/flights1.txt");
-        try {
-            FileDatabase.getInstance().serializeManagers(this.getApplicationContext().getFilesDir().getCanonicalPath() + "/");
-        }catch(IOException e){
-
-        }
-        */
-
         //passes the input information to the view_view_searched_flights.
         intent.putExtra("Flights",FileDatabase.getInstance().getFlightManger().getFlights(origin.getText().toString(),
                 destination.getText().toString(), departureDate.getText().toString()));
@@ -61,14 +52,10 @@ public class SearchForFlights extends AppCompatActivity {
         Intent intent = new Intent(this, BookItineraries.class);
 
         //passes the input information to the view_view_searched_flights.
-        try {
-            FileDatabase.getInstance().serializeManagers(this.getApplicationContext().getFilesDir().getCanonicalPath() + "/");
-        }catch(IOException e){
-
-        }
-        intent.putExtra("Flights",FileDatabase.getInstance().getFlightManger().getFlights(origin.getText().toString(),
+        intent.putExtra("Flights",FileDatabase.getInstance().getFlightManger().getItineraries(origin.getText().toString(),
                destination.getText().toString(), departureDate.getText().toString()));
-       startActivity(intent);
+        intent.putExtra("EMAIL", email);
+        startActivity(intent);
 
     }
 
@@ -77,6 +64,12 @@ public class SearchForFlights extends AppCompatActivity {
         intent.putExtra("EMAIL", email);
         startActivity(intent);
 
+    }
+
+    public void viewBookedItineraries(View view){
+        Intent intent = new Intent(this, ViewBooked.class);
+        intent.putExtra("EMAIL", email);
+        startActivity(intent);
     }
 }
 
