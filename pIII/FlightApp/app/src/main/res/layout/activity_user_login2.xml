@@ -11,7 +11,7 @@
 
     <EditText
         android:id="@+id/get_email"
-        style="@style/loginEditTextStyle"
+        style="@style/EditTextStyle"
         android:inputType="textEmailAddress"
         android:hint="@string/prompt_email"
         android:layout_centerHorizontal="true"
@@ -21,7 +21,7 @@
 
     <EditText
         android:id="@+id/get_password"
-        style="@style/loginEditTextStyle"
+        style="@style/EditTextStyle"
         android:inputType="textPassword"
         android:hint="@string/prompt_password"
         android:layout_above="@+id/login_button"
