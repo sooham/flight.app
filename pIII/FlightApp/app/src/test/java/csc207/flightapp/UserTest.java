@@ -49,12 +49,13 @@ public class UserTest {
                 "0:0"));
         assertEquals(testUser1.getPassword(), "Sooham1995");
         assertEquals(testUser1.getBookedItineraries(), new ArrayList<Itinerary>());
-        assertNull(testUser2.getPassword());
-        assertNull(testUser3.getLastName());
-        assertNull(testUser3.getFirstName());
-        assertNull(testUser3.getAddress());
+        assertEquals(testUser2.getPassword(), "");
+        assertEquals(testUser3.getLastName(), "");
+        assertEquals(testUser3.getFirstName(), "");
+        assertEquals(testUser3.getAddress(), "");
         assertEquals(testUser3.getCreditCardNumber(), 0);
-        assertNull(testUser3.getExpiryDate());
+        assertEquals(testUser3.getExpiryDate(), dateformatter.parse
+                ("0000-00-00"));
     }
 
     // setters

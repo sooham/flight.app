@@ -1,6 +1,7 @@
 package backend;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,7 +78,7 @@ public class User implements Serializable {
     public User(String lastName, String firstName, String email, String address,
                 int creditCardNumber, Date expiryDate) {
         this(lastName, firstName, email, address,
-                creditCardNumber, expiryDate, null);
+                creditCardNumber, expiryDate, "");
     }
 
     /**
@@ -89,7 +90,10 @@ public class User implements Serializable {
      * @param password  this user's password.
      */
     public User(String email, String password) {
-        this(null, null, email, null, 0, null, password);
+        this("", "", email, "", 0, null, password);
+        try {
+            setExpiryDate(formatter.parse("0000-00-00"));
+        } catch (ParseException e) {}
     }
 
     /**
