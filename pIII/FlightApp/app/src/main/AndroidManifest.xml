@@ -2,11 +2,6 @@
 <manifest package="csc207.flightapp"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.READ_PROFILE"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -34,7 +29,23 @@
         <activity
             android:name=".BookItineraries"
             android:label="@string/book_itineraries_header"/>
-        <activity android:name=".AdminMenu">
+        <activity
+            android:name=".AdminMenu"
+            android:label="@string/admin_menu_header">
+        </activity>
+        <activity android:name=".Upload"
+            android:label="@string/upload_data_header">
+        </activity>
+        <activity android:name=".SearchForClients"
+            android:label="@string/search_for_clients_header">
+        </activity>
+        <activity
+            android:name=".BookForClient"
+            android:label="@string/title_activity_book_for_client">
+        </activity>
+        <activity
+            android:name=".ViewBooked"
+            android:label="@string/view_bookings_of_client_header">
         </activity>
     </application>
 

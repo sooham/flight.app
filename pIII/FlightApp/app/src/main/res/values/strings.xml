@@ -1,4 +1,5 @@
 <resources>
+    <!-- TODO: Go through all xml files and refactor -->
     ​
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -22,5 +23,11 @@
     <string name="book_itineraries_header">Book Itineraries</string>
     <string name="upload_data_header">Upload</string>
     <string name="edit_flight_header">Edit Flight</string>
+    <string name="view_bookings_of_client_header">Book for Client</string>
+    <string name="search_for_clients_header">Search for Client</string>
+    <string name="admin_menu_header">Admin Menu</string>
+
+    <string name="title_activity_view_flights">View Flights</string>
+    <string name="title_activity_book_for_client">Book For Client</string>
     ​
 </resources>
