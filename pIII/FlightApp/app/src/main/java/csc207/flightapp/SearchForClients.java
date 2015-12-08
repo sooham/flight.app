@@ -23,6 +23,11 @@ public class SearchForClients extends Activity {
 
     }
 
+    /**
+     * Checks if the email for the client exists if it does will create an intent and go
+     * to the editClientInfo activity. Otherwise will display a message.
+     * @param view the view of the button clicked
+     */
     public void editClientInfo(View view) {
         clientEmail = (EditText) findViewById(R.id.get_client_email);
         String email = clientEmail.getText().toString();
