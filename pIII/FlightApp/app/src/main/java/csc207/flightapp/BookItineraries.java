@@ -10,6 +10,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -18,9 +19,11 @@ import backend.Flight;
 import backend.FlightManager;
 import backend.Itinerary;
 import backend.User;
+import backend.UserManager;
 
 public class BookItineraries extends Activity implements View.OnClickListener{
-    private FlightManager flightManager = null;
+
+    private FlightManager flightManager;
     private TableLayout table;
     private Flight bookFlight;
     private User user;
@@ -29,11 +32,17 @@ public class BookItineraries extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_itineraries);
+
         flightManager = FileDatabase.getInstance().getFlightManger();
-        table = (TableLayout)findViewById(R.id.flight_table);
+
+        table = (TableLayout) findViewById(R.id.flight_table);
+
+        // get the logged in user to book for
         Intent intent = getIntent();
+
         user = FileDatabase.getInstance().getUserManager().getUserWithEmail(
                 intent.getStringExtra(UserLogin.EMAIL));
+
         createTable((ArrayList<Itinerary>) intent.getSerializableExtra
                 (SearchForFlights.DISPLAY_RESULTS));
     }
@@ -44,7 +53,7 @@ public class BookItineraries extends Activity implements View.OnClickListener{
      * @param itineraries takes the key for what flights to be displayed.
      */
     private void createTable(ArrayList<Itinerary> itineraries){
-        for (Itinerary flight:itineraries) {
+        for (Itinerary flight: itineraries) {
             System.out.print(flight.getOrigin());
             TableRow tableRow = new TableRow(this);
             tableRow.setLayoutParams(new TableLayout.LayoutParams(
@@ -98,7 +107,7 @@ public class BookItineraries extends Activity implements View.OnClickListener{
 
     @Override
     public void onClick(View view){
-        switch(((viewButton)view).getType()){
+        switch(((viewButton) view).getType()){
             case "View Button":
                 Intent intent = new Intent(this, ViewSearchedFlights.class);
                 intent.putExtra(SearchForFlights.DISPLAY_RESULTS, ((viewButton)view).flight
@@ -106,7 +115,15 @@ public class BookItineraries extends Activity implements View.OnClickListener{
                 startActivity(intent);
                 break;
             case "Book Button":
-                user.bookItinerary(((bookButton)view).flight);
+                user.bookItinerary(((bookButton) view).flight);
+                // autosave
+                try {
+
+                    FileDatabase.getInstance().serializeManagers(
+                            this.getApplicationContext().getFilesDir()
+                                    .getCanonicalPath() + "/"
+                    );
+                } catch(IOException e) {}
                 break;
 
         }

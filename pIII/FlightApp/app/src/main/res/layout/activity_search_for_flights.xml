@@ -12,7 +12,7 @@
     <Button
         android:id="@+id/imageButton"
         style="@style/ButtonStyle"
-        android:text="View/Edit Info"
+        android:text="View | Edit Your Information"
         android:layout_width="fill_parent"
         android:layout_marginBottom="20dp"
         android:layout_alignParentTop="true"
@@ -86,9 +86,9 @@
     <Button
         android:id="@+id/view_booked"
         style="@style/ButtonStyle"
-        android:text="View Bookings"
+        android:text="View Your Bookings"
         android:layout_width="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/search_button"
-        android:onClick="viewResults"/>
+        android:onClick="viewBookedItineraries"/>
 </RelativeLayout>

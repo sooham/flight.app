@@ -7,18 +7,19 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import backend.FileDatabase;
-import backend.FlightManager;
 import backend.Flight;
 import backend.Itinerary;
 
 
 public class SearchForFlights extends AppCompatActivity {
 
+    private final SimpleDateFormat dateFormatter = new SimpleDateFormat(
+                                                                "yyyy-MM-dd");
     private EditText origin;
     private EditText destination;
     private EditText departureDate;
@@ -50,41 +51,39 @@ public class SearchForFlights extends AppCompatActivity {
         departureDate = (EditText) findViewById(R.id.departure_date);
         RadioButton flightsBtn = (RadioButton) findViewById(R.id.flight_search);
 
-        // Check if the RadioGroup Selection is Flights or Itineraries
-        Intent intent;
-        if (flightsBtn.isChecked()) {
-            intent = new Intent(this, ViewSearchedFlights.class);
-            // passes the input information to the correct Activity
-            ArrayList<Flight> results = FlightManager.getInstance().getFlights(
-                    origin.getText().toString(),
-                    destination.getText().toString(),
-                    departureDate.getText().toString()
-            );
-            intent.putExtra(DISPLAY_RESULTS, results);
-
-        } else {
-            intent = new Intent(this, BookItineraries.class);
-            // passes the input information to the correct Activity
-            ArrayList<Itinerary> results = FlightManager.getInstance().getItineraries(
-                    origin.getText().toString(),
-                    destination.getText().toString(),
-                    departureDate.getText().toString()
-            );
-            intent.putExtra(DISPLAY_RESULTS, results);
-            intent.putExtra(UserLogin.EMAIL, email);
-            }
-
-            // TODO:WTF is this doing in search Angad bro
-        /*
-        FileDatabase.getInstance().addFlightFromFile("/data/flights1.txt");
+        // Check if departure date is correctly formatted
         try {
-            FileDatabase.getInstance().serializeManagers(this.getApplicationContext().getFilesDir().getCanonicalPath() + "/");
-        }catch(IOException e){
+            dateFormatter.parse(departureDate.getText().toString());
 
-        }
-        */
-            // start the activity
-            startActivity(intent);
+            // Check if the RadioGroup Selection is Flights or Itineraries
+            Intent intent;
+            if (flightsBtn.isChecked()) {
+                intent = new Intent(this, ViewSearchedFlights.class);
+                // passes the input information to the correct Activity
+                ArrayList<Flight> results = FileDatabase.getInstance(
+                ).getFlightManger().getFlights(
+                        origin.getText().toString(),
+                        destination.getText().toString(),
+                        departureDate.getText().toString()
+                );
+                intent.putExtra(DISPLAY_RESULTS, results);
+
+            } else {
+                intent = new Intent(this, BookItineraries.class);
+                // passes the input information to the correct Activity
+                ArrayList<Itinerary> results = FileDatabase.getInstance()
+                        .getFlightManger(
+                ).getItineraries(
+                        origin.getText().toString(),
+                        destination.getText().toString(),
+                        departureDate.getText().toString()
+                );
+                intent.putExtra(DISPLAY_RESULTS, results);
+                intent.putExtra(UserLogin.EMAIL, email);
+                }
+                // start the activity
+                startActivity(intent);
+        } catch (ParseException e) {}
         }
 
     public void editClientInfo(View view) {

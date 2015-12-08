@@ -7,11 +7,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.File;
 import java.io.IOException;
 
 import backend.Admin;
-import backend.Client;
 import backend.FileDatabase;
 import backend.UserManager;
 
@@ -24,12 +22,12 @@ public class UserLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // making the FileDatabase instance
+
         try {
             FileDatabase.createInstance(
                     this.getApplicationContext().getFilesDir(
-                    ).getCanonicalPath()+"/"
+                    ).getCanonicalPath() + "/"
             );
-            //TODO: Remove the line below
         }catch (IOException e){
             // Unable to get the local app storage
             TextView textView = (TextView) findViewById(R.id.login_failure);
@@ -51,10 +49,10 @@ public class UserLogin extends AppCompatActivity {
      */
     public void searchFlightIntent(View view) {
         // get the email and password
-        String email = ((EditText)findViewById(R.id.get_email)).getText(
-                                                                ).toString();
-        String password = ((EditText)findViewById(R.id.get_password)).getText
-                                                        ().toString();
+        String email = ((EditText) findViewById(R.id.get_email)).getText(
+        ).toString();
+        String password = ((EditText) findViewById(R.id.get_password)).getText(
+        ).toString();
 
         // confirm UserCredentials are correct
 
