@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">FlightApp</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -14,6 +13,13 @@
         providing email completions."
     </string>
 
-    <!-- strings related to search for flights -->
-    <string name="search_flights"> Search Flights</string>
+    <!-- action bar headers -->
+    <string name="app_name">FlightApp</string>
+    <string name="flight_results_header">Flight Results</string>
+    <string name="edit_info_header">Edit info</string>
+    <string name="search_flights_header">Search</string>
+    <string name="book_itineraries_header">Book Itineraries</string>
+    <string name="upload_data_header">Upload</string>
+    <string name="edit_flight_header">Edit Flight</string>
+
 </resources>
