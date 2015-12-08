@@ -28,7 +28,8 @@ public class ViewSearchedFlights extends AppCompatActivity {
         setContentView(R.layout.activity_view_searched_flights);
         table = (TableLayout)findViewById(R.id.flight_table);
         Intent intent = getIntent();
-        createTable((ArrayList<Flight>)intent.getSerializableExtra("Flights"));
+        createTable((ArrayList<Flight>)intent.getSerializableExtra
+                (SearchForFlights.DISPLAY_RESULTS));
     }
 
     /**

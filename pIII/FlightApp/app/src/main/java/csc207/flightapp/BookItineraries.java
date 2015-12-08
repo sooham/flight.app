@@ -33,8 +33,9 @@ public class BookItineraries extends Activity implements View.OnClickListener{
         table = (TableLayout)findViewById(R.id.flight_table);
         Intent intent = getIntent();
         user = FileDatabase.getInstance().getUserManager().getUserWithEmail(
-                intent.getStringExtra("EMAIL"));
-        createTable((ArrayList<Itinerary>) intent.getSerializableExtra("Flights"));
+                intent.getStringExtra(UserLogin.EMAIL));
+        createTable((ArrayList<Itinerary>) intent.getSerializableExtra
+                (SearchForFlights.DISPLAY_RESULTS));
     }
 
     /**
@@ -100,7 +101,8 @@ public class BookItineraries extends Activity implements View.OnClickListener{
         switch(((viewButton)view).getType()){
             case "View Button":
                 Intent intent = new Intent(this, ViewSearchedFlights.class);
-                intent.putExtra("Flights", ((viewButton)view).flight.getFlights());
+                intent.putExtra(SearchForFlights.DISPLAY_RESULTS, ((viewButton)view).flight
+                        .getFlights());
                 startActivity(intent);
                 break;
             case "Book Button":
