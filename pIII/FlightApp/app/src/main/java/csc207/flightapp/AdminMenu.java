@@ -8,6 +8,8 @@ import android.view.View;
 
 public class AdminMenu extends Activity {
 
+    public static final String EDIT_CLIENT = "csc207.FlightApp.EDIT_CLIENT";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,7 @@ public class AdminMenu extends Activity {
         Intent intent = new Intent(this, SearchForClients.class);
         intent.putExtra(UserLogin.EMAIL, getIntent().getStringExtra(UserLogin
                 .EMAIL));
+        intent.putExtra(AdminMenu.EDIT_CLIENT, true);
         startActivity(intent);
     }
 
@@ -62,7 +65,11 @@ public class AdminMenu extends Activity {
      */
     public void adminBookForClient(View view) {
         // go to the book for client activity (admin only)
-        Intent intent = new Intent(this, BookForClient.class);
+        Intent intent = new Intent(this, SearchForClients.class);
+        intent.putExtra(UserLogin.EMAIL, getIntent().getStringExtra(UserLogin
+                .EMAIL));
+
+        intent.putExtra(AdminMenu.EDIT_CLIENT, false);
         startActivity(intent);
     }
 
