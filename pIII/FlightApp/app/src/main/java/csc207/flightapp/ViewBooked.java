@@ -15,7 +15,6 @@ import java.util.Objects;
 
 import backend.FileDatabase;
 import backend.Flight;
-import backend.FlightManager;
 import backend.Itinerary;
 import backend.User;
 
@@ -28,10 +27,15 @@ public class ViewBooked extends Activity implements View.OnClickListener{;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_booked);
+
         table = (TableLayout)findViewById(R.id.flight_table);
+
+        // get the user
         Intent intent = getIntent();
         user = FileDatabase.getInstance().getUserManager().getUserWithEmail(
                 intent.getStringExtra(UserLogin.EMAIL));
+
+        //make the table
         createTable(user.getBookedItineraries());
     }
 
