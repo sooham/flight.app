@@ -10,10 +10,13 @@ import android.widget.RadioButton;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 
+import backend.DurationComparator;
 import backend.FileDatabase;
 import backend.Flight;
 import backend.Itinerary;
+import backend.PriceComparator;
 
 
 public class SearchForFlights extends AppCompatActivity {
@@ -50,6 +53,7 @@ public class SearchForFlights extends AppCompatActivity {
         destination = (EditText) findViewById(R.id.destination);
         departureDate = (EditText) findViewById(R.id.departure_date);
         RadioButton flightsBtn = (RadioButton) findViewById(R.id.flight_search);
+        RadioButton sortBtn = (RadioButton) findViewById(R.id.sort_duration);
 
         // Check if departure date is correctly formatted
         try {
@@ -66,6 +70,11 @@ public class SearchForFlights extends AppCompatActivity {
                         destination.getText().toString(),
                         departureDate.getText().toString()
                 );
+                if(sortBtn.isChecked()){
+                    Collections.sort(results, new DurationComparator<Flight>());
+                }else{
+                    Collections.sort(results, new PriceComparator<Flight>());
+                }
                 intent.putExtra(DISPLAY_RESULTS, results);
 
             } else {
@@ -73,11 +82,16 @@ public class SearchForFlights extends AppCompatActivity {
                 // passes the input information to the correct Activity
                 ArrayList<Itinerary> results = FileDatabase.getInstance()
                         .getFlightManger(
-                ).getItineraries(
-                        origin.getText().toString(),
-                        destination.getText().toString(),
-                        departureDate.getText().toString()
-                );
+                        ).getItineraries(
+                                origin.getText().toString(),
+                                destination.getText().toString(),
+                                departureDate.getText().toString()
+                        );
+                if(sortBtn.isChecked()){
+                    Collections.sort(results, new DurationComparator<Itinerary>());
+                }else{
+                    Collections.sort(results, new PriceComparator<Itinerary>());
+                }
                 intent.putExtra(DISPLAY_RESULTS, results);
                 intent.putExtra(UserLogin.EMAIL, email);
                 }
