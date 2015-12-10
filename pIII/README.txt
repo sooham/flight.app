@@ -18,9 +18,10 @@ client info, the user must be a CSV file located in the following directory:
 /data/data/csc207.flightapp/files
 
 Clients will be given a screen that allows them to quicky search flights and 
-book itineraries. By providing the origin, destination, date of deprature
-in the format YYYY-MM-DD, they can search for itineraries or flights. When 
-searching for itineraries clients can press the view button to view the list of
-individual flights in the itinerary. Once the user has found the itinerary that 
-they want to book, they can press the book button located beside the view 
-button. 
+book itineraries. By providing the origin, destination, date of deprature in 
+the format YYYY-MM-DD, they can search for itineraries or flights. In addition 
+the search can be sort by duration or cost, by pressing on their respstive tabs 
+before the search. When searching for itineraries clients can press the view 
+button to view the list of individual flights in the itinerary. Once the user 
+has found the itinerary that they want to book, they can press the book button 
+located beside the view button. 
