@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-// TODO: Change creditCardNumber to take in string everywhere
 /**
  * A User object. A User is a backend representation for both Client and
  * Administrator objects. Every User has a first name, last name, email,
@@ -31,7 +30,7 @@ public class User implements Serializable {
     private String password;
 
     private String address;
-    private int creditCardNumber;
+    private long creditCardNumber;
     private Date expiryDate;
 
     private ArrayList<Itinerary> bookedItineraries;
@@ -50,7 +49,7 @@ public class User implements Serializable {
      * @param password  the password for this user.
      */
     public User(String lastName, String firstName, String email, String address,
-                int creditCardNumber, Date expiryDate, String password) {
+                long creditCardNumber, Date expiryDate, String password) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.email = email;
@@ -76,7 +75,7 @@ public class User implements Serializable {
      * @param expiryDate  a Date indicating this user's credit card expiry date.
      */
     public User(String lastName, String firstName, String email, String address,
-                int creditCardNumber, Date expiryDate) {
+                long creditCardNumber, Date expiryDate) {
         this(lastName, firstName, email, address,
                 creditCardNumber, expiryDate, "");
     }
@@ -90,7 +89,7 @@ public class User implements Serializable {
      * @param password  this user's password.
      */
     public User(String email, String password) {
-        this("", "", email, "", 0, null, password);
+        this("", "", email, "", 0l, null, password);
         try {
             setExpiryDate(formatter.parse("0000-00-00"));
         } catch (ParseException e) {}
@@ -162,7 +161,7 @@ public class User implements Serializable {
      *
      * @return this user's credit card number.
      */
-    public int getCreditCardNumber() {
+    public long getCreditCardNumber() {
         return creditCardNumber;
     }
 
@@ -171,7 +170,7 @@ public class User implements Serializable {
      *
      * @param creditCardNumber  this user's new credit card number.
      */
-    public void setCreditCardNumber(int creditCardNumber) {
+    public void setCreditCardNumber(long creditCardNumber) {
         this.creditCardNumber = creditCardNumber;
     }
 

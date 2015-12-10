@@ -193,7 +193,6 @@ public class UserTest {
     // toString
     @Test
     public void toStringShouldReturnCorrectString() {
-        // TODO: What if one of the fields in null?
 
         String expectedString= "Rafiz,Sooham,soohamrafiz@gmail.com,972 Shaw" +
                 " " +

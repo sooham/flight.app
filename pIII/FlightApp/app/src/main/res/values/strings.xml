@@ -1,5 +1,4 @@
 <resources>
-    <!-- TODO: Go through all xml files and refactor -->
     ​
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

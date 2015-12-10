@@ -4,9 +4,8 @@ import java.util.ArrayList;
 
 import backend.FileDatabase;
 import backend.Flight;
-import backend.FlightManager;
 import backend.Itinerary;
-import backend.UserManager;
+import backend.User;
 
 /** A Driver used for autotesting the project backend. */
 public class Driver {
@@ -20,10 +19,7 @@ public class Driver {
      *  (the ExpiryDate is stored in the format YYYY-MM-DD)
      */
     public static void uploadClientInfo(String path) {
-        // TODO: complete this method body
         FileDatabase.createInstance(path);
-        // TODO: Do not clean every instantiation FDB
-        // TODO: Make sure all methods in all classes autosave when info edited
         FileDatabase.getInstance().addClientFromFile(path);
     }
 
@@ -37,7 +33,6 @@ public class Driver {
      * decimal places; the number of seats is a non-negative integer)
      */
     public static void uploadFlightInfo(String path) {
-        // TODO: complete this method body
         FileDatabase.createInstance(path);
         FileDatabase.getInstance().addFlightFromFile(path);
     }
@@ -51,8 +46,13 @@ public class Driver {
      * (the ExpiryDate is stored in the format YYYY-MM-DD)
      */
     public static String getClient(String email) {
-        // TODO: complete this method body
-        return UserManager.getInstance().getUserWithEmail(email).toString();
+        User user = FileDatabase.getInstance().getUserManager()
+                .getUserWithEmail(email);
+        if (user != null) {
+            return user.toString();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -69,15 +69,14 @@ public class Driver {
      * YYYY-MM-DD HH:MM; the price has exactly two decimal places)
      */
     public static String getFlights(String date, String origin, String destination) {
-        // TODO: complete this method body
-        ArrayList<Flight> flights = FlightManager.getInstance().getFlights
-                (origin, destination, date);
+        ArrayList<Flight> flights = FileDatabase.getInstance().
+                getFlightManger().getFlights(origin, destination, date);
 
         String result = "";
         for (Flight f: flights) {
-            result += f.toString() + "\n"; // TODO: Verify newline type %n \r\n or \n
+            result += f.toString() + "\n";
         }
-        // TODO: End with \n, ordering?
+
         return result;
     }
 
@@ -106,17 +105,15 @@ public class Driver {
      * followed by total duration (on its own line, in format HH:MM).
      */
     public static String getItineraries(String date, String origin, String destination) {
-        // TODO: complete this method body
-        ArrayList<Itinerary> itineraries = FlightManager.getInstance()
-                .getItineraries(
-                                                                        origin, destination, date);
-        // TODO: See newline formatting issues in method above
+        ArrayList<Itinerary> itineraries = FileDatabase.getInstance()
+                .getFlightManger().getItineraries(origin, destination, date);
+
         String result = "";
         for (Itinerary it: itineraries) {
             result += it.toString();
             result += "\n";
         }
-        // TODO: newline at end?
+
         return result;
     }
 
@@ -136,18 +133,17 @@ public class Driver {
      * followed by total duration (on its own line, in format HH:MM).
      */
     public static String getItinerariesSortedByCost(String date, String origin, String destination) {
-        // TODO: complete this method body
-        ArrayList<Itinerary> itineraries = FlightManager.getInstance()
-                .getItineraries(
-                                                                        origin, destination, date);
-        FlightManager.getInstance().sortByPrice(itineraries);
-        // TODO: See newline formatting issues in method above
+        ArrayList<Itinerary> itineraries = FileDatabase.getInstance()
+                .getFlightManger().getItineraries(origin, destination, date);
+
+       FileDatabase.getInstance().getFlightManger().sortByPrice(itineraries);
+
         String result = "";
         for (Itinerary it: itineraries) {
             result += it.toString();
             result += "\n";
         }
-        // TODO: newline at end?
+
         return result;
     }
 
@@ -167,18 +163,18 @@ public class Driver {
      * followed by total duration (on its own line, in format HH:MM).
      */
     public static String getItinerariesSortedByTime(String date, String origin, String destination) {
-        // TODO: complete this method body
-        ArrayList<Itinerary> itineraries = FlightManager.getInstance()
-                .getItineraries(
-                                                                        origin, destination, date);
-        FlightManager.getInstance().sortByDuration(itineraries);
-        // TODO: See newline formatting issues in method above
+        ArrayList<Itinerary> itineraries = FileDatabase.getInstance()
+                .getFlightManger().getItineraries(origin, destination, date);
+
+        FileDatabase.getInstance().getFlightManger(
+        ).sortByDuration(itineraries);
+
         String result = "";
         for (Itinerary it: itineraries) {
             result += it.toString();
             result += "\n";
         }
-        // TODO: newline at end?
+
         return result;
     }
 }

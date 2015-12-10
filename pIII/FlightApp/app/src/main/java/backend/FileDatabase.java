@@ -11,10 +11,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.io.File;
 
 /**
  * The FileDataBase class. This class is a singleton which stores all
@@ -27,17 +27,10 @@ import java.text.SimpleDateFormat;
  * collections of Flight.
  */
 
-// TODO: Make a test mode and don't break logging in, rigth now driver wont work
 public class FileDatabase implements Serializable {
 
     private static final long serialVersionUID = -5414755056678568378L;
 
-    // TODO: Getting trouble with driver, need to decouple Managers and FDatabase,
-    // TODO: but then you would have to clear every instantiation of FDB
-    // TODO: What should I do?
-    // TODO: Making these fields static prevents them from being Serialized btw
-    // TODO: You cannot change the access methods to static either (see above line)
-    // TODO: Should you make a clearing function?
     // the managers
     private UserManager userManager = UserManager.getInstance();
     private FlightManager flightManager = FlightManager.getInstance();
@@ -50,11 +43,6 @@ public class FileDatabase implements Serializable {
 
     // the singleton instance
     private static FileDatabase singletonInstance;
-
-    /*
-    // the persistent storage location
-    private static String dir;
-    */
 
     // name of serialized files
     private String flightManagerFile = "FlightManager.ser";
@@ -74,14 +62,6 @@ public class FileDatabase implements Serializable {
      * persistent storage.
      */
     private FileDatabase(String dir) {
-        /*
-        FileDatabase.dir = dir;
-        */
-        // TODO: Should you clean the FDB when ever you
-        // Suggestion: No
-        // want to check for .ser files, try and read password
-        // and reserialize?
-        // what if you are instantiated in a new place?
         deserializeManagers(dir);
     }
 
@@ -93,7 +73,7 @@ public class FileDatabase implements Serializable {
      * persistent storage.
      */
     public static void createInstance(String dir) {
-        if (singletonInstance == null /*|| !dir.equals(FileDatabase.dir)*/) {
+        if (singletonInstance == null) {
             singletonInstance = new FileDatabase(dir);
         }
     }
@@ -135,7 +115,6 @@ public class FileDatabase implements Serializable {
      * @param dir  the path to directory where serialized files are stored.
      */
     public void deserializeManagers(String dir) {
-        // TODO: Remove try-with from all files
         try (
                 FileInputStream userFile = new
                         FileInputStream(dir + userManagerFile);
@@ -144,17 +123,20 @@ public class FileDatabase implements Serializable {
 
                 FileInputStream flightFile = new
                         FileInputStream(dir + flightManagerFile);
-                BufferedInputStream buffer2 = new BufferedInputStream(flightFile);
+                BufferedInputStream buffer2 = new
+                        BufferedInputStream(flightFile);
                 ObjectInputStream flightStream = new ObjectInputStream(buffer2);
         ) {
             userManager = (UserManager) userStream.readObject();
             flightManager = (FlightManager) flightStream.readObject();
         } catch (FileNotFoundException e) {
             // Serialized files do not exist
-            // TODO: Check if passwords file exists see before the line below
-            // TODO: http://stackoverflow.com/questions/1816673/how-do-i-check-if-a-file-exists-in-java
-            populateUserManager(dir + passwordsFile);
-            serializeManagers(dir);
+            // Check if the passwords.txt file exists, if it does not
+            // the we are testing driver
+            if ((new File(dir + passwordsFile)).exists()) {
+                populateUserManager(dir + passwordsFile);
+                serializeManagers(dir);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -168,18 +150,20 @@ public class FileDatabase implements Serializable {
      * @param dir  the path of a directory in the system.
      */
     public void serializeManagers(String dir) {
-        // TODO: Verify if this function clears the ser file before writing
-        // TODO: if they exist
         try (
                 FileOutputStream userFile = new FileOutputStream(
                         dir + userManagerFile);
-                BufferedOutputStream buffer = new BufferedOutputStream(userFile);
-                ObjectOutputStream userStream = new ObjectOutputStream(buffer);
+                BufferedOutputStream buffer = new
+                        BufferedOutputStream(userFile);
+                ObjectOutputStream userStream = new
+                        ObjectOutputStream(buffer);
 
                 FileOutputStream flightFile = new FileOutputStream(
                         dir + flightManagerFile);
-                BufferedOutputStream buffer2 = new BufferedOutputStream(flightFile);
-                ObjectOutputStream flightStream = new ObjectOutputStream(buffer2);
+                BufferedOutputStream buffer2 = new
+                        BufferedOutputStream(flightFile);
+                ObjectOutputStream flightStream = new
+                        ObjectOutputStream(buffer2);
         ) {
             userStream.writeObject(userManager);
             flightStream.writeObject(flightManager);
@@ -188,8 +172,6 @@ public class FileDatabase implements Serializable {
             e.printStackTrace();
         }
     }
-
-    // TODO: Make a general, CSV file reading helper function
 
     /**
      * Populates this FlightManager's UserManager with all initial Users
@@ -236,12 +218,10 @@ public class FileDatabase implements Serializable {
             e.printStackTrace();
         } catch(IndexOutOfBoundsException e){
             System.out.println(
-                    "The CSV file given at " + dir + " is not formatted correctly."
+                    "The CSV file given at " + dir + " not formatted correctly."
             );
             e.printStackTrace();
         }
-
-        // TODO: Autosave (Wait it happens after the only time it is called
     }
 
     /**
@@ -272,7 +252,7 @@ public class FileDatabase implements Serializable {
                         values[1],
                         values[2],
                         values[3],
-                        Integer.parseInt(values[4]),
+                        Long.parseLong(values[4]),
                         dateFormatter.parse(values[5])
                 );
 
@@ -288,20 +268,15 @@ public class FileDatabase implements Serializable {
             e.printStackTrace();
         } catch(IndexOutOfBoundsException e){
             System.out.println(
-                    "The CSV file given at " + dir + " is not formatted correctly."
+                    "The CSV file given at " + dir + " not formatted correctly."
             );
             e.printStackTrace();
         } catch(ParseException e) {
             System.out.println(
-                    "The CSV file given at " + dir + " is not formatted correctly."
+                    "The CSV file given at " + dir + " not formatted correctly."
             );
             e.printStackTrace();
         }
-        // TODO: Autosave
-        /*
-        serializeManagers(dir);
-        */
-
     }
 
     /**
@@ -351,19 +326,14 @@ public class FileDatabase implements Serializable {
             e.printStackTrace();
         } catch(IndexOutOfBoundsException e){
             System.out.println(
-                    "The CSV file given at " + dir + " is not formatted correctly."
+                    "The CSV file given at " + dir + " not formatted correctly."
             );
             e.printStackTrace();
         } catch(ParseException e) {
             System.out.println(
-                    "The CSV file given at " + dir + " is not formatted correctly."
+                    "The CSV file given at " + dir + " not formatted correctly."
             );
             e.printStackTrace();
         }
-
-        // TODO: Autosave after editing all info in app
-        /*
-        serializeManagers(dir);
-        */
     }
 }

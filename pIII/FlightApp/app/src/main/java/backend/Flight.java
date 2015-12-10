@@ -11,8 +11,6 @@ import java.text.SimpleDateFormat;
  * <p>Flight objects will be persistent, hence they implement Serializable.
  * The natural ordering for Flights will be by Date, hence implements
  * Comparable.
- * TODO: For some reason, Dates do not work properly, make sure you use
- * TODO: SimpleDateFormatter to input Dates for constructors
  */
 public class Flight implements Comparable<Flight>, Serializable, Transport {
 
@@ -279,7 +277,6 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
      * nothing.
      *
      * @param numEmptySeats  the new number of empty seats of this Flight
-     * TODO: Change this method to private BEFORE FINAL SUBMISSION!
      */
     public void setNumEmptySeats(int numEmptySeats) {
         if (0 <= numEmptySeats && numEmptySeats <= numSeats) {
@@ -291,7 +288,6 @@ public class Flight implements Comparable<Flight>, Serializable, Transport {
      * Returns true iff this Flight has no empty seats.
      *
      * @return true iff this Flight has no empty seats.
-     * TODO: Change to private maybe (see where it is used)
      */
     public boolean isFull() {
         return numEmptySeats == 0;
