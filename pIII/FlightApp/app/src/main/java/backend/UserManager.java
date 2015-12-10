@@ -17,8 +17,7 @@ public class UserManager implements Serializable {
 
     private final long serialVersionUID = 1772117296747939656L;
 
-    public ArrayList<User> users; // The List of Users in the manager TODO: make
-    // private
+    public ArrayList<User> users; // The List of Users in the manager
 
     // Singleton Instance
     private static UserManager singletonInstance;
@@ -50,8 +49,6 @@ public class UserManager implements Serializable {
      * UserManager, edits that User's information.
      *
      * @param u  User that is to be added or edited
-     * TODO: Rename this method to update
-     * TODO: Unit test
      */
     public void addUser(User u) {
         if (users.contains(u)) {

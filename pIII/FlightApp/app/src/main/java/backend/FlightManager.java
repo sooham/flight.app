@@ -1,15 +1,12 @@
 package backend;
 
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.TreeSet;
-// TODO: Make code in this class simpler, suggestions getKey() method for
-// Flight and Itineraries
+
 /**
  * A FlightManager object. FlightManager is a singleton responsible for handling
  * both Itineraries and Flight objects. All instantiated Flight and Itinerary
@@ -97,7 +94,6 @@ public class FlightManager implements Serializable {
         // have to remove all flights with the same airline and flight number
         // from the HashMap (because the flight could have changed origin
         // destination or departure date)
-        // TODO: verify if the loop below remove() aliases the flights HashMap
         for (ArrayList<Flight> value: flights.values()) {
             value.remove(flight);
         }
@@ -125,7 +121,6 @@ public class FlightManager implements Serializable {
         // same airline and flight number from the HashMap
         // (because the flight could have changed origin
         // destination or date times) making the itinerary invalid
-        // TODO: Make sure this code block aliases the HashMap of itinerary
         for (ArrayList<Itinerary> value: itineraries.values()) {
             for (Itinerary it: new ArrayList<Itinerary>(value)) {
                 if (it.getFlights().contains(flight)) {
@@ -156,8 +151,6 @@ public class FlightManager implements Serializable {
      * Adds a new itinerary to the itineraries HashMap. The condition that
      * the hashmap does not contain itineraries equals() to the new
      * itinerary must be true.
-     *
-     * TODO: Update this method name to a better name
      *
      * @param itinerary  the new itinerary to add.
      */

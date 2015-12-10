@@ -45,7 +45,7 @@ public class EditClientInfo extends AppCompatActivity {
         // Sets the default values for all views at login
         firstName.setText(user.getFirstName());
         lastName.setText(user.getLastName());
-        creditNum.setText(Integer.toString(user.getCreditCardNumber()));
+        creditNum.setText(Long.toString(user.getCreditCardNumber()));
         expiryDate.setText(dateFormatter.format(user.getExpiryDate()));
         }
 
@@ -61,7 +61,7 @@ public class EditClientInfo extends AppCompatActivity {
             user.setFirstName(firstName.getText().toString());
             user.setLastName(lastName.getText().toString());
             user.setCreditCardNumber(
-            Integer.parseInt(creditNum.getText().toString()));
+            Long.parseLong(creditNum.getText().toString()));
         } catch (ParseException e) {}
 
         //Saves the changes made to the user and the UserManager

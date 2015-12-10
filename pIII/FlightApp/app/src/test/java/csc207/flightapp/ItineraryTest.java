@@ -339,8 +339,6 @@ public class ItineraryTest {
         assertNotSame(newItinerary, testItinerary);
     }
 
-    // TODO: Add Itineraries
-
     // equals
     @Test
     public void equalsShouldReturnCorrectValue() throws

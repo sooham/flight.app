@@ -353,12 +353,6 @@ public class FlightManagerTest {
                 expectedItinerariesMap.size());
         assertEquals(flightManager.itineraries, expectedItinerariesMap);
 
-        // TODO: Complete the below
-        // edit a couple of flights
-        // edit a single flight to form a new itinerary (f11)
-        // edit a flight to invalidate itinerary (f1, f3, f8)
-        // add them to the FM
-        // check the HashMaps
     }
 
     @Test

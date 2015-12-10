@@ -18,7 +18,6 @@ import java.text.SimpleDateFormat;
  * is imposed to prevent inefficient routes.
  */
 
-// TODO: TreeSet require API level 9
 public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
         Serializable, Transport {
 
@@ -117,7 +116,6 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
     }
 
     /**
-     * TODO: Do we need this (check)
      * Returns the Flights in this Itinerary as a List.
      *
      * @return the flights field of this Itinerary
@@ -188,8 +186,6 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
      *
      * @param itinerary  the Itinerary to concatenate to this Itinerary.
      * @throws InvalidItineraryException if the Itinerary formed is invalid.
-     * TODO: This method should not take in equal Flight containing Itinerary
-     * TODO: Update Junit tests
      */
     public Itinerary addItinerary(Itinerary itinerary)
             throws InvalidItineraryException {
@@ -199,7 +195,6 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
         return new Itinerary(newFlightsTreeSet);
     }
 
-    //TODO: Only needed for Unit Test, delete afterwards
     public Itinerary addFlight(Flight flight) throws
             InvalidItineraryException {
         // Create a new TreeSet, being careful not to alias
@@ -306,7 +301,7 @@ public class Itinerary implements Comparable<Itinerary>, Iterable<Flight>,
                                             f.getOrigin(),
                                             f.getDestination()
                                         );
-            formatString += "\n"; // TODO: verify newline char to use
+            formatString += "\n";
         }
 
         formatString += String.format("%.2f\n%02d:%02d",

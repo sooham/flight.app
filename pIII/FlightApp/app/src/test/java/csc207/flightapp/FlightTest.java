@@ -301,7 +301,6 @@ public class FlightTest {
     @Test
     public void bookSeatBooksASingleSeatWhenFlightNotFull()
             throws InvalidFlightException, ParseException {
-        // TODO: Write a better Test?
         Flight f = new Flight("Emirates", 303l, "S", "T", format.parse
                 ("2016-08-19 01:00"),
                 format.parse("2016-08-19 03:00"), 100.0, 50);
