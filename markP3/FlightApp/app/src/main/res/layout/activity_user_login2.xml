@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="csc207.flightapp.UserLogin">
+
+    <EditText
+        android:id="@+id/get_email"
+        style="@style/EditTextStyle"
+        android:inputType="textEmailAddress"
+        android:hint="@string/prompt_email"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/get_password"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true" />
+
+    <EditText
+        android:id="@+id/get_password"
+        style="@style/EditTextStyle"
+        android:inputType="textPassword"
+        android:hint="@string/prompt_password"
+        android:layout_above="@+id/login_button"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true" />
+
+    <Button
+        android:id="@+id/login_button"
+        style="@style/ButtonStyle"
+        android:text="@string/action_sign_in"
+        android:onClick="searchFlightIntent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="200dp" />
+
+    <TextView
+        android:id="@+id/login_failure"
+        android:textStyle="italic"
+        android:textColor="@color/redAccent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/get_email"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp"/>
+
+</RelativeLayout>

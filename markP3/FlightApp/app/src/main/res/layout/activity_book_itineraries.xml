@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="csc207.flightapp.BookItineraries">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="none"
+        android:layout_weight="1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/flight_table">
+
+                <TableRow>
+                    <TextView
+                        android:text="# of Flights"
+                        android:padding="10dp"
+                        android:layout_width="fill_parent"
+                        android:background="@drawable/cell_shape"/>
+
+                    <TextView
+                        android:text="Duration"
+                        android:padding="10dp"
+                        android:layout_width="fill_parent"
+                        android:background="@drawable/cell_shape"/>
+
+                    <TextView
+                        android:text="Price"
+                        android:padding="10dp"
+                        android:layout_width="fill_parent"
+                        android:background="@drawable/cell_shape"/>
+
+                    <TextView
+                        android:text="Flights"
+                        android:padding="10dp"
+                        android:layout_width="fill_parent"
+                        android:background="@drawable/cell_shape"/>
+
+                    <TextView
+                        android:text="Book"
+                        android:padding="10dp"
+                        android:layout_width="fill_parent"
+                        android:background="@drawable/cell_shape"/>
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
