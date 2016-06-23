@@ -72,6 +72,11 @@ Monday, Nov 16, fourth Status meeting
 
 Phase III
 ___________________________________________________________________________
+NOTE:
+Sooham Rafiz (c4rafizs) has additional (70+ commit) made for PIII
+in the pII folder (due to android studio being fragile) and to not
+conflict with teammate working on frontend
+
 Monday Nov 23, first Planning meeting:
     Notes:
         One person (Chris) missing from meeting due to part time job,
@@ -201,7 +206,7 @@ Wednesday December 2, first Status meeting:
     Accomplished in meeting:
         All people are familiar with backend and frontend code, ready
         for PIIIa interview tomorrow.
-		
+
 	Tasks left to complete for Phase III:
 		Driver needs to be implemented and work properly
 		UserLogin must recognize the distinction between User and Admin

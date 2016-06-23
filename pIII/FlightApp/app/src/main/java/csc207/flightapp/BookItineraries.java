@@ -61,7 +61,7 @@ public class BookItineraries extends Activity implements View.OnClickListener{
 
             // Creation of the textview that displays the number of transfers
             TextView flightText2 = new TextView(this);
-            flightText2.setText(Objects.toString(flight.getFlights().size()));;
+            flightText2.setText(Objects.toString(flight.getFlights().size()));
             flightText2.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
             flightText2.setPadding(5,5,5,5);
